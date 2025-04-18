@@ -27,3 +27,7 @@ Redirect
 Term
 Careers
 Contact Us
+
+Facilities
+social media
+info
