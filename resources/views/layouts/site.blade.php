@@ -33,11 +33,11 @@
             transition: all 0.3s ease-in-out;
             background: #000000; /* Black background */
             color: #ffffff; /* White text */
-            height: 5rem; /* Increased height */
+            height: 6.5rem; /* Increased height */
         }
 
         .header.scrolled {
-            height: 3.5rem; /* Shrink on scroll */
+            height: 4.5rem; /* Shrink on scroll */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
@@ -66,6 +66,14 @@
                 opacity: 1;
             }
         }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
 
         /* RTL Adjustments */
         html[dir="rtl"] .nav-items {
@@ -140,6 +148,14 @@
 </head>
 
 <body class="bg-gray-100 overflow-x-hidden">
+      <!-- Loader -->
+      <div x-data="{ isLoading: true }" x-init="setTimeout(() => isLoading = false, 2000)"
+        x-show="isLoading" x-cloak
+        class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50 transition-opacity duration-500"
+        :class="{ 'opacity-100': isLoading, 'opacity-0': !isLoading }">
+        <div class="loader w-16 h-16 border-8 border-orange-500 border-t-black rounded-full animate-spin"></div>
+    </div>
+
     <div class="flex flex-col min-h-screen" x-data="{ menuOpen: false }">
         <!-- Fixed Header -->
         <header class="header fixed top-0 left-0 right-0 z-50 text-white flex items-center">
@@ -212,44 +228,72 @@
         </div>
 
         <!-- Main Content -->
-        <main class="flex-1 pt-20">
+        <main class="flex-1 pt-20 ">
             {{ $slot }}
         </main>
 
         <!-- Footer -->
-        <footer class="footer py-12">
-            <div class="container text-center">
-                <!-- Footer Links -->
-                <div class="footer-links flex justify-center gap-8 mb-6">
-                    <a href="#" class="text-white hover:underline">البحث</a>
-                    <a href="#" class="text-white hover:underline">اتصل بنا</a>
-                    <a href="#" class="text-white hover:underline">الشروط</a>
-                    <a href="#" class="text-white hover:underline">الخصوصية</a>
-                </div>
-
-                <!-- Social Media Icons -->
-                <div class="flex justify-center gap-4 mb-6">
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="social-icon">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                </div>
-
-                <!-- Copyright Notice -->
-                <div class="text-gray-300">
-                    <p>
-                        الحقوق محفوظة لـ
-                        <a href="https://digitsmark.com" class="underline hover:text-white">digitsmark</a>
-                        © 2025
+          <!-- Footer -->
+          <footer class="footer py-12">
+            <div class="container grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Column 1: Logo and Company Info -->
+                <div>
+                    <img src="{{ asset('logo.png') }}" alt="Bin Nazeh Logo" class="h-16 w-16 mb-4" />
+                    <h3 class="text-xl font-bold mb-2">بن نازح</h3>
+                    <p class="text-gray-300">
+                        بن نازح هي شركة رائدة في مجال التطوير العقاري، تقدم حلولاً مبتكرة ومستدامة لتلبية احتياجات عملائها في جميع أنحاء المملكة العربية السعودية.
                     </p>
+                </div>
+
+                <!-- Column 2: Quick Links (Split into Two Sub-Columns) -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">روابط سريعة</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <ul class="space-y-2">
+                                <li><a href="#" class="hover:text-gray-300">الرئيسية</a></li>
+                                <li><a href="#" class="hover:text-gray-300">نبذة عنا</a></li>
+                                <li><a href="#" class="hover:text-gray-300">خدماتنا</a></li>
+                                <li><a href="#" class="hover:text-gray-300">جدة</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="space-y-2">
+                                <li><a href="#" class="hover:text-gray-300">الرياض</a></li>
+                                <li><a href="#" class="hover:text-gray-300">سجل اهتمامك</a></li>
+                                <li><a href="#" class="hover:text-gray-300">الأخبار</a></li>
+                                <li><a href="#" class="hover:text-gray-300">تواصل معنا</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 3: Newsletter -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">النشرة البريدية</h3>
+                    <p class="text-gray-300 mb-4">اشترك في نشرتنا البريدية للحصول على آخر الأخبار والعروض.</p>
+                    <div x-data="{ email: '' }">
+                        <input type="email" x-model="email" placeholder="أدخل بريدك الإلكتروني"
+                            class="w-full p-2 mb-2 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:border-white">
+                        <button @click="alert('تم الاشتراك بنجاح!')"
+                            class="w-full p-2 bg-white text-black rounded hover:bg-gray-200">اشترك</button>
+                    </div>
+                </div>
+
+                <!-- Column 4: Contact Info -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">معلومات التواصل</h3>
+                    <ul class="space-y-2 text-gray-300">
+                        <li><i class="fas fa-phone mr-2"></i> +966 123 456 789</li>
+                        <li><i class="fas fa-envelope mr-2"></i> info@binnazeh.com</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i> الرياض، المملكة العربية السعودية</li>
+                    </ul>
+                    <div class="mt-4 flex space-x-4 space-x-reverse">
+                        <a href="#" class="hover:text-gray-300"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="hover:text-gray-300"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="hover:text-gray-300"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover:text-gray-300"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
             </div>
         </footer>

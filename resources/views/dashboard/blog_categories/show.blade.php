@@ -11,6 +11,16 @@
             </div>            <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.name')</label>
                 <p class="text-gray-900">{{ $blogCategory->name ?? '—' }}</p>
+            </div>            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">@lang('site.description')</label>
+                <p class="text-gray-900">{{ $blogCategory->description ?? '—' }}</p>
+            </div>            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">@lang('site.img')</label>
+                @isset($blogCategory->img)
+                    <img src="{{ Storage::url($blogCategory->img) }}" alt="img" class="mt-2 w-48 h-48 rounded">
+                @else
+                    <p class="text-gray-900">—</p>
+                @endisset
             </div>
             <a href="{{ route('dashboard.blog_categories.index') }}" class="mt-4 inline-block px-4 py-2 bg-gray-500 text-white rounded shadow hover:bg-gray-700">
                 @lang('site.back')

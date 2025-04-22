@@ -9,10 +9,6 @@ use App\Models\BlogCategory;
 
 class BlogCategoryController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware(['auth']);
-    }
 
     public function index()
     {
@@ -30,8 +26,13 @@ class BlogCategoryController extends Controller
     {
         $validated = $request->validate([
             'slug' => 'required|string|max:255',
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'img' => 'nullable|image|max:2048'
         ]);
+                if ($request->hasFile('img')) {
+            $validated['img'] = $request->file('img')->store('public/imgs');
+        }
 
         $blogCategory = \App\Models\BlogCategory::create($validated);
 
@@ -42,7 +43,7 @@ class BlogCategoryController extends Controller
     {
         $blogCategory = \App\Models\BlogCategory::findOrFail($id);
 
-        return view('dashboard.blogCategories.show', compact('blogCategory'));
+        return view('dashboard.blog_categories.show', compact('blogCategory'));
     }
 
     public function edit($id)
@@ -57,8 +58,14 @@ class BlogCategoryController extends Controller
         $blogCategory = \App\Models\BlogCategory::findOrFail($id);
         $validated = $request->validate([
             'slug' => 'required|string|max:255',
-            'name' => 'required|string|max:255'
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'img' => 'nullable|image|max:2048'
         ]);
+                if ($request->hasFile('img')) {
+            $validated['img'] = $request->file('img')->store('public/imgs');
+            if ($blogCategory->img) Storage::delete($blogCategory->img);
+        }
 
         $blogCategory->update($validated);
 

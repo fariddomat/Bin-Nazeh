@@ -31,3 +31,12 @@ Contact Us
 Facilities
 social media
 info
+
+
+Home #
+Services # static sections
+Service # order services
+
+Projects Categories #
+Projects #
+Project # image Slider

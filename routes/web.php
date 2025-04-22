@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dashboard\BlogCategoryController;
 use App\Http\Controllers\Dashboard\BlogController;
 use App\Http\Controllers\Dashboard\UserController;
+use App\Http\Controllers\SiteController;
 use App\Livewire\UserForm;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -19,7 +20,19 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 |
 */
 
-Route::view('/', 'welcome');
+Route::get('/', [SiteController::class, 'home'])->name('home');
+Route::get('/about', [SiteController::class, 'about'])->name('about');
+Route::get('/services', [SiteController::class, 'services'])->name('services');
+Route::get('/services/{slug}', [SiteController::class, 'serviceShow'])->name('services.show');
+Route::get('/project-categories', [SiteController::class, 'projectCategories'])->name('project-categories');
+Route::get('/projectsCategory/{category}', [SiteController::class, 'projects'])->name('projects');
+Route::get('/projects/{slug}', [SiteController::class, 'projectShow'])->name('projects.show');
+Route::get('/blogs', [SiteController::class, 'blogs'])->name('blogs.index');
+Route::get('/blogs/{slug}', [SiteController::class, 'blogShow'])->name('blogs.show');
+Route::get('/register-interest', [SiteController::class, 'registerInterestCreate'])->name('register-interest');
+Route::post('/register-interest', [SiteController::class, 'registerInterestStore'])->name('register-interest.store');
+Route::get('/contact-us', [SiteController::class, 'contact'])->name('contact');
+Route::post('/contact-us', [SiteController::class, 'contactStore'])->name('contact.store');
 
 Route::middleware(['web'])->group(function () {
     Route::view('dashboard', 'dashboard')
@@ -94,3 +107,12 @@ Route::prefix('dashboard')
     });
 
 require __DIR__ . '/auth.php';
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
+    Route::resource('/facilities', \App\Http\Controllers\Dashboard\FacilityController::class);
+    Route::post('/facilities/{id}/restore', [\App\Http\Controllers\Dashboard\FacilityController::class, 'restore'])->name('facilities.restore');
+});
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
+    Route::resource('/social_media', \App\Http\Controllers\Dashboard\SocialMediaController::class);
+    Route::post('/social_media/{id}/restore', [\App\Http\Controllers\Dashboard\SocialMediaController::class, 'restore'])->name('social_media.restore');
+});
+

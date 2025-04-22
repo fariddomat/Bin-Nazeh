@@ -1,0 +1,551 @@
+<x-site-layout>
+    <!-- Hero Image Slider -->
+    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+        class="relative h-screen opacity-0 translate-y-10 overflow-x-hidden">
+        <div x-data='{
+            slides: @json($sliders, JSON_UNESCAPED_SLASHES),
+            currentSlide: 0,
+            init() {
+                if (this.slides.length > 0) {
+                    setInterval(() => {
+                        this.currentSlide = (this.currentSlide + 1) % this.slides.length;
+                    }, 10000); // Change slide every 10 seconds
+                }
+            }
+        }' class="relative h-full" wire:ignore>
+            <!-- Debug -->
+            <div x-show="false" x-text="JSON.stringify(slides)"></div>
+            <!-- Slides -->
+            <template x-for="(slide, index) in slides" :key="index">
+                <div x-show="currentSlide === index"
+                    class="absolute inset-0 bg-cover bg-center transition-opacity duration-1000"
+                    :class="{ 'opacity-100': currentSlide === index, 'opacity-0': currentSlide !== index }"
+                    :style="{ 'background-image': `url(${slide.image})` }">
+                    <!-- Dark Overlay -->
+                    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                    <!-- Main Text with Fade-In Slide Effect -->
+                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white animate-text-slide-in">
+                        <h1 class="text-4xl md:text-6xl font-bold" x-text="slide.text"></h1>
+                    </div>
+                    <!-- Description (Bottom Right) -->
+                    <div class="absolute bottom-8 right-8 text-white max-w-sm animate-slide-in-right">
+                        <p class="text-lg md:text-xl" x-text="slide.description"></p>
+                    </div>
+                    <!-- Explore Button (Bottom Left) -->
+                    <div class="absolute bottom-8 left-8 animate-slide-in-left">
+                        <a href="{{ route('home') }}"
+                            class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md hover:bg-gray-200 transition-colors duration-300">
+                            استكشف المزيد
+                        </a>
+                    </div>
+                </div>
+            </template>
+            <div x-show="slides.length === 0" class="absolute inset-0 flex items-center justify-center text-white bg-gray-900">
+                <p>لا توجد صور متاحة</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section x-intersect="$el.classList.add('animate-section', 'slide-in-left')"
+        class="bg-white py-16 opacity-0 translate-x-10">
+        <div class="container text-center">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-12">شركائنا</h2>
+            <!-- Continuous Logo Slider -->
+            <div class="overflow-hidden">
+                <div class="flex animate-continuous-slide" x-data="{ pause: false }" @mouseenter="pause = true" @mouseleave="pause = false">
+                    <!-- Logos (Repeated for seamless loop) -->
+                    <div class="flex flex-shrink-0">
+                        @foreach ($partners as $partner)
+                            <img src="{{ asset('images/' . $partner->img) }}" alt="{{ $partner->name ?? 'Partner' }}"
+                                class="h-16 mx-6">
+                        @endforeach
+                    </div>
+                    <!-- Duplicate Logos for Continuous Effect -->
+                    <div class="flex flex-shrink-0">
+                        @foreach ($partners as $partner)
+                            <img src="{{ asset('images/' . $partner->img) }}" alt="{{ $partner->name ?? 'Partner' }}"
+                                class="h-16 mx-6">
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Section -->
+    <section x-intersect="$el.classList.add('animate-section', 'fade-in-scale')"
+        class="relative h-screen bg-gray-900 opacity-0 scale-95">
+        <video class="w-full h-full object-cover" autoplay muted loop playsinline>
+            <source src="{{ asset('videos/placeholder-video.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </section>
+
+    <!-- Services Section -->
+    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+        class="relative py-16 bg-cover bg-center opacity-0 translate-y-10"
+        style="background-image: url('{{ asset('images/services-bg.jpg') }}')">
+        <!-- Lightened Overlay -->
+        <div class="absolute inset-0 bg-white bg-opacity-50"></div>
+        <div class="container relative z-10">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">خدماتنا</h2>
+            <!-- Services Slider -->
+            <div class="relative">
+                <div x-data="{
+                    currentIndex: 0,
+                    cardWidth: 320, // w-80 ≈ 320px
+                    cardCount: {{ count($services) }},
+                    cardsPerView: 3,
+                    maxIndex() { return this.cardCount - this.cardsPerView; },
+                    next() { if (this.currentIndex < this.maxIndex()) this.currentIndex++; },
+                    prev() { if (this.currentIndex > 0) this.currentIndex--; }
+                }" class="overflow-hidden">
+                    <!-- Slider Container -->
+                    <div class="flex transition-transform duration-500"
+                        :style="{ 'transform': `translateX(-${currentIndex * cardWidth}px)` }">
+                        @foreach ($services as $index => $service)
+                            <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
+                                :x-intersect:delay="{{ $index * 200 }}"
+                                class="service-card flex-shrink-0 w-80 bg-white rounded-lg shadow-lg p-6 text-center mx-3 opacity-0 translate-y-10">
+                                <i class="{{ $service->icon }} text-4xl text-gray-900 mb-4"></i>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $service->name }}</h3>
+                                <p class="text-gray-600 mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($service->description), 100) !!}</p>
+                                <a href="{{ route('services.show', $service->slug) }}"
+                                    class="text-blue-600 hover:underline">عرض المزيد</a>
+                            </div>
+                        @endforeach
+                    </div>
+                    <!-- Navigation Arrows -->
+                    <button x-on:click="prev()" x-bind:class="{ 'opacity-50 cursor-not-allowed': currentIndex === 0 }"
+                        class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg text-gray-900 hover:bg-gray-200">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button x-on:click="next()" x-bind:class="{ 'opacity-50 cursor-not-allowed': currentIndex >= maxIndex() }"
+                        class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg text-gray-900 hover:bg-gray-200">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+        class="bg-white py-16 opacity-0 translate-y-10">
+        <div class="container">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">مشاريعنا</h2>
+            <!-- Projects Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach ($projects as $index => $project)
+                    <div x-intersect="$el.classList.add('animate-item', '{{ $index % 2 === 0 ? 'slide-in-left' : 'slide-in-right' }}')"
+                        :x-intersect:delay="{{ $index * 200 }}"
+                        class="relative bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 opacity-0 {{ $index % 2 === 0 ? 'translate-x-10' : '-translate-x-10' }}">
+                        <!-- Image -->
+                        <div class="relative">
+                            <img src="{{ asset('images/' . $project->img) }}" alt="{{ $project->name }}"
+                                class="w-full h-48 object-cover rounded-t-lg">
+                            <!-- Status Badge -->
+                            <span class="absolute top-4 left-4 bg-gray-900 bg-opacity-75 text-white text-sm font-semibold px-3 py-1 rounded-full project-badge">
+                                {{ __('status.' . $project->status) }}
+                            </span>
+                            <!-- Sold Overlay (Conditional) -->
+                            <div x-data="{ isSold: {{ $project->is_sold ? 'true' : 'false' }} }" x-show="isSold"
+                                class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-t-lg">
+                                <span class="text-white text-2xl font-bold">تم البيع</span>
+                            </div>
+                        </div>
+                        <!-- Content -->
+                        <div class="p-6 text-center">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $project->name }}</h3>
+                            <p class="text-gray-600 mb-4">{{ $project->projectCategory->name }}</p>
+                            <a href="{{ route('projects.show', $project->slug) }}"
+                                class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-gray-200 transition-colors duration-300">
+                                استكشف
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <!-- Explore More Button -->
+            <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
+                class="text-center mt-12 opacity-0 translate-y-10">
+                <a href="{{ route('projects') }}"
+                    class="inline-block px-8 py-4 bg-black text-white font-semibold rounded-md hover:bg-gray-800 transition-colors duration-300">
+                    استكشف المزيد من المشاريع
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Guarantees Section -->
+    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+        class="bg-white py-16 opacity-0 translate-y-10">
+        <div class="container">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">الضمانات</h2>
+            <!-- Guarantees Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @foreach ($facilities as $index => $facility)
+                    <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                        :x-intersect:delay="{{ $index * 200 }}"
+                        class="flex items-start bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 opacity-0 scale-95 guarantee-item">
+                        <i class="{{ $facility->icon }} text-4xl text-gray-900 mr-4"></i>
+                        <div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $facility->title }}</h3>
+                            <p class="text-gray-600">{{ $facility->description }}</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- Reviews Section -->
+    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+        class="bg-gray-100 py-16 opacity-0 translate-y-10">
+        <div class="container">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">آراء العملاء</h2>
+            <!-- Reviews Slider -->
+            <div x-data='{
+                reviews: @json($reviews, JSON_UNESCAPED_SLASHES),
+                currentIndex: 0,
+                reviewsPerPage: 3,
+                cardWidth: 320, // w-80 ≈ 320px
+                pause: false,
+                maxIndex() { return Math.ceil(this.reviews.length / this.reviewsPerPage) - 1; },
+                next() { if (this.currentIndex < this.maxIndex()) this.currentIndex++; else this.currentIndex = 0; },
+                init() {
+                    if (this.reviews.length > 0) {
+                        setInterval(() => {
+                            if (!this.pause) {
+                                this.next();
+                            }
+                        }, 5000); // Change set every 5 seconds
+                    }
+                }
+            }' class="relative overflow-hidden review-slider" @mouseenter="pause = true" @mouseleave="pause = false" wire:ignore>
+                <!-- Debug -->
+                <div x-show="false" x-text="JSON.stringify(reviews)"></div>
+                <!-- Slider Container -->
+                <div class="flex transition-transform duration-500"
+                    :style="{ 'transform': `translateX(-${currentIndex * cardWidth * reviewsPerPage}px)` }">
+                    <template x-for="(review, index) in reviews" :key="index">
+                        <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
+                            :x-intersect:delay="index % reviewsPerPage * 200"
+                            class="flex-shrink-0 w-80 bg-white rounded-lg shadow-md p-6 text-center mx-3 opacity-0 translate-y-10">
+                            <img :src="review.icon" alt="Reviewer" class="w-16 h-16 rounded-full mx-auto mb-4 object-cover">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
+                            <p class="text-gray-600 italic mb-4" x-text="review.title"></p>
+                            <p class="text-gray-700" x-text="review.description"></p>
+                        </div>
+                    </template>
+                </div>
+                <!-- Navigation Dots -->
+                <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
+                    class="flex justify-center mt-6 space-x-2 space-x-reverse opacity-0 translate-y-10">
+                    <template x-for="index in Math.ceil(reviews.length / reviewsPerPage)" :key="index">
+                        <span @click="currentIndex = index - 1"
+                            class="w-3 h-3 rounded-full cursor-pointer transition-colors duration-300"
+                            :class="{ 'bg-gray-900': currentIndex === index - 1, 'bg-gray-300': currentIndex !== index - 1 }"></span>
+                    </template>
+                </div>
+                <div x-show="reviews.length === 0" class="text-center text-gray-600 py-8">
+                    <p>لا توجد آراء متاحة</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section (Counters) -->
+    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+        class="bg-gray-100 py-16 opacity-0 translate-y-10">
+        <div class="container">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">المميزات</h2>
+            <!-- Features Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                @foreach ($counters as $index => $counter)
+                    <div x-intersect.once="$el.classList.add('animate-item', 'fade-in-scale'); $dispatch('start-count', { id: $el.id })"
+                        id="feature-{{ $index + 1 }}"
+                        x-data="{ count: 0 }"
+                        x-on:start-count.window="if ($event.detail.id === 'feature-{{ $index + 1 }}') { let start = 0; const end = parseInt($el.dataset.count); const duration = 2000; const interval = duration / end; const timer = setInterval(() => { if (start < end) { start++; count = start; } else { clearInterval(timer); } }, interval); }"
+                        class="bg-white rounded-lg shadow-md p-6 text-center opacity-0 scale-95"
+                        data-count="{{ $counter->value }}">
+                        <i class="{{ $counter->icon }} text-4xl text-gray-900 mb-4"></i>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $counter->name }}</h3>
+                        <p class="text-3xl font-semibold text-orange-500" x-text="count"></p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    <!-- Blogs Section -->
+    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+        class="bg-white py-16 opacity-0 translate-y-10">
+        <div class="container">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">المدونات</h2>
+            <!-- Blogs Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach ($blogs as $index => $blog)
+                    <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
+                        :x-intersect:delay="{{ $index * 200 }}"
+                        class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 opacity-0 translate-y-10">
+                        <img src="{{ asset('images/' . $blog->image) }}" alt="{{ $blog->title }}"
+                            class="w-full h-48 object-cover rounded-t-lg blog-image">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $blog->title }}</h3>
+                            <p class="text-gray-600 text-sm mb-4">{{ $blog->created_at->format('d F Y') }}</p>
+                            <p class="text-gray-700 mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($blog->introduction), 100) !!}</p>
+                            <a href="{{ route('blogs.show', $blog->slug) }}"
+                                class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
+                                استكشف
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+            <!-- View All Button -->
+            <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
+                class="text-center mt-12 opacity-0 translate-y-10">
+                <a href="{{ route('blogs.index') }}"
+                    class="inline-block px-8 py-4 bg-black text-white font-semibold rounded-md hover:bg-gray-800 transition-colors duration-300">
+                    عرض الكل
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Animations and Styles -->
+    <style>
+        @keyframes text-slide-in {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-in-right {
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-in-left {
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes continuous-slide {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        @keyframes slide-in-up {
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fade-in-slide-up {
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fade-in-scale {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .animate-text-slide-in {
+            animation: text-slide-in 1s ease-out forwards;
+        }
+
+        .animate-slide-in-right {
+            animation: slide-in-right 0.8s ease-out forwards;
+        }
+
+        .animate-slide-in-left {
+            animation: slide-in-left 0.8s ease-out forwards;
+        }
+
+        .animate-continuous-slide {
+            animation: continuous-slide 20s linear infinite;
+        }
+
+        .animate-continuous-slide:hover {
+            animation-play-state: paused;
+        }
+
+        [dir="rtl"] .animate-continuous-slide {
+            animation-direction: reverse;
+        }
+
+        .animate-section.fade-in-slide-up {
+            animation: fade-in-slide-up 0.7s ease-out forwards;
+        }
+
+        .animate-section.slide-in-left {
+            animation: slide-in-left 0.7s ease-out forwards;
+        }
+
+        .animate-section.fade-in-scale {
+            animation: fade-in-scale 0.7s ease-out forwards;
+        }
+
+        .animate-item.slide-in-up {
+            animation: slide-in-up 0.7s ease-out forwards;
+        }
+
+        .animate-item.slide-in-left {
+            animation: slide-in-left 0.7s ease-out forwards;
+        }
+
+        .animate-item.slide-in-right {
+            animation: slide-in-right 0.7s ease-out forwards;
+        }
+
+        .animate-item.fade-in-scale {
+            animation: fade-in-scale 0.7s ease-out forwards;
+        }
+
+        .animate-item.fade-in-slide-up {
+            animation: fade-in-slide-up 0.7s ease-out forwards;
+        }
+
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* RTL Adjustments */
+        [dir="rtl"] .slider-container {
+            direction: ltr; /* Ensure transform works consistently */
+        }
+
+        [dir="rtl"] .project-badge {
+            left: auto;
+            right: 1rem; /* Adjust badge position in RTL */
+        }
+
+        [dir="rtl"] .guarantee-item .fas {
+            margin-right: 0;
+            margin-left: 1rem; /* Adjust icon spacing in RTL */
+        }
+
+        [dir="rtl"] .review-slider {
+            direction: ltr; /* Ensure slider direction consistency */
+        }
+
+        [dir="rtl"] .slide-in-left {
+            animation: slide-in-right 0.7s ease-out forwards; /* Reverse for RTL */
+        }
+
+        [dir="rtl"] .slide-in-right {
+            animation: slide-in-left 0.7s ease-out forwards; /* Reverse for RTL */
+        }
+
+        [dir="rtl"] .fa-map-marker-alt,
+        [dir="rtl"] .fa-phone,
+        [dir="rtl"] .fa-envelope {
+            margin-right: 0;
+            margin-left: 0.5rem; /* Adjust icon spacing in RTL */
+        }
+
+        [dir="rtl"] .blog-image {
+            border-top-right-radius: 0;
+            border-top-left-radius: 0.5rem; /* Adjust image border radius in RTL */
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 640px) {
+            .blog-image {
+                height: 10rem; /* Smaller image height on mobile */
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            .animate-section, .animate-item {
+                animation: none !important;
+                transform: none !important;
+                opacity: 1 !important;
+            }
+        }
+    </style>
+
+    <!-- Alpine.js Intersection Observer -->
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.directive('intersect', (el, { value, expression }, { evaluate, cleanup }) => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const delay = parseInt(el.getAttribute('x-intersect:delay') || '0', 10);
+                            setTimeout(() => {
+                                evaluate(expression);
+                            }, delay);
+                            if (el.hasAttribute('x-intersect.once')) {
+                                observer.unobserve(el);
+                            }
+                        }
+                    });
+                }, { threshold: 0.1 });
+                observer.observe(el);
+                cleanup(() => observer.disconnect());
+            });
+        });
+    </script>
+</x-site-layout>
