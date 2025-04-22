@@ -15,118 +15,113 @@
         </div>
     </section>
 
-    <!-- Form Section -->
+    <!-- Form and Info Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-white py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">أرسل استفسارك</h2>
-            <div x-data="{
-                form: {
-                    name: '',
-                    email: '',
-                    phone: '',
-                    project_id: '',
-                    message: ''
-                },
-                errors: {},
-                submitted: false,
-                validate() {
-                    this.errors = {};
-                    if (!this.form.name) this.errors.name = 'الاسم مطلوب';
-                    if (!this.form.email) this.errors.email = 'البريد الإلكتروني مطلوب';
-                    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.form.email)) this.errors.email = 'البريد الإلكتروني غير صحيح';
-                    if (!this.form.phone) this.errors.phone = 'رقم الهاتف مطلوب';
-                    else if (!/^\d{10}$/.test(this.form.phone)) this.errors.phone = 'رقم الهاتف يجب أن يكون 10 أرقام';
-                    if (!this.form.project_id) this.errors.project_id = 'المشروع مطلوب';
-                    if (!this.form.message) this.errors.message = 'الرسالة مطلوبة';
-                    return Object.keys(this.errors).length === 0;
-                },
-                submit() {
-                    if (this.validate()) {
-                        // Simulate form submission (replace with actual POST request)
-                        console.log('Form submitted:', this.form);
-                        this.submitted = true;
-                        // Reset form
-                        this.form = {
-                            name: '',
-                            email: '',
-                            phone: '',
-                            project_id: '',
-                            message: ''
-                        };
-                        // Auto-hide success message after 5 seconds
-                        setTimeout(() => { this.submitted = false; }, 5000);
-                    }
-                }
-            }" class="max-w-lg mx-auto relative p-4">
-                <!-- Gold Gradient Border -->
-                <div class="gold-border"></div>
-                <!-- Success Message -->
-                <div x-show="submitted"
-                    x-transition:enter="transition ease-out duration-300"
-                    x-transition:enter-start="opacity-0 scale-95"
-                    x-transition:enter-end="opacity-100 scale-100"
-                    x-transition:leave="transition ease-in duration-200"
-                    x-transition:leave-start="opacity-100 scale-100"
-                    x-transition:leave-end="opacity-0 scale-95"
-                    class="mb-6 p-4 bg-green-100 text-green-800 rounded-lg text-center">
-                    تم إرسال استفسارك بنجاح! سنتواصل معك قريبًا.
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Form Column -->
+                <div class="relative p-4">
+                    <!-- Gold Gradient Border -->
+                    <div class="gold-border"></div>
+                    <!-- Success Message -->
+                    @if (session('success'))
+                        <div class="mb-6 p-4 bg-green-100 text-green-800 rounded-lg text-center">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <!-- Form -->
+                    <form action="{{ route('contact.store') }}" method="POST" class="space-y-6 bg-white p-6 rounded-lg shadow-md relative z-10">
+                        @csrf
+                        <!-- Name -->
+                        <div>
+                            <label for="name" class="block text-gray-600 mb-2">الاسم <span class="text-red-500">*</span></label>
+                            <input name="name" id="name" type="text" value="{{ old('name') }}"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('name') border-red-500 @enderror">
+                            @error('name')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-gray-600 mb-2">البريد الإلكتروني <span class="text-red-500">*</span></label>
+                            <input name="email" id="email" type="email" value="{{ old('email') }}"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('email') border-red-500 @enderror">
+                            @error('email')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Phone -->
+                        <div>
+                            <label for="phone" class="block text-gray-600 mb-2">رقم الهاتف <span class="text-red-500">*</span></label>
+                            <input name="phone" id="phone" type="text" value="{{ old('phone') }}"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('phone') border-red-500 @enderror">
+                            @error('phone')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Project -->
+                        <div>
+                            <label for="project_id" class="block text-gray-600 mb-2">المشروع <span class="text-red-500">*</span></label>
+                            <select name="project_id" id="project_id"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('project_id') border-red-500 @enderror">
+                                <option value="">اختر المشروع</option>
+                                @foreach ($projects as $project)
+                                    <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>{{ $project->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('project_id')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Message -->
+                        <div>
+                            <label for="message" class="block text-gray-600 mb-2">الرسالة <span class="text-red-500">*</span></label>
+                            <textarea name="message" id="message" rows="6"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
+                            @error('message')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit"
+                                class="px-8 py-4 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition-all duration-300">
+                                أرسل الآن
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <!-- Form -->
-                <form x-on:submit.prevent="submit" class="space-y-6 bg-white p-6 rounded-lg shadow-md relative z-10">
-                    <!-- Name -->
-                    <div>
-                        <label for="name" class="block text-gray-600 mb-2">الاسم <span class="text-red-500">*</span></label>
-                        <input x-model="form.name" id="name" type="text"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            :class="{ 'border-red-500': errors.name }">
-                        <p x-show="errors.name" class="text-red-500 text-sm mt-1" x-text="errors.name"></p>
+                <!-- Info Column -->
+                <div class="relative p-4">
+                    <!-- Gold Gradient Border -->
+                    <div class="gold-border"></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md relative z-10">
+                        <h3 x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                            class="text-2xl font-bold text-gray-900 mb-4 opacity-0 scale-95">
+                            لماذا تتواصل مع بن نازح؟
+                        </h3>
+                        <p x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                            class="text-gray-600 mb-6 opacity-0 scale-95">
+                            فريق بن نازح العقارية مكرس لتقديم دعم استثنائي لعملائنا. عندما تتواصل معنا، ستحصل على:
+                        </p>
+                        <ul x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                            class="list-disc list-inside text-gray-600 mb-6 opacity-0 scale-95">
+                            <li>ردود سريعة من فريقنا المتخصص خلال 24 ساعة.</li>
+                            <li>دعم من خبراء عقاريين للإجابة على استفساراتك.</li>
+                            <li>حلول مخصصة تتناسب مع احتياجاتك الاستثمارية أو السكنية.</li>
+                            <li>معلومات حصرية عن مشاريعنا القادمة والفرص المتاحة.</li>
+                        </ul>
+                        <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                            class="relative p-4 opacity-0 scale-95">
+                            <div class="gold-border"></div>
+                            <img src="{{ asset('images/contact-us-info.jpg') }}"
+                                alt="فريق بن نازح العقارية"
+                                class="w-full h-64 object-cover rounded-lg shadow-md relative z-10">
+                        </div>
                     </div>
-                    <!-- Email -->
-                    <div>
-                        <label for="email" class="block text-gray-600 mb-2">البريد الإلكتروني <span class="text-red-500">*</span></label>
-                        <input x-model="form.email" id="email" type="email"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            :class="{ 'border-red-500': errors.email }">
-                        <p x-show="errors.email" class="text-red-500 text-sm mt-1" x-text="errors.email"></p>
-                    </div>
-                    <!-- Phone -->
-                    <div>
-                        <label for="phone" class="block text-gray-600 mb-2">رقم الهاتف <span class="text-red-500">*</span></label>
-                        <input x-model="form.phone" id="phone" type="text"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            :class="{ 'border-red-500': errors.phone }">
-                        <p x-show="errors.phone" class="text-red-500 text-sm mt-1" x-text="errors.phone"></p>
-                    </div>
-                    <!-- Project -->
-                    <div>
-                        <label for="project_id" class="block text-gray-600 mb-2">المشروع <span class="text-red-500">*</span></label>
-                        <select x-model="form.project_id" id="project_id"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            :class="{ 'border-red-500': errors.project_id }">
-                            <option value="">اختر المشروع</option>
-                            @foreach ($projects as $project)
-                                <option value="{{ $project['id'] }}">{{ $project['title'] }}</option>
-                            @endforeach
-                        </select>
-                        <p x-show="errors.project_id" class="text-red-500 text-sm mt-1" x-text="errors.project_id"></p>
-                    </div>
-                    <!-- Message -->
-                    <div>
-                        <label for="message" class="block text-gray-600 mb-2">الرسالة <span class="text-red-500">*</span></label>
-                        <textarea x-model="form.message" id="message" rows="6"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            :class="{ 'border-red-500': errors.message }"></textarea>
-                        <p x-show="errors.message" class="text-red-500 text-sm mt-1" x-text="errors.message"></p>
-                    </div>
-                    <!-- Submit Button -->
-                    <div class="text-center">
-                        <button type="submit"
-                            class="px-8 py-4 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition-all duration-300">
-                            أرسل الآن
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </section>

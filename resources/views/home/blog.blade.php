@@ -4,16 +4,16 @@
         class="relative h-[75vh] overflow-hidden opacity-0 translate-y-10"
         data-parallax>
         <div class="absolute inset-0 bg-cover bg-center parallax-bg"
-            style="background-image: url('{{ asset('images/' . ($blog['image'] ?? 'blog-placeholder.jpg')) }}')">
+            style="background-image: url('{{ $blog->image ? asset('images/' . $blog->image) : asset('images/blog-placeholder.jpg') }}')">
             <!-- Dark Overlay with Gradient -->
             <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
             <!-- Centered Title -->
             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
                 <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">
-                    {{ $blog['title'] ?? 'اتجاهات السوق العقاري لعام 2025' }}
+                    {{ $blog->title }}
                 </h1>
                 <p class="text-lg md:text-xl mt-4 animate-slide-in-up">
-                    {{ $blog['date'] ?? '2025-04-01' }}
+                    {{ $blog->created_at->format('Y-m-d') }}
                 </p>
             </div>
         </div>
@@ -28,23 +28,71 @@
                 <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                     class="relative p-4 mb-8 opacity-0 scale-95">
                     <div class="gold-border"></div>
-                    <img src="{{ asset('images/' . ($blog['image'] ?? 'blog-placeholder.jpg')) }}"
-                        alt="{{ $blog['title'] }}"
+                    <img src="{{ $blog->image ? asset('images/' . $blog->image) : asset('images/blog-placeholder.jpg') }}"
+                        alt="{{ $blog->image_alt ?? $blog->title }}"
                         class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
                 </div>
                 <!-- Content -->
                 <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')"
                     class="opacity-0 translate-x-10">
                     <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                        {{ $blog['title'] }}
+                        {{ $blog->title }}
                     </h2>
                     <p class="text-gray-600 text-sm mb-4">
-                        بقلم {{ $blog['author'] ?? 'محمد النازح' }} | {{ $blog['date'] }}
+                        بقلم {{ $blog->author_name }} | {{ $blog->author_title }} | {{ $blog->created_at->format('Y-m-d') }}
                     </p>
                     <div class="prose prose-lg text-gray-600 leading-relaxed">
-                        <p>
-                            {{ $blog['content'] ?? 'يشهد السوق العقاري في الرياض تحولات كبيرة مع اقتراب عام 2025، حيث تتصدر الاستدامة والتصميمات الحديثة قائمة الاتجاهات. تشمل هذه الاتجاهات استخدام مواد بناء صديقة للبيئة، وتصميمات مفتوحة تتيح المرونة، ودمج التكنولوجيا الذكية في المنازل. في بن نازح، نركز على تطوير مشاريع تجمع بين الجمال والوظيفية، مع الالتزام بمعايير الاستدامة العالمية. على سبيل المثال، مشاريعنا الأخيرة تتضمن أنظمة توفير الطاقة التي تقلل من استهلاك الكهرباء بنسبة 30%. كما نشهد زيادة في الطلب على الوحدات السكنية متعددة الاستخدامات التي تلبي احتياجات العائلات الحديثة. بالإضافة إلى ذلك، أصبحت المناطق الخارجية مثل الحدائق والمساحات الخضراء جزءًا أساسيًا من التصميمات، مما يعزز جودة الحياة. مع استمرار نمو الرياض كمركز اقتصادي، فإن الاستثمار في العقارات الذكية والمستدامة يعد خيارًا استراتيجيًا للمستقبل. تابعونا لمزيد من الرؤى حول كيفية الاستفادة من هذه الاتجاهات!' }}
-                        </p>
+                        <!-- Content Table with Image -->
+                        @if ($blog->content_table)
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                                <!-- Content Table -->
+                                <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                                    class="opacity-0 scale-95">
+                                    {!! $blog->content_table !!}
+                                </div>
+                                <!-- Image -->
+                                <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                                    class="relative p-4 opacity-0 scale-95">
+                                    <div class="gold-border"></div>
+                                    <img src="{{ $blog->index_image ? asset('images/' . $blog->index_image) : ($blog->image ? asset('images/' . $blog->image) : asset('images/blog-placeholder.jpg')) }}"
+                                        alt="{{ $blog->index_image_alt ?? $blog->image_alt ?? $blog->title }}"
+                                        class="w-full h-64 object-cover rounded-lg shadow-md relative z-10">
+                                </div>
+                            </div>
+                        @endif
+                        <!-- First Paragraph -->
+                        @if ($blog->first_paragraph)
+                            <p>{!! nl2br(e($blog->first_paragraph)) !!}</p>
+                        @endif
+                        <!-- Description -->
+                        @if ($blog->description)
+                            <div>{!! $blog->description !!}</div>
+                        @else
+                            <p>لا يوجد محتوى متاح لهذا المقال.</p>
+                        @endif
+                        <!-- Social Share Buttons -->
+                        <div class="mt-8 flex flex-wrap gap-4">
+                            <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($blog->title) }}"
+                                class="flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-all duration-300"
+                                target="_blank">
+                                <i class="fab fa-x-twitter mr-2"></i> شارك على تويتر
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}"
+                                class="flex items-center px-4 py-2 bg-blue-700 text-white rounded-md hover:bg-blue-800 transition-all duration-300"
+                                target="_blank">
+                                <i class="fab fa-facebook-f mr-2"></i> شارك على فيسبوك
+                            </a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ urlencode(url()->current()) }}"
+                                class="flex items-center px-4 py-2 bg-blue-800 text-white rounded-md hover:bg-blue-900 transition-all duration-300"
+                                target="_blank">
+                                <i class="fab fa-linkedin-in mr-2"></i> شارك على لينكدإن
+                            </a>
+                            <a href="https://api.whatsapp.com/send?text={{ urlencode($blog->title . ' ' . url()->current()) }}"
+                                class="flex items-center px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 transition-all duration-300"
+                                target="_blank">
+                                <i class="fab fa-whatsapp mr-2"></i> شارك على واتساب
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -56,29 +104,35 @@
         class="bg-gray-100 py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">مقالات ذات صلة</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach ($relatedBlogs as $index => $relatedBlog)
-                    <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
-                        x-intersect:delay="{{ $index * 200 }}"
-                        class="blog-card bg-white rounded-lg shadow-md overflow-hidden opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
-                        <!-- Image with Gold Border -->
-                        <div class="relative p-4">
-                            <div class="gold-border"></div>
-                            <img src="{{ asset('images/' . ($relatedBlog['image'] ?? 'blog-placeholder.jpg')) }}"
-                                alt="{{ $relatedBlog['title'] }}"
-                                class="w-full h-64 object-cover rounded-lg relative z-10">
+            @if ($relatedBlogs->isNotEmpty())
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    @foreach ($relatedBlogs as $index => $relatedBlog)
+                        <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                            x-intersect:delay="{{ $index * 200 }}"
+                            class="blog-card bg-white rounded-lg shadow-md overflow-hidden opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
+                            <!-- Image with Gold Border -->
+                            <div class="relative p-4">
+                                <div class="gold-border"></div>
+                                <img src="{{ $relatedBlog->image ? asset('images/' . $relatedBlog->image) : asset('images/blog-placeholder.jpg') }}"
+                                    alt="{{ $relatedBlog->image_alt ?? $relatedBlog->title }}"
+                                    class="w-full h-64 object-cover rounded-lg relative z-10">
+                            </div>
+                            <!-- Content -->
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $relatedBlog->title }}</h3>
+                                <p class="text-gray-600 text-sm mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($relatedBlog->introduction), 100) !!}</p>
+                                <p class="text-gray-500 text-sm mb-4">{{ $relatedBlog->created_at->format('Y-m-d') }}</p>
+                                <a href="{{ route('blogs.show', $relatedBlog->slug) }}"
+                                    class="text-blue-600 hover:underline">اقرأ المزيد</a>
+                            </div>
                         </div>
-                        <!-- Content -->
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $relatedBlog['title'] }}</h3>
-                            <p class="text-gray-600 text-sm mb-4">{{ $relatedBlog['excerpt'] }}</p>
-                            <p class="text-gray-500 text-sm mb-4">{{ $relatedBlog['date'] }}</p>
-                            <a href="{{ route('blogs.show', $relatedBlog['slug']) }}"
-                                class="text-blue-600 hover:underline">اقرأ المزيد</a>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="text-center text-gray-600 py-8">
+                    <p>لا توجد مقالات ذات صلة متاحة حاليًا</p>
+                </div>
+            @endif
         </div>
     </section>
 
@@ -235,7 +289,6 @@
         }
 
         /* RTL Adjustments */
-
         [dir="rtl"] .slide-in-left {
             animation: slide-in-right 0.8s ease-in-out forwards;
         }

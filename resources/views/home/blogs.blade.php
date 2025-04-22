@@ -70,29 +70,53 @@
         class="bg-white py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">مقالاتنا</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach ($blogs as $index => $blog)
-                    <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
-                        x-intersect:delay="{{ $index % 3 * 200 }}"
-                        class="blog-card bg-white rounded-lg shadow-md overflow-hidden opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
-                        <!-- Image with Gold Border -->
-                        <div class="relative p-4">
-                            <div class="gold-border"></div>
-                            <img src="{{ asset('images/' . ($blog['image'] ?? 'blog-placeholder.jpg')) }}"
-                                alt="{{ $blog['title'] }}"
-                                class="w-full h-64 object-cover rounded-lg relative z-10">
-                        </div>
-                        <!-- Content -->
-                        <div class="p-6">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $blog['title'] }}</h3>
-                            <p class="text-gray-600 text-sm mb-4">{{ $blog['excerpt'] }}</p>
-                            <p class="text-gray-500 text-sm mb-4">{{ $blog['date'] }}</p>
-                            <a href="{{ route('blogs.show', $blog['slug']) }}"
-                                class="text-blue-600 hover:underline">اقرأ المزيد</a>
-                        </div>
-                    </div>
+            <!-- Category Filter -->
+            <div class="mb-8 flex flex-wrap justify-center gap-4">
+                <a href="{{ route('blogs.index') }}"
+                    class="px-4 py-2 {{ !$category ? 'bg-orange-500 text-white' : 'bg-white text-black' }} rounded-md hover:bg-orange-500 hover:text-white transition-all duration-300">
+                    الكل
+                </a>
+                @foreach ($categories as $cat)
+                    <a href="{{ route('blogs.index', $cat->slug) }}"
+                        class="px-4 py-2 {{ $category && $category->slug === $cat->slug ? 'bg-orange-500 text-white' : 'bg-white text-black' }} rounded-md hover:bg-orange-500 hover:text-white transition-all duration-300">
+                        {{ $cat->name }}
+                    </a>
                 @endforeach
             </div>
+            <!-- Blogs Grid -->
+            @if ($blogs->isNotEmpty())
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    @foreach ($blogs as $index => $blog)
+                        <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                            x-intersect:delay="{{ $index % 3 * 200 }}"
+                            class="blog-card bg-white rounded-lg shadow-md overflow-hidden opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
+                            <!-- Image with Gold Border -->
+                            <div class="relative p-4">
+                                <div class="gold-border"></div>
+                                <img src="{{ $blog->image ? asset('images/' . $blog->image) : asset('images/blog-placeholder.jpg') }}"
+                                    alt="{{ $blog->image_alt ?? $blog->title }}"
+                                    class="w-full h-64 object-cover rounded-lg relative z-10">
+                            </div>
+                            <!-- Content -->
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $blog->title }}</h3>
+                                <p class="text-gray-600 text-sm mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($blog->introduction), 100) !!}</p>
+                                <p class="text-gray-500 text-sm mb-4">{{ $blog->created_at->format('Y-m-d') }}</p>
+                                <a href="{{ route('blogs.show', $blog->slug) }}"
+                                    class="text-blue-600 hover:underline">اقرأ المزيد</a>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <!-- Pagination -->
+                <div class="mt-8">
+                    {{ $blogs->appends(request()->query())->links() }}
+                </div>
+            @else
+                <div class="text-center text-gray-600 py-8">
+                    <p>لا توجد مقالات متاحة حاليًا</p>
+                </div>
+            @endif
         </div>
     </section>
 
@@ -236,7 +260,6 @@
         }
 
         /* RTL Adjustments */
-
         [dir="rtl"] .slide-in-left {
             animation: slide-in-right 0.8s ease-in-out forwards;
         }

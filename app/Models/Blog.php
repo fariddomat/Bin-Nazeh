@@ -10,7 +10,7 @@ class Blog extends Model
     use HasFactory;
 
     protected $guarded=[];
-    public function category()
+    public function blogCategory()
     {
         return $this->belongsTo('App\Models\BlogCategory', 'blog_category_id', 'id');
     }

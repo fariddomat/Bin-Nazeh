@@ -48,7 +48,7 @@ class SiteController extends Controller
             \Log::error('HomeController Error: ' . $e->getMessage() . ' | File: ' . $e->getFile() . ' | Line: ' . $e->getLine());
             return response('Internal Server Error', 500);
         }
-        }
+    }
 
     // About
     public function about()
@@ -85,10 +85,10 @@ class SiteController extends Controller
     public function projects($category)
     {
         $projects = Project::where('project_category_id', $category)
-        ->with('projectCategory')
-        ->paginate(9);
+            ->with('projectCategory')
+            ->paginate(9);
         $categories = ProjectCategory::all();
-        $category=ProjectCategory::firstOrFail('id',$category);
+        $category = ProjectCategory::firstOrFail('id', $category);
         return view('home.projects', compact('projects', 'categories', 'category'));
     }
 
@@ -99,11 +99,19 @@ class SiteController extends Controller
     }
 
     // Blogs
-    public function blogs()
+    public function blogs($categorySlug = null)
     {
-        $blogs = Blog::where('showed', true)->with('blogCategory')->paginate(10);
+        $query = Blog::where('showed', true)->with('blogCategory');
+        $category = null;
+        if ($categorySlug) {
+            $category = BlogCategory::where('slug', $categorySlug)->firstOrFail();
+            $query->where('blog_category_id', $category->id);
+        }
+
+        $blogs = $query->paginate(9);
         $categories = BlogCategory::all();
-        return view('home.blogs', compact('blogs', 'categories'));
+
+        return view('home.blogs', compact('blogs', 'categories', 'category'));
     }
 
     public function blogShow($slug)
@@ -111,9 +119,10 @@ class SiteController extends Controller
         $blog = Blog::where('slug', $slug)->with('blogCategory')->firstOrFail();
         $relatedBlogs = Blog::where('blog_category_id', $blog->blog_category_id)
             ->where('id', '!=', $blog->id)
+            ->where('showed', true) // Ensure only visible blogs are shown
             ->take(3)
             ->get();
-        return view('home.blog-show', compact('blog', 'relatedBlogs'));
+        return view('home.blog', compact('blog', 'relatedBlogs'));
     }
 
     // Register Interest

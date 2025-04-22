@@ -15,167 +15,161 @@
         </div>
     </section>
 
-    <!-- Form Section -->
+    <!-- Form and Info Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-white py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">تفاصيل الاهتمام</h2>
-            <div x-data="{
-                form: {
-                    name: '',
-                    email: '',
-                    phone: '',
-                    block_number: '',
-                    city: '',
-                    project_id: '',
-                    wish: 'استثمار',
-                    other_wish: '',
-                    notes: ''
-                },
-                errors: {},
-                submitted: false,
-                validate() {
-                    this.errors = {};
-                    if (!this.form.name) this.errors.name = 'الاسم مطلوب';
-                    if (!this.form.email) this.errors.email = 'البريد الإلكتروني مطلوب';
-                    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.form.email)) this.errors.email = 'البريد الإلكتروني غير صحيح';
-                    if (!this.form.phone) this.errors.phone = 'رقم الهاتف مطلوب';
-                    else if (!/^\d{10}$/.test(this.form.phone)) this.errors.phone = 'رقم الهاتف يجب أن يكون 10 أرقام';
-                    if (!this.form.city) this.errors.city = 'المدينة مطلوبة';
-                    if (!this.form.project_id) this.errors.project_id = 'المشروع مطلوب';
-                    if (!this.form.wish) this.errors.wish = 'الرغبة مطلوبة';
-                    if (this.form.wish === 'اخرى' && !this.form.other_wish) this.errors.other_wish = 'يرجى تحديد الرغبة الأخرى';
-                    return Object.keys(this.errors).length === 0;
-                },
-                submit() {
-                    if (this.validate()) {
-                        // Simulate form submission (replace with actual POST request)
-                        console.log('Form submitted:', this.form);
-                        this.submitted = true;
-                        // Reset form
-                        this.form = {
-                            name: '',
-                            email: '',
-                            phone: '',
-                            block_number: '',
-                            city: '',
-                            project_id: '',
-                            wish: 'استثمار',
-                            other_wish: '',
-                            notes: ''
-                        };
-                        // Auto-hide success message after 5 seconds
-                        setTimeout(() => { this.submitted = false; }, 5000);
-                    }
-                }
-            }" class="max-w-lg mx-auto relative p-4">
-                <!-- Gold Gradient Border -->
-                <div class="gold-border"></div>
-                <!-- Success Message -->
-                <div x-show="submitted"
-                    x-transition:enter="transition ease-out duration-300"
-                    x-transition:enter-start="opacity-0 scale-95"
-                    x-transition:enter-end="opacity-100 scale-100"
-                    x-transition:leave="transition ease-in duration-200"
-                    x-transition:leave-start="opacity-100 scale-100"
-                    x-transition:leave-end="opacity-0 scale-95"
-                    class="mb-6 p-4 bg-green-100 text-green-800 rounded-lg text-center">
-                    تم تسجيل اهتمامك بنجاح! سنتواصل معك قريبًا.
-                </div>
-                <!-- Form -->
-                <form x-on:submit.prevent="submit" class="space-y-6 bg-white p-6 rounded-lg shadow-md relative z-10">
-                    <!-- Name -->
-                    <div>
-                        <label for="name" class="block text-gray-600 mb-2">الاسم <span class="text-red-500">*</span></label>
-                        <input x-model="form.name" id="name" type="text"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            :class="{ 'border-red-500': errors.name }">
-                        <p x-show="errors.name" class="text-red-500 text-sm mt-1" x-text="errors.name"></p>
-                    </div>
-                    <!-- Email -->
-                    <div>
-                        <label for="email" class="block text-gray-600 mb-2">البريد الإلكتروني <span class="text-red-500">*</span></label>
-                        <input x-model="form.email" id="email" type="email"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            :class="{ 'border-red-500': errors.email }">
-                        <p x-show="errors.email" class="text-red-500 text-sm mt-1" x-text="errors.email"></p>
-                    </div>
-                    <!-- Phone -->
-                    <div>
-                        <label for="phone" class="block text-gray-600 mb-2">رقم الهاتف <span class="text-red-500">*</span></label>
-                        <input x-model="form.phone" id="phone" type="text"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            :class="{ 'border-red-500': errors.phone }">
-                        <p x-show="errors.phone" class="text-red-500 text-sm mt-1" x-text="errors.phone"></p>
-                    </div>
-                    <!-- Block Number -->
-                    <div>
-                        <label for="block_number" class="block text-gray-600 mb-2">رقم القطعة (اختياري)</label>
-                        <input x-model="form.block_number" id="block_number" type="text"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-                    </div>
-                    <!-- City -->
-                    <div>
-                        <label for="city" class="block text-gray-600 mb-2">المدينة <span class="text-red-500">*</span></label>
-                        <input x-model="form.city" id="city" type="text"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            :class="{ 'border-red-500': errors.city }">
-                        <p x-show="errors.city" class="text-red-500 text-sm mt-1" x-text="errors.city"></p>
-                    </div>
-                    <!-- Project -->
-                    <div>
-                        <label for="project_id" class="block text-gray-600 mb-2">المشروع <span class="text-red-500">*</span></label>
-                        <select x-model="form.project_id" id="project_id"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            :class="{ 'border-red-500': errors.project_id }">
-                            <option value="">اختر المشروع</option>
-                            @foreach ($projects as $project)
-                                <option value="{{ $project['id'] }}">{{ $project['title'] }}</option>
-                            @endforeach
-                        </select>
-                        <p x-show="errors.project_id" class="text-red-500 text-sm mt-1" x-text="errors.project_id"></p>
-                    </div>
-                    <!-- Wish -->
-                    <div>
-                        <label class="block text-gray-600 mb-2">الرغبة <span class="text-red-500">*</span></label>
-                        <div class="flex flex-col space-y-2">
-                            <label class="flex items-center">
-                                <input x-model="form.wish" type="radio" value="استثمار" class="mr-2">
-                                استثمار
-                            </label>
-                            <label class="flex items-center">
-                                <input x-model="form.wish" type="radio" value="سكن" class="mr-2">
-                                سكن
-                            </label>
-                            <label class="flex items-center">
-                                <input x-model="form.wish" type="radio" value="اخرى" class="mr-2">
-                                اخرى
-                            </label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <!-- Form Column -->
+                <div class="relative p-4">
+                    <!-- Gold Gradient Border -->
+                    <div class="gold-border"></div>
+                    <!-- Success Message -->
+                    @if (session('success'))
+                        <div class="mb-6 p-4 bg-green-100 text-green-800 rounded-lg text-center">
+                            {{ session('success') }}
                         </div>
-                        <p x-show="errors.wish" class="text-red-500 text-sm mt-1" x-text="errors.wish"></p>
+                    @endif
+                    <!-- Form -->
+                    <form action="{{ route('register-interest.store') }}" method="POST" class="space-y-6 bg-white p-6 rounded-lg shadow-md relative z-10">
+                        @csrf
+                        <!-- Name -->
+                        <div>
+                            <label for="name" class="block text-gray-600 mb-2">الاسم <span class="text-red-500">*</span></label>
+                            <input name="name" id="name" type="text" value="{{ old('name') }}"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('name') border-red-500 @enderror">
+                            @error('name')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Email -->
+                        <div>
+                            <label for="email" class="block text-gray-600 mb-2">البريد الإلكتروني <span class="text-red-500">*</span></label>
+                            <input name="email" id="email" type="email" value="{{ old('email') }}"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('email') border-red-500 @enderror">
+                            @error('email')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Phone -->
+                        <div>
+                            <label for="phone" class="block text-gray-600 mb-2">رقم الهاتف <span class="text-red-500">*</span></label>
+                            <input name="phone" id="phone" type="text" value="{{ old('phone') }}"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('phone') border-red-500 @enderror">
+                            @error('phone')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Block Number -->
+                        <div>
+                            <label for="block_number" class="block text-gray-600 mb-2">رقم القطعة (اختياري)</label>
+                            <input name="block_number" id="block_number" type="text" value="{{ old('block_number') }}"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('block_number') border-red-500 @enderror">
+                            @error('block_number')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- City -->
+                        <div>
+                            <label for="city" class="block text-gray-600 mb-2">المدينة <span class="text-red-500">*</span></label>
+                            <input name="city" id="city" type="text" value="{{ old('city') }}"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('city') border-red-500 @enderror">
+                            @error('city')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Project -->
+                        <div>
+                            <label for="project_id" class="block text-gray-600 mb-2">المشروع <span class="text-red-500">*</span></label>
+                            <select name="project_id" id="project_id"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('project_id') border-red-500 @enderror">
+                                <option value="">اختر المشروع</option>
+                                @foreach ($projects as $project)
+                                    <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>{{ $project->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('project_id')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Wish -->
+                        <div>
+                            <label class="block text-gray-600 mb-2">الرغبة <span class="text-red-500">*</span></label>
+                            <div class="flex flex-col space-y-2">
+                                <label class="flex items-center">
+                                    <input name="wish" type="radio" value="استثمار" class="mr-2" {{ old('wish', 'استثمار') == 'استثمار' ? 'checked' : '' }}>
+                                    استثمار
+                                </label>
+                                <label class="flex items-center">
+                                    <input name="wish" type="radio" value="سكن" class="mr-2" {{ old('wish') == 'سكن' ? 'checked' : '' }}>
+                                    سكن
+                                </label>
+                                <label class="flex items-center">
+                                    <input name="wish" type="radio" value="اخرى" class="mr-2" {{ old('wish') == 'اخرى' ? 'checked' : '' }}>
+                                    اخرى
+                                </label>
+                            </div>
+                            @error('wish')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Other Wish -->
+                        <div x-show="$('input[name=wish]:checked').val() === 'اخرى'" x-cloak>
+                            <label for="other_wish" class="block text-gray-600 mb-2">رغبة أخرى <span class="text-red-500">*</span></label>
+                            <input name="other_wish" id="other_wish" type="text" value="{{ old('other_wish') }}"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('other_wish') border-red-500 @enderror">
+                            @error('other_wish')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Notes -->
+                        <div>
+                            <label for="notes" class="block text-gray-600 mb-2">ملاحظات (اختياري)</label>
+                            <textarea name="notes" id="notes" rows="4"
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('notes') border-red-500 @enderror">{{ old('notes') }}</textarea>
+                            @error('notes')
+                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <!-- Submit Button -->
+                        <div class="text-center">
+                            <button type="submit"
+                                class="px-8 py-4 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition-all duration-300">
+                                سجل الآن
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- Info Column -->
+                <div class="relative p-4">
+                    <!-- Gold Gradient Border -->
+                    <div class="gold-border"></div>
+                    <div class="bg-white p-6 rounded-lg shadow-md relative z-10">
+                        <h3 x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                            class="text-2xl font-bold text-gray-900 mb-4 opacity-0 scale-95">
+                            لماذا تسجل اهتمامك مع بن نازح؟
+                        </h3>
+                        <p x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                            class="text-gray-600 mb-6 opacity-0 scale-95">
+                            في بن نازح العقارية، نسعى لتحقيق أحلامك العقارية من خلال تقديم حلول مبتكرة ومشاريع استثنائية. عند تسجيل اهتمامك، ستحصل على:
+                        </p>
+                        <ul x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                            class="list-disc list-inside text-gray-600 mb-6 opacity-0 scale-95">
+                            <li>إرشادات من خبراء عقاريين ذوي خبرة.</li>
+                            <li>وصول حصري إلى مشاريعنا الفاخرة قبل الإطلاق.</li>
+                            <li>استشارات مخصصة تتناسب مع احتياجاتك الاستثمارية أو السكنية.</li>
+                            <li>تحديثات مستمرة حول فرص السوق العقاري في المملكة.</li>
+                        </ul>
+                        <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                            class="relative p-4 opacity-0 scale-95">
+                            <div class="gold-border"></div>
+                            <img src="{{ asset('images/register-interest-info.jpg') }}"
+                                alt="مشاريع بن نازح العقارية الفاخرة"
+                                class="w-full h-64 object-cover rounded-lg shadow-md relative z-10">
+                        </div>
                     </div>
-                    <!-- Other Wish -->
-                    <div x-show="form.wish === 'اخرى'">
-                        <label for="other_wish" class="block text-gray-600 mb-2">رغبة أخرى <span class="text-red-500">*</span></label>
-                        <input x-model="form.other_wish" id="other_wish" type="text"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                            :class="{ 'border-red-500': errors.other_wish }">
-                        <p x-show="errors.other_wish" class="text-red-500 text-sm mt-1" x-text="errors.other_wish"></p>
-                    </div>
-                    <!-- Notes -->
-                    <div>
-                        <label for="notes" class="block text-gray-600 mb-2">ملاحظات (اختياري)</label>
-                        <textarea x-model="form.notes" id="notes" rows="4"
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"></textarea>
-                    </div>
-                    <!-- Submit Button -->
-                    <div class="text-center">
-                        <button type="submit"
-                            class="px-8 py-4 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition-all duration-300">
-                            سجل الآن
-                        </button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </section>
@@ -310,7 +304,6 @@
         }
 
         /* RTL Adjustments */
-
         [dir="rtl"] .space-x-4 > * + * {
             margin-left: 0;
             margin-right: 1rem;
