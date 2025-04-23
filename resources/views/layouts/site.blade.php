@@ -169,9 +169,9 @@
 
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex space-x-6 space-x-reverse nav-items" dir="ltr">
-                    <a href="#" class="nav-link hover:text-gray-200 transition-colors duration-200 {{ request()->is('/') ? 'active' : '' }}">الرئيسية</a>
-                    <a href="#" class="nav-link hover:text-gray-200 transition-colors duration-200">نبذة عنا</a>
-                    <a href="#" class="nav-link hover:text-gray-200 transition-colors duration-200">خدماتنا</a>
+                    <a href="{{ route('home') }}" class="nav-link hover:text-gray-200 transition-colors duration-200 {{ request()->is('/') ? 'active' : '' }}"  wire:navigate>الرئيسية</a>
+                    <a href="{{ route('about') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"  wire:navigate>نبذة عنا</a>
+                    <a href="{{ route('services') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"  wire:navigate>خدماتنا</a>
                     <div x-data="{ open: false }" class="relative">
                         <button @click="open = !open"
                             class="nav-link hover:text-gray-200 transition-colors duration-200 flex items-center">
@@ -180,13 +180,15 @@
                         </button>
                         <div x-show="open" @click.away="open = false"
                             class="absolute top-full right-0 mt-2 bg-white text-gray-900 rounded-md shadow-lg w-48">
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">جدة</a>
-                            <a href="#" class="block px-4 py-2 hover:bg-gray-100">الرياض</a>
+                            @foreach (\App\Models\ProjectCategory::all() as $item)
+
+                            <a href="{{ route('projects', $item) }}" class="block px-4 py-2 hover:bg-gray-100"  wire:navigate>{{ $item->name }}</a>
+                            @endforeach
                         </div>
                     </div>
-                    <a href="#" class="nav-link hover:text-gray-200 transition-colors duration-200">سجل اهتمامك</a>
-                    <a href="#" class="nav-link hover:text-gray-200 transition-colors duration-200">الأخبار</a>
-                    <a href="#" class="nav-link hover:text-gray-200 transition-colors duration-200">تواصل معنا</a>
+                    <a href="{{ route('register-interest') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"  wire:navigate>سجل اهتمامك</a>
+                    <a href="{{ route('blogs.index') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"  wire:navigate>الأخبار</a>
+                    <a href="{{ route('contact') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"  wire:navigate>تواصل معنا</a>
                 </nav>
 
                 <!-- Mobile Menu Button and Search -->
@@ -208,22 +210,23 @@
                 <i class="fas fa-times text-2xl"></i>
             </button>
             <nav class="mt-12 space-y-4">
-                <a href="#" class="block hover:text-gray-300 {{ request()->is('/') ? 'font-bold border-r-2 border-white' : '' }}">الرئيسية</a>
-                <a href="#" class="block hover:text-gray-300">نبذة عنا</a>
-                <a href="#" class="block hover:text-gray-300">خدماتنا</a>
+                <a href="{{ route('home') }}" class="block hover:text-gray-300 {{ request()->is('/') ? 'font-bold border-r-2 border-white' : '' }}"   wire:navigate>الرئيسية</a>
+                <a href="{{ route('about') }}" class="block hover:text-gray-300"  wire:navigate>نبذة عنا</a>
+                <a href="{{ route('services') }}" class="block hover:text-gray-300"  wire:navigate>خدماتنا</a>
                 <div x-data="{ open: false }">
                     <button @click="open = !open" class="block hover:text-gray-300 flex justify-between w-full">
                         المشاريع
                         <i class="fas fa-chevron-down"></i>
                     </button>
                     <div x-show="open" class="pr-4 space-y-2">
-                        <a href="#" class="block hover:text-gray-300">جدة</a>
-                        <a href="#" class="block hover:text-gray-300">الرياض</a>
+                        @foreach (\App\Models\ProjectCategory::all() as $item)
+                        <a href="{{ route('projects', $item) }}" class="block hover:text-gray-300"  wire:navigate>{{ $item->name }}</a>
+                        @endforeach
                     </div>
                 </div>
-                <a href="#" class="block hover:text-gray-300">سجل اهتمامك</a>
-                <a href="#" class="block hover:text-gray-300">الأخبار</a>
-                <a href="#" class="block hover:text-gray-300">تواصل معنا</a>
+                <a href="{{ route('register-interest') }}" class="block hover:text-gray-300"  wire:navigate>سجل اهتمامك</a>
+                <a href="{{ route('blogs.index') }}" class="block hover:text-gray-300"  wire:navigate>الأخبار</a>
+                <a href="{{ route('contact') }}" class="block hover:text-gray-300"  wire:navigate>تواصل معنا</a>
             </nav>
         </div>
 
@@ -251,18 +254,16 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <ul class="space-y-2">
-                                <li><a href="#" class="hover:text-gray-300">الرئيسية</a></li>
-                                <li><a href="#" class="hover:text-gray-300">نبذة عنا</a></li>
-                                <li><a href="#" class="hover:text-gray-300">خدماتنا</a></li>
-                                <li><a href="#" class="hover:text-gray-300">جدة</a></li>
+                                <li><a href="{{ route('home') }}" class="hover:text-gray-300"  wire:navigate>الرئيسية</a></li>
+                                <li><a href="{{ route('about') }}" class="hover:text-gray-300"  wire:navigate>نبذة عنا</a></li>
+                                <li><a href="{{ route('services') }}" class="hover:text-gray-300"  wire:navigate>خدماتنا</a></li>
                             </ul>
                         </div>
                         <div>
                             <ul class="space-y-2">
-                                <li><a href="#" class="hover:text-gray-300">الرياض</a></li>
-                                <li><a href="#" class="hover:text-gray-300">سجل اهتمامك</a></li>
-                                <li><a href="#" class="hover:text-gray-300">الأخبار</a></li>
-                                <li><a href="#" class="hover:text-gray-300">تواصل معنا</a></li>
+                                <li><a href="{{ route('register-interest') }}" class="hover:text-gray-300"  wire:navigate>سجل اهتمامك</a></li>
+                                <li><a href="{{ route('blogs.index') }}" class="hover:text-gray-300"  wire:navigate>الأخبار</a></li>
+                                <li><a href="{{ route('contact') }}" class="hover:text-gray-300"  wire:navigate>تواصل معنا</a></li>
                             </ul>
                         </div>
                     </div>
