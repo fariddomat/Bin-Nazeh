@@ -54,6 +54,7 @@ class SiteController extends Controller
     public function about()
     {
         $abouts = About::orderBy('sort_id')->get();
+        // dd($abouts);
         $certificates = Certificate::all();
         $whies = Why::all();
 

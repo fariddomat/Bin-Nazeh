@@ -31,7 +31,6 @@ class ProjectsSeeder extends Seeder
                 'status_percent' => 100,
                 'project_category_id' => $categories[0],
                 'sort_id' => 1,
-                'images' => json_encode(['project-1-1.jpg', 'project-1-2.jpg']),
             ],
             // Add more project entries...
         ];
@@ -54,7 +53,6 @@ class ProjectsSeeder extends Seeder
                 'status_percent' => $faker->numberBetween(0, 100),
                 'project_category_id' => $categories[$i % count($categories)],
                 'sort_id' => $i + 1,
-                'images' => $faker->boolean ? json_encode($faker->words(3)) : null,
             ]);
         }
 

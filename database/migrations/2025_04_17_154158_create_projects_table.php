@@ -24,7 +24,7 @@ return new class extends Migration
             $table->enum('status', ['not_started', 'pending', 'done']);
             $table->integer('status_percent');
             $table->foreignId('project_category_id')->constrained('project_categories')->onDelete('cascade');
-            $table->integer('sort_id')->nullable();bl
+            $table->integer('sort_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

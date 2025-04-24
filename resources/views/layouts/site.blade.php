@@ -12,7 +12,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+    
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -23,134 +23,13 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-        }
-
-        /* Header Styles */
-        .header {
-            transition: all 0.3s ease-in-out;
-            background: #000000; /* Black background */
-            color: #ffffff; /* White text */
-            height: 6.5rem; /* Increased height */
-        }
-
-        .header.scrolled {
-            height: 4.5rem; /* Shrink on scroll */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .header.scrolled .header-logo {
-            transform: scale(0.8);
-        }
-
-        /* Active Link */
-        .nav-link.active {
-            border-bottom: 2px solid #ffffff;
-            font-weight: bold;
-        }
-
-        /* Page Load Animation */
-        .header {
-            animation: slideDown 0.8s ease-out;
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-.animate-spin {
-    animation: spin 1s linear infinite;
-}
-
-        /* RTL Adjustments */
-        html[dir="rtl"] .nav-items {
-            flex-direction: row-reverse;
-        }
-
-        html[dir="rtl"] .mobile-menu {
-            right: 0;
-            left: auto;
-            transform: translateX(100%);
-        }
-
-        html[dir="rtl"] .mobile-menu.open {
-            transform: translateX(0);
-        }
-
-        /* Mobile Menu */
-        .mobile-menu {
-            transition: transform 0.3s ease-in-out;
-        }
-
-        /* Container */
-        .container {
-            @apply mx-auto px-4 sm:px-6 lg:px-8;
-        }
-
-        /* Footer Styles */
-        .footer {
-            background: #000000; /* Black background */
-            color: #ffffff; /* White text */
-        }
-
-        .footer a:hover {
-            color: #cccccc; /* Light gray on hover */
-        }
-
-        .social-icon {
-            border: 2px solid #ffffff; /* White rounded border */
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #ffffff; /* White icon */
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .social-icon:hover {
-            background-color: #ffffff; /* White background on hover */
-            color: #000000; /* Black icon on hover */
-        }
-
-        /* Responsive Adjustments */
-        @media (max-width: 768px) {
-            .header {
-                padding: 1rem;
-            }
-
-            .header.scrolled {
-                padding: 0.5rem;
-                height: 3rem;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 1rem;
-            }
-        }
-    </style>
+  
 
 </head>
 
 <body class="bg-gray-100 overflow-x-hidden">
-      <!-- Loader -->
-      <div x-data="{ isLoading: true }" x-init="setTimeout(() => isLoading = false, 2000)"
-        x-show="isLoading" x-cloak
+    <!-- Loader -->
+    <div x-data="{ isLoading: true }" x-init="setTimeout(() => isLoading = false, 2000)" x-show="isLoading" x-cloak
         class="fixed inset-0 flex items-center justify-center bg-white bg-opacity-90 z-50 transition-opacity duration-500"
         :class="{ 'opacity-100': isLoading, 'opacity-0': !isLoading }">
         <div class="loader w-16 h-16 border-8 border-orange-500 border-t-black rounded-full animate-spin"></div>
@@ -158,20 +37,24 @@
 
     <div class="flex flex-col min-h-screen" x-data="{ menuOpen: false }">
         <!-- Fixed Header -->
-        <header class="header fixed top-0 left-0 right-0 z-50 text-white flex items-center">
+        <header class="header fixed top-0 left-0 right-0 z-50 text-white flex items-center justify-center primary-bg">
             <div class="container flex justify-between items-center">
                 <!-- Logo and Name -->
                 <div class="flex items-center space-x-2 space-x-reverse">
-                    <img src="{{ asset('logo.png') }}" alt="Bin Nazeh Logo"
-                        class="header-logo h-12 w-12 transition-transform duration-300" />
-                    <span class="text-2xl font-bold">بن نازح</span>
+                    <img src="{{ asset('logo/bin nazeh 3.png') }}" alt="Bin Nazeh Logo"
+                        class="header-logo h-20 w-20 transition-transform duration-300" />
+                    {{-- <span class="text-2xl font-bold">بن نازح</span> --}}
                 </div>
 
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex space-x-6 space-x-reverse nav-items" dir="ltr">
-                    <a href="{{ route('home') }}" class="nav-link hover:text-gray-200 transition-colors duration-200 {{ request()->is('/') ? 'active' : '' }}"  wire:navigate>الرئيسية</a>
-                    <a href="{{ route('about') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"  wire:navigate>نبذة عنا</a>
-                    <a href="{{ route('services') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"  wire:navigate>خدماتنا</a>
+                    <a href="{{ route('home') }}"
+                        class="nav-link hover:text-gray-200 transition-colors duration-200 {{ request()->is('/') ? 'active' : '' }}"
+                        wire:navigate>الرئيسية</a>
+                    <a href="{{ route('about') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"
+                        wire:navigate>نبذة عنا</a>
+                    <a href="{{ route('services') }}"
+                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate>خدماتنا</a>
                     <div x-data="{ open: false }" class="relative">
                         <button @click="open = !open"
                             class="nav-link hover:text-gray-200 transition-colors duration-200 flex items-center">
@@ -181,14 +64,18 @@
                         <div x-show="open" @click.away="open = false"
                             class="absolute top-full right-0 mt-2 bg-white text-gray-900 rounded-md shadow-lg w-48">
                             @foreach (\App\Models\ProjectCategory::all() as $item)
-
-                            <a href="{{ route('projects', $item) }}" class="block px-4 py-2 hover:bg-gray-100"  wire:navigate>{{ $item->name }}</a>
+                                <a href="{{ route('projects', $item) }}" class="block px-4 py-2 hover:bg-gray-100"
+                                    wire:navigate>{{ $item->name }}</a>
                             @endforeach
                         </div>
                     </div>
-                    <a href="{{ route('register-interest') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"  wire:navigate>سجل اهتمامك</a>
-                    <a href="{{ route('blogs.index') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"  wire:navigate>الأخبار</a>
-                    <a href="{{ route('contact') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"  wire:navigate>تواصل معنا</a>
+                    <a href="{{ route('register-interest') }}"
+                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate>سجل
+                        اهتمامك</a>
+                    <a href="{{ route('blogs.index') }}"
+                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate>الأخبار</a>
+                    <a href="{{ route('contact') }}"
+                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate>تواصل معنا</a>
                 </nav>
 
                 <!-- Mobile Menu Button and Search -->
@@ -210,9 +97,11 @@
                 <i class="fas fa-times text-2xl"></i>
             </button>
             <nav class="mt-12 space-y-4">
-                <a href="{{ route('home') }}" class="block hover:text-gray-300 {{ request()->is('/') ? 'font-bold border-r-2 border-white' : '' }}"   wire:navigate>الرئيسية</a>
-                <a href="{{ route('about') }}" class="block hover:text-gray-300"  wire:navigate>نبذة عنا</a>
-                <a href="{{ route('services') }}" class="block hover:text-gray-300"  wire:navigate>خدماتنا</a>
+                <a href="{{ route('home') }}"
+                    class="block hover:text-gray-300 {{ request()->is('/') ? 'font-bold border-r-2 border-white' : '' }}"
+                    wire:navigate>الرئيسية</a>
+                <a href="{{ route('about') }}" class="block hover:text-gray-300" wire:navigate>نبذة عنا</a>
+                <a href="{{ route('services') }}" class="block hover:text-gray-300" wire:navigate>خدماتنا</a>
                 <div x-data="{ open: false }">
                     <button @click="open = !open" class="block hover:text-gray-300 flex justify-between w-full">
                         المشاريع
@@ -220,13 +109,15 @@
                     </button>
                     <div x-show="open" class="pr-4 space-y-2">
                         @foreach (\App\Models\ProjectCategory::all() as $item)
-                        <a href="{{ route('projects', $item) }}" class="block hover:text-gray-300"  wire:navigate>{{ $item->name }}</a>
+                            <a href="{{ route('projects', $item) }}" class="block hover:text-gray-300"
+                                wire:navigate>{{ $item->name }}</a>
                         @endforeach
                     </div>
                 </div>
-                <a href="{{ route('register-interest') }}" class="block hover:text-gray-300"  wire:navigate>سجل اهتمامك</a>
-                <a href="{{ route('blogs.index') }}" class="block hover:text-gray-300"  wire:navigate>الأخبار</a>
-                <a href="{{ route('contact') }}" class="block hover:text-gray-300"  wire:navigate>تواصل معنا</a>
+                <a href="{{ route('register-interest') }}" class="block hover:text-gray-300" wire:navigate>سجل
+                    اهتمامك</a>
+                <a href="{{ route('blogs.index') }}" class="block hover:text-gray-300" wire:navigate>الأخبار</a>
+                <a href="{{ route('contact') }}" class="block hover:text-gray-300" wire:navigate>تواصل معنا</a>
             </nav>
         </div>
 
@@ -236,15 +127,16 @@
         </main>
 
         <!-- Footer -->
-          <!-- Footer -->
-          <footer class="footer py-12">
+        <!-- Footer -->
+        <footer class="footer py-12">
             <div class="container grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Column 1: Logo and Company Info -->
                 <div>
-                    <img src="{{ asset('logo.png') }}" alt="Bin Nazeh Logo" class="h-16 w-16 mb-4" />
+                    <img src="{{ asset('logo/bin nazeh 3.png') }}" alt="Bin Nazeh Logo" class="h-24 w-24 mb-4" />
                     <h3 class="text-xl font-bold mb-2">بن نازح</h3>
                     <p class="text-gray-300">
-                        بن نازح هي شركة رائدة في مجال التطوير العقاري، تقدم حلولاً مبتكرة ومستدامة لتلبية احتياجات عملائها في جميع أنحاء المملكة العربية السعودية.
+                        بن نازح هي شركة رائدة في مجال التطوير العقاري، تقدم حلولاً مبتكرة ومستدامة لتلبية احتياجات
+                        عملائها في جميع أنحاء المملكة العربية السعودية.
                     </p>
                 </div>
 
@@ -254,16 +146,22 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <ul class="space-y-2">
-                                <li><a href="{{ route('home') }}" class="hover:text-gray-300"  wire:navigate>الرئيسية</a></li>
-                                <li><a href="{{ route('about') }}" class="hover:text-gray-300"  wire:navigate>نبذة عنا</a></li>
-                                <li><a href="{{ route('services') }}" class="hover:text-gray-300"  wire:navigate>خدماتنا</a></li>
+                                <li><a href="{{ route('home') }}" class="hover:text-gray-300"
+                                        wire:navigate>الرئيسية</a></li>
+                                <li><a href="{{ route('about') }}" class="hover:text-gray-300" wire:navigate>نبذة
+                                        عنا</a></li>
+                                <li><a href="{{ route('services') }}" class="hover:text-gray-300"
+                                        wire:navigate>خدماتنا</a></li>
                             </ul>
                         </div>
                         <div>
                             <ul class="space-y-2">
-                                <li><a href="{{ route('register-interest') }}" class="hover:text-gray-300"  wire:navigate>سجل اهتمامك</a></li>
-                                <li><a href="{{ route('blogs.index') }}" class="hover:text-gray-300"  wire:navigate>الأخبار</a></li>
-                                <li><a href="{{ route('contact') }}" class="hover:text-gray-300"  wire:navigate>تواصل معنا</a></li>
+                                <li><a href="{{ route('register-interest') }}" class="hover:text-gray-300"
+                                        wire:navigate>سجل اهتمامك</a></li>
+                                <li><a href="{{ route('blogs.index') }}" class="hover:text-gray-300"
+                                        wire:navigate>الأخبار</a></li>
+                                <li><a href="{{ route('contact') }}" class="hover:text-gray-300" wire:navigate>تواصل
+                                        معنا</a></li>
                             </ul>
                         </div>
                     </div>

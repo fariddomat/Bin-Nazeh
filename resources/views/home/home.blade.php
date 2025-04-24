@@ -1,7 +1,7 @@
 <x-site-layout>
     <!-- Hero Image Slider -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="relative h-screen opacity-0 translate-y-10 overflow-x-hidden">
+        class="relative h-[89vh] opacity-0 translate-y-10 overflow-x-hidden">
         <div x-data='{
             slides: @json($sliders, JSON_UNESCAPED_SLASHES),
             currentSlide: 0,
@@ -48,10 +48,10 @@
 
     <!-- Partners Section -->
     <section x-intersect="$el.classList.add('animate-section', 'slide-in-left')"
-        class="bg-white py-16 opacity-0 translate-x-10">
+        class="secondary-bg py-16 opacity-0 translate-x-10">
         <div class="container text-center">
             <!-- Title -->
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-12">شركائنا</h2>
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-12">شركائنا</h2>
             <!-- Continuous Logo Slider -->
             <div class="overflow-hidden">
                 <div class="flex animate-continuous-slide" x-data="{ pause: false }" @mouseenter="pause = true" @mouseleave="pause = false">
@@ -134,10 +134,10 @@
 
     <!-- Projects Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="bg-white py-16 opacity-0 translate-y-10">
+        class="primary-bg bg py-16 opacity-0 translate-y-10">
         <div class="container">
             <!-- Title -->
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">مشاريعنا</h2>
+            <h2 class="text-4xl md:text-5xl font-bold text-white text-center mb-12">مشاريعنا</h2>
             <!-- Projects Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @foreach ($projects as $index => $project)
@@ -174,7 +174,7 @@
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
                 class="text-center mt-12 opacity-0 translate-y-10">
                 <a href="{{ route('projects') }}"
-                    class="inline-block px-8 py-4 bg-black text-white font-semibold rounded-md hover:bg-gray-800 transition-colors duration-300">
+                    class="inline-block px-8 py-4 secondary-bg text-white font-semibold rounded-md hover:bg-orange-800 transition-colors duration-300">
                     استكشف المزيد من المشاريع
                 </a>
             </div>
@@ -206,10 +206,10 @@
 
     <!-- Reviews Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="bg-gray-100 py-16 opacity-0 translate-y-10">
+        class="secondary-bg py-16 opacity-0 translate-y-10">
         <div class="container">
             <!-- Title -->
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">آراء العملاء</h2>
+            <h2 class="text-4xl md:text-5xl font-bold text-white text-center mb-12">آراء العملاء</h2>
             <!-- Reviews Slider -->
             <div x-data='{
                 reviews: @json($reviews, JSON_UNESCAPED_SLASHES),

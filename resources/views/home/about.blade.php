@@ -1,5 +1,5 @@
 <x-site-layout>
-    <!-- Hero Section (Parallax) -->
+    <!-- Hero Section (Static, as it’s just a background image) -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="relative h-[75vh] overflow-hidden opacity-0 translate-y-10"
         data-parallax>
@@ -10,27 +10,28 @@
         </div>
     </section>
 
-    <!-- Who We Are Section (Enhanced Design) -->
+    <!-- Who We Are Section -->
     <section id="who-we-are" x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-gradient-to-r from-gray-50 to-white py-16 opacity-0 translate-y-10">
         <div class="container">
-            <div class="relative max-w-3xl mx-auto border-2 border-orange-500 rounded-lg p-8 shadow-lg">
-                <!-- Decorative Icon -->
-                <i class="fas fa-building text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 bg-white px-4"></i>
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mt-8 mb-6">من نحن</h2>
-                <p class="text-gray-600 text-lg leading-relaxed text-center">
-                    بن نازح هي شركة رائدة في التطوير العقاري، تأسست لتقديم حلول مبتكرة ومستدامة تلبي تطلعات عملائنا.
-                    مع فريق من الخبراء، نحن ملتزمون بالجودة والتصميم العصري، نسعى للتميز ورضا العملاء.
-                </p>
-                <!-- Centered Button with Pulse -->
-                <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
-                    class="mt-8 text-center opacity-0 scale-95">
-                    <a href="#mission"
-                        class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
-                        استكشف المزيد
-                    </a>
+            @foreach (\App\Models\About::where('name', 'Who We Are')->get() as $about)
+                <div class="relative max-w-3xl mx-auto border-2 border-orange-500 rounded-lg p-8 shadow-lg">
+                    <!-- Decorative Icon -->
+                    <i class="{{ $about->icon }} text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 bg-white px-4"></i>
+                    <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mt-8 mb-6">من نحن</h2>
+                    <p class="text-gray-600 text-lg leading-relaxed text-center">
+                        {{ $about->discription }}
+                    </p>
+                    <!-- Centered Button with Pulse -->
+                    <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
+                        class="mt-8 text-center opacity-0 scale-95">
+                        <a href="#mission"
+                            class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
+                            استكشف المزيد
+                        </a>
+                    </div>
                 </div>
-            </div>
+            @endforeach
         </div>
     </section>
 
@@ -39,58 +40,45 @@
         class="bg-gray-100 py-16 opacity-0 translate-y-10">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">الرسالة</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <!-- Text -->
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')"
-                    class="opacity-0 translate-x-10">
-                    <h3 class="text-2xl font-bold text-orange-500 mb-4">رسالتنا</h3>
-                    <p class="text-gray-600 text-lg leading-relaxed">
-                        نسعى لإعادة تعريف التطوير العقاري من خلال مشاريع مبتكرة ومستدامة تحسن جودة الحياة وتبني مجتمعات مزدهرة.
-                    </p>
+            @foreach (\App\Models\About::where('name', 'Mission')->get() as $about)
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <!-- Text -->
+                    <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')"
+                        class="opacity-0 translate-x-10">
+                        <h3 class="text-2xl font-bold text-orange-500 mb-4">رسالتنا</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            {{ $about->discription }}
+                        </p>
+                    </div>
+                    <!-- Image with Gold Border -->
+                    <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
+                        class="opacity-0 -translate-x-10 relative p-4">
+                        <div class="gold-border"></div>
+                        <img src="{{ $about->img ? asset('storage/' . $about->img) : asset('images/mission.jpg') }}"
+                            alt="Mission" class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
+                    </div>
                 </div>
-                <!-- Image with Gold Border -->
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
-                    class="opacity-0 -translate-x-10 relative p-4">
-                    <div class="gold-border"></div>
-                    <img src="{{ asset('images/mission.jpg') }}" alt="Mission" class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
 
-    <!-- Values Section (Hover Effects) -->
+    <!-- Values Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-white py-16 opacity-0 translate-y-10">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">قيمنا وأهدافنا</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <!-- Vision -->
-                <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')" x-intersect:delay="0"
-                    class="value-card bg-white rounded-lg shadow-md p-6 text-center opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
-                    <i class="fas fa-eye text-4xl text-orange-500 mb-4"></i>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">رؤيتنا</h3>
-                    <p class="text-gray-600">
-                        أن نكون الشركة الرائدة في التطوير العقاري، مع التركيز على الابتكار والاستدامة.
-                    </p>
-                </div>
-                <!-- Success Standards -->
-                <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')" x-intersect:delay="200"
-                    class="value-card bg-white rounded-lg shadow-md p-6 text-center opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
-                    <i class="fas fa-star text-4xl text-orange-500 mb-4"></i>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">معايير النجاح</h3>
-                    <p class="text-gray-600">
-                        تحقيق التميز من خلال الجودة العالية، التسليم في الوقت المحدد، ورضا العملاء.
-                    </p>
-                </div>
-                <!-- Values -->
-                <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')" x-intersect:delay="400"
-                    class="value-card bg-white rounded-lg shadow-md p-6 text-center opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
-                    <i class="fas fa-heart text-4xl text-orange-500 mb-4"></i>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">قيمنا</h3>
-                    <p class="text-gray-600">
-                        النزاهة، الابتكار، التعاون، والالتزام بالمسؤولية تجاه عملائنا ومجتمعنا.
-                    </p>
-                </div>
+                @foreach (\App\Models\About::whereIn('name', ['Vision', 'Success Standards', 'Values'])->orderBy('sort_id')->get() as $about)
+                    <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                        x-intersect:delay="{{ ($loop->index * 200) }}"
+                        class="value-card bg-white rounded-lg shadow-md p-6 text-center opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
+                        <i class="{{ $about->icon }} text-4xl text-orange-500 mb-4"></i>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $about->name == 'Vision' ? 'رؤيتنا' : ($about->name == 'Success Standards' ? 'معايير النجاح' : 'قيمنا') }}</h3>
+                        <p class="text-gray-600">
+                            {{ $about->discription }}
+                        </p>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
@@ -100,22 +88,25 @@
         class="bg-gray-100 py-16 opacity-0 translate-y-10">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">بيئة العمل</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <!-- Image with Gold Border -->
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')"
-                    class="opacity-0 translate-x-10 relative p-4">
-                    <div class="gold-border"></div>
-                    <img src="{{ asset('images/work-environment.jpg') }}" alt="Work Environment" class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
+            @foreach (\App\Models\About::where('name', 'Work Environment')->get() as $about)
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <!-- Image with Gold Border -->
+                    <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')"
+                        class="opacity-0 translate-x-10 relative p-4">
+                        <div class="gold-border"></div>
+                        <img src="{{ $about->img ? asset('storage/' . $about->img) : asset('images/work-environment.jpg') }}"
+                            alt="Work Environment" class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
+                    </div>
+                    <!-- Text -->
+                    <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
+                        class="opacity-0 -translate-x-10">
+                        <h3 class="text-2xl font-bold text-orange-500 mb-4">بيئة عمل محفزة</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            {{ $about->discription }}
+                        </p>
+                    </div>
                 </div>
-                <!-- Text -->
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
-                    class="opacity-0 -translate-x-10">
-                    <h3 class="text-2xl font-bold text-orange-500 mb-4">بيئة عمل محفزة</h3>
-                    <p class="text-gray-600 text-lg leading-relaxed">
-                        نحن نفخر بتوفير بيئة عمل داعمة تشجع على الإبداع والتعاون، مع التدريب المستمر وفرص التطور المهني.
-                    </p>
-                </div>
-            </div>
+            @endforeach
         </div>
     </section>
 
@@ -124,13 +115,15 @@
         class="bg-white py-16 opacity-0 translate-y-10">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">المسؤولية المجتمعية</h2>
-            <p class="text-gray-600 text-lg leading-relaxed max-w-3xl mx-auto">
-                في بن نازح، نؤمن بأهمية رد الجميل للمجتمع. نسعى لدعم التعليم، حماية البيئة، وتحسين جودة الحياة في مجتمعاتنا.
-            </p>
+            @foreach (\App\Models\About::where('name', 'Social Responsibility')->get() as $about)
+                <p class="text-gray-600 text-lg leading-relaxed max-w-3xl mx-auto">
+                    {{ $about->discription }}
+                </p>
+            @endforeach
         </div>
     </section>
 
-    <!-- Partners Section -->
+    <!-- Partners Section (Static for now) -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-white py-16 opacity-0 translate-y-10">
         <div class="container text-center">
@@ -280,7 +273,6 @@
         }
 
         /* RTL Adjustments */
-
         [dir="rtl"] .slide-in-left {
             animation: slide-in-right 0.8s ease-in-out forwards;
         }

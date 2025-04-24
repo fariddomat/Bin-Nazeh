@@ -1,3 +1,231 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Font */
+.ibm-plex-sans-arabic-thin {
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+  }
+  
+  .ibm-plex-sans-arabic-extralight {
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+    font-weight: 200;
+    font-style: normal;
+  }
+  
+  .ibm-plex-sans-arabic-light {
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  .ibm-plex-sans-arabic-regular {
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .ibm-plex-sans-arabic-medium {
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  .ibm-plex-sans-arabic-semibold {
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+  }
+  
+  .ibm-plex-sans-arabic-bold {
+    font-family: "IBM Plex Sans Arabic", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+/* code */
+.bg-black,
+.bg-gray-900,
+.primary-bg {
+    background-color: unset  ;
+    background: #173c4d  ;
+}
+
+.text-gray-900,
+.text-black,
+.primary-color {
+    color: #173c4d  ;
+}
+
+.hover\:bg-orange-500:hover,
+.bg-orange-500,
+.secondary-bg {
+    background-color: unset  ;
+    background: #e38648;
+}
+
+.text-orange-500,
+.secondory-color {
+    color: #d5884b  ;
+}
+
+.border-orange-500 {
+    --tw-border-opacity: 1;
+    border-color: rgb(213 136 75 / var(--tw-border-opacity, 1));
+}
+
+.white-bg {
+    background: #d6d9d9  ;
+}
+
+body {
+    font-family: 'IBM Plex Sans Arabic', sans-serif;
+}
+
+.container {
+    margin: 0 auto;
+}
+
+/* Header Styles */
+.header {
+    transition: all 0.3s ease-in-out;
+    background: #173c4d;
+    /* Black background */
+    color: #ffffff;
+    /* White text */
+    height: 6.5rem;
+    /* Increased height */
+}
+
+.header.scrolled {
+    height: 4.5rem;
+    /* Shrink on scroll */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.header.scrolled .header-logo {
+    transform: scale(0.8);
+}
+
+/* Active Link */
+.nav-link.active {
+    border-bottom: 2px solid #ffffff;
+    font-weight: bold;
+}
+
+/* Page Load Animation */
+.header {
+    animation: slideDown 0.8s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* RTL Adjustments */
+html[dir="rtl"] .nav-items {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .mobile-menu {
+    right: 0;
+    left: auto;
+    transform: translateX(100%);
+}
+
+html[dir="rtl"] .mobile-menu.open {
+    transform: translateX(0);
+}
+
+/* Mobile Menu */
+.mobile-menu {
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Footer Styles */
+.footer {
+    background: #173c4d;
+    /* Black background */
+    color: #ffffff;
+    /* White text */
+}
+
+.footer a:hover {
+    color: #cccccc;
+    /* Light gray on hover */
+}
+
+.social-icon {
+    border: 2px solid #ffffff;
+    /* White rounded border */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    /* White icon */
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.social-icon:hover {
+    background-color: #ffffff;
+    /* White background on hover */
+    color: #000000;
+    /* Black icon on hover */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .header {
+        padding: 1rem;
+    }
+
+    .header.scrolled {
+        padding: 0.5rem;
+        height: 3rem;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+.loader {
+    border: 8px solid rgb(213 136 75); /* Matches your updated border-orange-500 */
+    border-top: 8px solid #173c4d; /* Explicitly set the top border to black */
+    border-radius: 100%; /* Ensure circular shape */
+    animation: spin 1s linear infinite; /* Tailwind's animate-spin uses this */
+}
+
+/* Ensure the animation is defined (Tailwind's animate-spin should already handle this, but just in case) */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+header .nav{
+    font-size: 18px;
+    font-weight: 600;
+}

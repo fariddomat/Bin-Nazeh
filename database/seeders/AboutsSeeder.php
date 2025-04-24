@@ -1,54 +1,73 @@
 <?php
-
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\About;
-use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 class AboutsSeeder extends Seeder
 {
     public function run()
     {
-        $faker = Faker::create('ar_SA');
+        About::create([
+            'name' => 'Who We Are',
+            'discription' => 'بن نازح هي شركة رائدة في التطوير العقاري، تأسست لتقديم حلول مبتكرة ومستدامة تلبي تطلعات عملائنا. مع فريق من الخبراء، نحن ملتزمون بالجودة والتصميم العصري، نسعى للتميز ورضا العملاء.',
+            'img' => null,
+            'icon' => 'fas fa-building',
+            'class' => null,
+            'sort_id' => 1,
+        ]);
 
-        $abouts = [
-            [
-                'name' => 'من نحن',
-                'discription' => 'بن نازح هي شركة رائدة في التطوير العقاري بالرياض، ملتزمة بتقديم مشاريع فاخرة ومستدامة.',
-                'img' => 'about-1.jpg',
-                'icon' => 'fas fa-info-circle',
-                'class' => 'about-section',
-                'sort_id' => 1,
-            ],
-            [
-                'name' => 'رؤيتنا',
-                'discription' => 'نسعى لتحويل الرياض إلى مركز عقاري عالمي من خلال الابتكار والجودة.',
-                'img' => 'about-2.jpg',
-                'icon' => 'fas fa-eye',
-                'class' => 'vision-section',
-                'sort_id' => 2,
-            ],
-            [
-                'name' => 'مهمتنا',
-                'discription' => 'تقديم حلول عقارية متكاملة تلبي احتياجات عملائنا مع الحفاظ على الاستدامة.',
-                'img' => 'about-3.jpg',
-                'icon' => 'fas fa-bullseye',
-                'class' => 'mission-section',
-                'sort_id' => 3,
-            ],
-            [
-                'name' => 'قيمنا',
-                'discription' => 'الجودة، الشفافية، الابتكار، والالتزام تجاه عملائنا ومجتمعنا.',
-                'img' => 'about-4.jpg',
-                'icon' => 'fas fa-heart',
-                'class' => 'values-section',
-                'sort_id' => 4,
-            ],
-        ];
+        About::create([
+            'name' => 'Mission',
+            'discription' => 'نسعى لإعادة تعريف التطوير العقاري من خلال مشاريع مبتكرة ومستدامة تحسن جودة الحياة وتبني مجتمعات مزدهرة.',
+            'img' => 'abouts/mission.jpg',
+            'icon' => null,
+            'class' => null,
+            'sort_id' => 2,
+        ]);
 
-        foreach ($abouts as $about) {
-            About::create($about);
-        }
+        About::create([
+            'name' => 'Vision',
+            'discription' => 'أن نكون الشركة الرائدة في التطوير العقاري، مع التركيز على الابتكار والاستدامة.',
+            'img' => null,
+            'icon' => 'fas fa-eye',
+            'class' => 'value-card',
+            'sort_id' => 3,
+        ]);
+
+        About::create([
+            'name' => 'Success Standards',
+            'discription' => 'تحقيق التميز من خلال الجودة العالية، التسليم في الوقت المحدد، ورضا العملاء.',
+            'img' => null,
+            'icon' => 'fas fa-star',
+            'class' => 'value-card',
+            'sort_id' => 4,
+        ]);
+
+        About::create([
+            'name' => 'Values',
+            'discription' => 'النزاهة، الابتكار، التعاون، والالتزام بالمسؤولية تجاه عملائنا ومجتمعنا.',
+            'img' => null,
+            'icon' => 'fas fa-heart',
+            'class' => 'value-card',
+            'sort_id' => 5,
+        ]);
+
+        About::create([
+            'name' => 'Work Environment',
+            'discription' => 'نحن نفخر بتوفير بيئة عمل داعمة تشجع على الإبداع والتعاون، مع التدريب المستمر وفرص التطور المهني.',
+            'img' => 'abouts/work-environment.jpg',
+            'class' => null,
+            'sort_id' => 6,
+        ]);
+
+        About::create([
+            'name' => 'Social Responsibility',
+            'discription' => 'في بن نازح، نؤمن بأهمية رد الجميل للمجتمع. نسعى لدعم التعليم، حماية البيئة، وتحسين جودة الحياة في مجتمعاتنا.',
+            'img' => null,
+            'icon' => null,
+            'class' => null,
+            'sort_id' => 7,
+        ]);
     }
 }
