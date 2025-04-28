@@ -210,7 +210,7 @@ class SiteController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $validator->errors()->first(),
-            ], 422);
+            ]);
         }
 
         NewsLetter::create([
