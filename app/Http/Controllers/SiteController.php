@@ -16,8 +16,10 @@ use App\Models\Facility;
 use App\Models\About;
 use App\Models\Career;
 use App\Models\Certificate;
+use App\Models\NewsLetter;
 use App\Models\Why;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SiteController extends Controller
 {
@@ -50,6 +52,27 @@ class SiteController extends Controller
         }
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+        $scope = $request->input('scope', 'all');
+
+        $results = [];
+
+        if ($scope === 'all' || $scope === 'projects') {
+            $results['projects'] = Project::where('name', 'like', "%{$query}%")
+                ->orWhere('details', 'like', "%{$query}%")
+                ->get();
+        }
+
+        if ($scope === 'all' || $scope === 'blogs') {
+            $results['blogs'] = Blog::where('title', 'like', "%{$query}%")
+                ->orWhere('description', 'like', "%{$query}%")
+                ->get();
+        }
+
+        return view('home.search', compact('results', 'query', 'scope'));
+    }
     // About
     public function about()
     {
@@ -172,5 +195,31 @@ class SiteController extends Controller
         ContactUs::create($validated);
 
         return redirect()->route('contact')->with('success', 'تم إرسال استفسارك بنجاح!');
+    }
+
+    public function newsletter(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'mobile' => [
+                'required',
+                'regex:/^05[0-9]{8}$/', // Start with 05 and exactly 10 digits in total
+            ]
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $validator->errors()->first(),
+            ], 422);
+        }
+
+        NewsLetter::create([
+            'mobile' => $request->mobile,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'تم الاشتراك في النشرة البريدية بنجاح!',
+        ]);
     }
 }

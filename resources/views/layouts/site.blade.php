@@ -12,7 +12,6 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -22,9 +21,6 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
-
-  
-
 </head>
 
 <body class="bg-gray-100 overflow-x-hidden">
@@ -35,7 +31,7 @@
         <div class="loader w-16 h-16 border-8 border-orange-500 border-t-black rounded-full animate-spin"></div>
     </div>
 
-    <div class="flex flex-col min-h-screen" x-data="{ menuOpen: false }">
+    <div class="flex flex-col min-h-screen" x-data="{ menuOpen: false, searchOpen: false }">
         <!-- Fixed Header -->
         <header class="header fixed top-0 left-0 right-0 z-50 text-white flex items-center justify-center primary-bg">
             <div class="container flex justify-between items-center">
@@ -43,7 +39,6 @@
                 <div class="flex items-center space-x-2 space-x-reverse">
                     <img src="{{ asset('logo/bin nazeh 3.png') }}" alt="Bin Nazeh Logo"
                         class="header-logo h-20 w-20 transition-transform duration-300" />
-                    {{-- <span class="text-2xl font-bold">بن نازح</span> --}}
                 </div>
 
                 <!-- Desktop Navigation -->
@@ -83,12 +78,57 @@
                     <button class="md:hidden" @click="menuOpen = !menuOpen">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
-                    <button>
+                    <button @click="searchOpen = !searchOpen">
                         <i class="fas fa-search text-xl"></i>
                     </button>
                 </div>
             </div>
         </header>
+
+        <!-- Search Popup -->
+        <div x-show="searchOpen" x-cloak
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100"
+            x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0">
+            <div class="bg-white rounded-lg p-6 w-full max-w-xl mx-4 relative"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="transform scale-95"
+                x-transition:enter-end="transform scale-100"
+                x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="transform scale-100"
+                x-transition:leave-end="transform scale-95">
+                <button class="absolute top-4 left-4 text-gray-600 hover:text-gray-800" @click="searchOpen = false">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+                <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">ابحث في الموقع</h3>
+                <form action="{{ route('search') }}" method="GET" class="space-y-4">
+                    <div>
+                        <label for="query" class="block text-gray-600 mb-2">كلمة البحث</label>
+                        <input type="text" name="query" id="query" placeholder="أدخل كلمة البحث"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label for="scope" class="block text-gray-600 mb-2">نطاق البحث</label>
+                        <select name="scope" id="scope"
+                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                            <option value="all">الكل</option>
+                            <option value="projects">المشاريع</option>
+                            <option value="blogs">الأخبار</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit"
+                            class="px-6 py-3 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition-all duration-300">
+                            ابحث الآن
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!-- Mobile Menu -->
         <div class="mobile-menu fixed top-0 right-0 h-full w-64 bg-gray-900 text-white p-6 md:hidden z-50"
@@ -122,11 +162,10 @@
         </div>
 
         <!-- Main Content -->
-        <main class="flex-1 pt-20 ">
+        <main class="flex-1 pt-20">
             {{ $slot }}
         </main>
 
-        <!-- Footer -->
         <!-- Footer -->
         <footer class="footer py-12">
             <div class="container grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -140,7 +179,7 @@
                     </p>
                 </div>
 
-                <!-- Column 2: Quick Links (Split into Two Sub-Columns) -->
+                <!-- Column 2: Quick Links -->
                 <div>
                     <h3 class="text-xl font-bold mb-4">روابط سريعة</h3>
                     <div class="grid grid-cols-2 gap-4">
@@ -171,12 +210,18 @@
                 <div>
                     <h3 class="text-xl font-bold mb-4">النشرة البريدية</h3>
                     <p class="text-gray-300 mb-4">اشترك في نشرتنا البريدية للحصول على آخر الأخبار والعروض.</p>
-                    <div x-data="{ email: '' }">
-                        <input type="email" x-model="email" placeholder="أدخل بريدك الإلكتروني"
-                            class="w-full p-2 mb-2 bg-gray-700 text-white border border-gray-600 rounded focus:outline-none focus:border-white">
-                        <button @click="alert('تم الاشتراك بنجاح!')"
-                            class="w-full p-2 bg-white text-black rounded hover:bg-gray-200">اشترك</button>
-                    </div>
+                    <form id="newsletter-form" action="{{ route('newsletter.subscribe') }}" method="POST" class="space-y-4">
+                        @csrf
+                        <div class="relative">
+                            <input type="text" name="mobile" id="mobile" placeholder="أدخل رقم هاتفك "
+                                class="w-full p-3 pr-10 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
+                            <i class="fas fa-phone absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                        <button type="submit"
+                            class="w-full p-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-all duration-300">
+                            اشترك الآن
+                        </button>
+                    </form>
                 </div>
 
                 <!-- Column 4: Contact Info -->
@@ -199,12 +244,8 @@
     </div>
 
     @livewireScripts
-
-    <!-- jQuery and AjaxForm -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"></script>
-
-    <!-- Noty and Livewire Redirect -->
     @extends('layouts._noty')
     <script>
         document.addEventListener('livewire:initialized', () => {
@@ -213,7 +254,6 @@
             });
         });
 
-        // Scroll Effect for Header
         window.addEventListener('scroll', () => {
             const header = document.querySelector('.header');
             if (window.scrollY > 50) {
@@ -223,11 +263,38 @@
             }
         });
 
-        // Debug Menu Toggle
         document.addEventListener('alpine:init', () => {
             console.log('Alpine.js initialized');
         });
+
+        // Newsletter Form Submission with AJAX
+        $(document).ready(function () {
+            $('#newsletter-form').ajaxForm({
+                beforeSubmit: function () {
+                    // Disable button to prevent multiple submissions
+                    $('#newsletter-form button').prop('disabled', true).text('جارٍ الإرسال...');
+                },
+                success: function (response) {
+                    $('#newsletter-form button').prop('disabled', false).text('اشترك الآن');
+                    new Noty({
+                        type: response.success ? 'success' : 'error',
+                        text: response.message,
+                        timeout: 3000,
+                    }).show();
+                    if (response.success) {
+                        $('#newsletter-form')[0].reset();
+                    }
+                },
+                error: function () {
+                    $('#newsletter-form button').prop('disabled', false).text('اشترك الآن');
+                    new Noty({
+                        type: 'error',
+                        text: 'حدث خطأ أثناء الاشتراك. حاول مرة أخرى.',
+                        timeout: 3000,
+                    }).show();
+                }
+            });
+        });
     </script>
 </body>
-
 </html>

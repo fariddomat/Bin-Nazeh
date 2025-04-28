@@ -33,6 +33,8 @@ Route::get('/register-interest', [SiteController::class, 'registerInterestCreate
 Route::post('/register-interest', [SiteController::class, 'registerInterestStore'])->name('register-interest.store');
 Route::get('/contact-us', [SiteController::class, 'contact'])->name('contact');
 Route::post('/contact-us', [SiteController::class, 'contactStore'])->name('contact.store');
+Route::get('/search',[SiteController::class, 'search'])->name('search');
+Route::post('/newsletter/subscribe', [SiteController::class, 'newsletter'])->name('newsletter.subscribe');
 
 Route::middleware(['web'])->group(function () {
     Route::view('dashboard', 'dashboard')
