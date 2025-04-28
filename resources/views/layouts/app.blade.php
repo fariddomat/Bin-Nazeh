@@ -207,7 +207,7 @@
                 </details>
 
                 <!-- SEO Group -->
-                @php
+                {{-- @php
                     $isSeoActive = Str::startsWith(request()->route()->getName(), [
                         'dashboard.meta_tags.',
                         'dashboard.redirects.',
@@ -226,7 +226,7 @@
                             @lang('site.redirects') <i class="fas fa-link"></i>
                         </x-responsive-nav-link>
                     </div>
-                </details>
+                </details> --}}
 
                 <!-- Pages Group -->
                 @php
@@ -243,7 +243,7 @@
                         <x-responsive-nav-link href="{{ route('dashboard.terms.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.terms.')">
                             @lang('site.terms') <i class="fas fa-file-contract"></i>
                         </x-responsive-nav-link>
-                       
+
                     </div>
                 </details>
 
