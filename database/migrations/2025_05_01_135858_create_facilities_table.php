@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('description');
-            $table->string('img');
+            $table->string('icon');
             $table->softDeletes();
             $table->timestamps();
         });

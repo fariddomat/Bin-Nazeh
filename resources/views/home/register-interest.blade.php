@@ -1,17 +1,36 @@
 <x-site-layout>
     <!-- Hero Section (Parallax) -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="relative h-[75vh] overflow-hidden opacity-0 translate-y-10"
-        data-parallax>
+        class="relative h-[95vh] overflow-hidden opacity-0 translate-y-10" data-parallax>
         <div class="absolute inset-0 bg-cover bg-center parallax-bg"
-            style="background-image: url('{{ asset('images/register-interest-hero.jpg') }}')">
+            style="background-image: url('{{ asset('images/sections/Register interest hero.jpg') }}')">
             <!-- Dark Overlay with Gradient -->
             <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
             <!-- Centered Title -->
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
-                <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">سجل اهتمامك</h1>
-                <p class="text-lg md:text-xl mt-4 animate-slide-in-up">شاركنا رؤيتك لنحقق تطلعاتك العقارية</p>
+            <div x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+                class="mt-32 py-16 opacity-0 translate-y-10">
+                <div class="container">
+                    <div class="relative max-w-3xl mx-auto border-2 border-orange-500 rounded-lg p-8 shadow-lg">
+                        <!-- Decorative Icon -->
+                        <i
+                            class="fas fa-building text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 px-4"></i>
+                            <div class="text-center text-white">
+                                <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">سجل اهتمامك</h1>
+                                <p class="text-lg md:text-xl mt-4 animate-slide-in-up">شاركنا رؤيتك لنحقق تطلعاتك العقارية</p>
+                            </div>
+                        <!-- Centered Button with Pulse -->
+                        <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
+                            class="mt-8 text-center opacity-0 scale-95">
+                            <a href="#mission"
+                                class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
+                                استكشف المزيد
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
         </div>
     </section>
 
@@ -32,11 +51,13 @@
                         </div>
                     @endif
                     <!-- Form -->
-                    <form action="{{ route('register-interest.store') }}" method="POST" class="space-y-6 bg-white p-6 rounded-lg shadow-md relative z-10">
+                    <form action="{{ route('register-interest.store') }}" method="POST"
+                        class="space-y-6 bg-white p-6 rounded-lg shadow-md relative z-10">
                         @csrf
                         <!-- Name -->
                         <div>
-                            <label for="name" class="block text-gray-600 mb-2">الاسم <span class="text-red-500">*</span></label>
+                            <label for="name" class="block text-gray-600 mb-2">الاسم <span
+                                    class="text-red-500">*</span></label>
                             <input name="name" id="name" type="text" value="{{ old('name') }}"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('name') border-red-500 @enderror">
                             @error('name')
@@ -45,7 +66,8 @@
                         </div>
                         <!-- Email -->
                         <div>
-                            <label for="email" class="block text-gray-600 mb-2">البريد الإلكتروني <span class="text-red-500">*</span></label>
+                            <label for="email" class="block text-gray-600 mb-2">البريد الإلكتروني <span
+                                    class="text-red-500">*</span></label>
                             <input name="email" id="email" type="email" value="{{ old('email') }}"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('email') border-red-500 @enderror">
                             @error('email')
@@ -54,7 +76,8 @@
                         </div>
                         <!-- Phone -->
                         <div>
-                            <label for="phone" class="block text-gray-600 mb-2">رقم الهاتف <span class="text-red-500">*</span></label>
+                            <label for="phone" class="block text-gray-600 mb-2">رقم الهاتف <span
+                                    class="text-red-500">*</span></label>
                             <input name="phone" id="phone" type="text" value="{{ old('phone') }}"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('phone') border-red-500 @enderror">
                             @error('phone')
@@ -64,7 +87,8 @@
                         <!-- Block Number -->
                         <div>
                             <label for="block_number" class="block text-gray-600 mb-2">رقم القطعة (اختياري)</label>
-                            <input name="block_number" id="block_number" type="text" value="{{ old('block_number') }}"
+                            <input name="block_number" id="block_number" type="text"
+                                value="{{ old('block_number') }}"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('block_number') border-red-500 @enderror">
                             @error('block_number')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -72,7 +96,8 @@
                         </div>
                         <!-- City -->
                         <div>
-                            <label for="city" class="block text-gray-600 mb-2">المدينة <span class="text-red-500">*</span></label>
+                            <label for="city" class="block text-gray-600 mb-2">المدينة <span
+                                    class="text-red-500">*</span></label>
                             <input name="city" id="city" type="text" value="{{ old('city') }}"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('city') border-red-500 @enderror">
                             @error('city')
@@ -81,12 +106,15 @@
                         </div>
                         <!-- Project -->
                         <div>
-                            <label for="project_id" class="block text-gray-600 mb-2">المشروع <span class="text-red-500">*</span></label>
+                            <label for="project_id" class="block text-gray-600 mb-2">المشروع <span
+                                    class="text-red-500">*</span></label>
                             <select name="project_id" id="project_id"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('project_id') border-red-500 @enderror">
                                 <option value="">اختر المشروع</option>
                                 @foreach ($projects as $project)
-                                    <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>{{ $project->name }}</option>
+                                    <option value="{{ $project->id }}"
+                                        {{ old('project_id') == $project->id ? 'selected' : '' }}>{{ $project->name }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('project_id')
@@ -98,15 +126,18 @@
                             <label class="block text-gray-600 mb-2">الرغبة <span class="text-red-500">*</span></label>
                             <div class="flex flex-col space-y-2">
                                 <label class="flex items-center">
-                                    <input name="wish" type="radio" value="استثمار" class="mr-2" {{ old('wish', 'استثمار') == 'استثمار' ? 'checked' : '' }}>
+                                    <input name="wish" type="radio" value="استثمار" class="mr-2"
+                                        {{ old('wish', 'استثمار') == 'استثمار' ? 'checked' : '' }}>
                                     استثمار
                                 </label>
                                 <label class="flex items-center">
-                                    <input name="wish" type="radio" value="سكن" class="mr-2" {{ old('wish') == 'سكن' ? 'checked' : '' }}>
+                                    <input name="wish" type="radio" value="سكن" class="mr-2"
+                                        {{ old('wish') == 'سكن' ? 'checked' : '' }}>
                                     سكن
                                 </label>
                                 <label class="flex items-center">
-                                    <input name="wish" type="radio" value="اخرى" class="mr-2" {{ old('wish') == 'اخرى' ? 'checked' : '' }}>
+                                    <input name="wish" type="radio" value="اخرى" class="mr-2"
+                                        {{ old('wish') == 'اخرى' ? 'checked' : '' }}>
                                     اخرى
                                 </label>
                             </div>
@@ -116,7 +147,8 @@
                         </div>
                         <!-- Other Wish -->
                         <div x-show="$('input[name=wish]:checked').val() === 'اخرى'" x-cloak>
-                            <label for="other_wish" class="block text-gray-600 mb-2">رغبة أخرى <span class="text-red-500">*</span></label>
+                            <label for="other_wish" class="block text-gray-600 mb-2">رغبة أخرى <span
+                                    class="text-red-500">*</span></label>
                             <input name="other_wish" id="other_wish" type="text" value="{{ old('other_wish') }}"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('other_wish') border-red-500 @enderror">
                             @error('other_wish')
@@ -152,7 +184,8 @@
                         </h3>
                         <p x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             class="text-gray-600 mb-6 opacity-0 scale-95">
-                            في بن نازح العقارية، نسعى لتحقيق أحلامك العقارية من خلال تقديم حلول مبتكرة ومشاريع استثنائية. عند تسجيل اهتمامك، ستحصل على:
+                            في بن نازح العقارية، نسعى لتحقيق أحلامك العقارية من خلال تقديم حلول مبتكرة ومشاريع
+                            استثنائية. عند تسجيل اهتمامك، ستحصل على:
                         </p>
                         <ul x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             class="list-disc list-inside text-gray-600 mb-6 opacity-0 scale-95">
@@ -164,7 +197,7 @@
                         <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             class="relative p-4 opacity-0 scale-95">
                             <div class="gold-border"></div>
-                            <img src="{{ asset('images/register-interest-info.jpg') }}"
+                            <img src="{{ asset('images/sections/Register interest section.jpg') }}"
                                 alt="مشاريع بن نازح العقارية الفاخرة"
                                 class="w-full h-64 object-cover rounded-lg shadow-md relative z-10">
                         </div>
@@ -199,34 +232,77 @@
     <!-- Custom Animations and Styles -->
     <style>
         @keyframes text-slide-in {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes slide-in-left {
-            from { transform: translateX(-100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         @keyframes fade-in-slide-up {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes fade-in-scale {
-            from { transform: scale(0.95); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         @keyframes slide-in-up {
-            from { transform: translateY(10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes pulse-once {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         .animate-text-slide-in {
@@ -304,7 +380,7 @@
         }
 
         /* RTL Adjustments */
-        [dir="rtl"] .space-x-4 > * + * {
+        [dir="rtl"] .space-x-4>*+* {
             margin-left: 0;
             margin-right: 1rem;
         }
@@ -345,7 +421,9 @@
 
         /* Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
-            .animate-section, .animate-item {
+
+            .animate-section,
+            .animate-item {
                 animation: none !important;
                 transform: none !important;
                 opacity: 1 !important;
@@ -356,18 +434,27 @@
     <!-- Alpine.js and Parallax Script -->
     <script>
         document.addEventListener('alpine:init', () => {
-            Alpine.directive('intersect', (el, { value, expression }, { evaluate, cleanup }) => {
+            Alpine.directive('intersect', (el, {
+                value,
+                expression
+            }, {
+                evaluate,
+                cleanup
+            }) => {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            const delay = parseInt(el.getAttribute('x-intersect:delay') || '0', 10);
+                            const delay = parseInt(el.getAttribute('x-intersect:delay') ||
+                                '0', 10);
                             setTimeout(() => {
                                 evaluate(expression);
                             }, delay);
                             observer.unobserve(el);
                         }
                     });
-                }, { threshold: 0.1 });
+                }, {
+                    threshold: 0.1
+                });
                 observer.observe(el);
                 cleanup(() => observer.disconnect());
             });

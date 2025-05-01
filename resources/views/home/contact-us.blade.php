@@ -1,17 +1,36 @@
 <x-site-layout>
     <!-- Hero Section (Parallax) -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="relative h-[75vh] overflow-hidden opacity-0 translate-y-10"
-        data-parallax>
+        class="relative h-[95vh] overflow-hidden opacity-0 translate-y-10" data-parallax>
         <div class="absolute inset-0 bg-cover bg-center parallax-bg"
-            style="background-image: url('{{ asset('images/contact-us-hero.jpg') }}')">
+            style="background-image: url('{{ asset('images/sections/Contact us hero.jpg') }}')">
             <!-- Dark Overlay with Gradient -->
             <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
             <!-- Centered Title -->
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
-                <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">تواصل معنا</h1>
-                <p class="text-lg md:text-xl mt-4 animate-slide-in-up">نحن هنا لدعم تطلعاتك العقارية</p>
+            <div x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+                class="mt-32 py-16 opacity-0 translate-y-10">
+                <div class="container">
+                    <div class="relative max-w-3xl mx-auto border-2 border-orange-500 rounded-lg p-8 shadow-lg">
+                        <!-- Decorative Icon -->
+                        <i
+                            class="fas fa-building text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 px-4"></i>
+                            <div class="text-center text-white">
+                                <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">تواصل معنا</h1>
+                                <p class="text-lg md:text-xl mt-4 animate-slide-in-up">نحن هنا لدعم تطلعاتك العقارية</p>
+                            </div>
+                        <!-- Centered Button with Pulse -->
+                        <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
+                            class="mt-8 text-center opacity-0 scale-95">
+                            <a href="#mission"
+                                class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
+                                استكشف المزيد
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
         </div>
     </section>
 
@@ -116,7 +135,7 @@
                         <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             class="relative p-4 opacity-0 scale-95">
                             <div class="gold-border"></div>
-                            <img src="{{ asset('images/contact-us-info.jpg') }}"
+                            <img src="{{ asset('images/sections/Contact us section.jpg') }}"
                                 alt="فريق بن نازح العقارية"
                                 class="w-full h-64 object-cover rounded-lg shadow-md relative z-10">
                         </div>

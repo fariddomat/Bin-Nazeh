@@ -16,32 +16,32 @@ class FacilitiesSeeder extends Seeder
             [
                 'title' => 'مسبح خاص',
                 'description' => 'استمتع بالرفاهية مع مسبح خاص في مشاريعنا السكنية.',
-                'img' => 'facility-1.jpg',
+                'icon' => 'facility-1.jpg',
             ],
             [
                 'title' => 'صالة رياضية',
                 'description' => 'حافظ على لياقتك مع صالات رياضية مجهزة بأحدث المعدات.',
-                'img' => 'facility-2.jpg',
+                'icon' => 'facility-2.jpg',
             ],
             [
                 'title' => 'حدائق خضراء',
                 'description' => 'مساحات خضراء للاسترخاء والترفيه مع العائلة.',
-                'img' => 'facility-3.jpg',
+                'icon' => 'facility-3.jpg',
             ],
             [
                 'title' => 'أمن على مدار الساعة',
                 'description' => 'نظام أمني متطور لحماية سكاننا.',
-                'img' => 'facility-4.jpg',
+                'icon' => 'facility-4.jpg',
             ],
             [
                 'title' => 'مواقف سيارات',
                 'description' => 'مواقف سيارات واسعة وآمنة لجميع السكان.',
-                'img' => 'facility-5.jpg',
+                'icon' => 'facility-5.jpg',
             ],
             [
                 'title' => 'مركز تسوق',
                 'description' => 'مراكز تسوق قريبة تلبي كافة احتياجاتك.',
-                'img' => 'facility-6.jpg',
+                'icon' => 'facility-6.jpg',
             ],
         ];
 

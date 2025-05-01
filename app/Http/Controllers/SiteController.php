@@ -19,6 +19,7 @@ use App\Models\Certificate;
 use App\Models\NewsLetter;
 use App\Models\Why;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class SiteController extends Controller
@@ -28,7 +29,7 @@ class SiteController extends Controller
     {
         try {
             $sliders = Slider::all()->map(fn($slider) => [
-                'image' => $slider->img ? asset('images/' . $slider->img) : asset('images/default-slider.jpg'),
+                'image' => $slider->img ? Storage::url($slider->img) : asset('images/default-slider.jpg'),
                 'text' => htmlspecialchars($slider->title ?? 'بدون عنوان', ENT_QUOTES, 'UTF-8'),
                 'description' => htmlspecialchars($slider->description ?? 'بدون وصف', ENT_QUOTES, 'UTF-8')
             ]);
@@ -39,7 +40,7 @@ class SiteController extends Controller
             $partners = Partner::all();
             $facilities = Facility::take(6)->get();
             $reviews = Review::take(5)->get()->map(fn($review) => [
-                'icon' => $review->img ? asset('images/' . $review->img) : asset('images/default-user.jpg'),
+                'icon' => $review->img ? Storage::url($review->img) : asset('images/default-user.jpg'),
                 'name' => $review->name ?? 'مجهول',
                 'title' => $review->title ?? 'بدون عنوان',
                 'description' => $review->description ?? 'بدون وصف'
@@ -80,8 +81,9 @@ class SiteController extends Controller
         // dd($abouts);
         $certificates = Certificate::all();
         $whies = Why::all();
+        $partners = Partner::all();
 
-        return view('home.about', compact('abouts', 'certificates', 'whies'));
+        return view('home.about', compact('abouts', 'certificates', 'whies', 'partners'));
     }
 
     // Services
@@ -112,7 +114,8 @@ class SiteController extends Controller
             ->with('projectCategory')
             ->paginate(9);
         $categories = ProjectCategory::all();
-        $category = ProjectCategory::firstOrFail('id', $category);
+        $category = ProjectCategory::where('id', $category)->first();
+        
         return view('home.projects', compact('projects', 'categories', 'category'));
     }
 

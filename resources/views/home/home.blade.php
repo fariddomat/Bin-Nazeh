@@ -12,7 +12,8 @@
                     }, 10000); // Change slide every 10 seconds
                 }
             }
-        }' class="relative h-full" wire:ignore>
+        }'
+            class="relative h-full" wire:ignore>
             <!-- Debug -->
             <div x-show="false" x-text="JSON.stringify(slides)"></div>
             <!-- Slides -->
@@ -22,9 +23,10 @@
                     :class="{ 'opacity-100': currentSlide === index, 'opacity-0': currentSlide !== index }"
                     :style="{ 'background-image': `url(${slide.image})` }">
                     <!-- Dark Overlay -->
-                    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+                    <div class="absolute inset-0" style="background: #173c4d78"></div>
                     <!-- Main Text with Fade-In Slide Effect -->
-                    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white animate-text-slide-in">
+                    <div
+                        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white animate-text-slide-in">
                         <h1 class="text-4xl md:text-6xl font-bold" x-text="slide.text"></h1>
                     </div>
                     <!-- Description (Bottom Right) -->
@@ -34,13 +36,15 @@
                     <!-- Explore Button (Bottom Left) -->
                     <div class="absolute bottom-8 left-8 animate-slide-in-left">
                         <a href="{{ route('home') }}"
-                            class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md hover:bg-gray-200 transition-colors duration-300">
+                            class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md hover:bg-gray-200 transition-colors duration-300"
+                            aria-label="home">
                             استكشف المزيد
                         </a>
                     </div>
                 </div>
             </template>
-            <div x-show="slides.length === 0" class="absolute inset-0 flex items-center justify-center text-white bg-gray-900">
+            <div x-show="slides.length === 0"
+                class="absolute inset-0 flex items-center justify-center text-white bg-gray-900">
                 <p>لا توجد صور متاحة</p>
             </div>
         </div>
@@ -54,18 +58,19 @@
             <h2 class="text-4xl md:text-5xl font-bold text-white mb-12">شركائنا</h2>
             <!-- Continuous Logo Slider -->
             <div class="overflow-hidden">
-                <div class="flex animate-continuous-slide" x-data="{ pause: false }" @mouseenter="pause = true" @mouseleave="pause = false">
+                <div class="flex animate-continuous-slide" x-data="{ pause: false }" @mouseenter="pause = true"
+                    @mouseleave="pause = false">
                     <!-- Logos (Repeated for seamless loop) -->
                     <div class="flex flex-shrink-0">
                         @foreach ($partners as $partner)
-                            <img src="{{ asset('images/' . $partner->img) }}" alt="{{ $partner->name ?? 'Partner' }}"
+                            <img src="{{ Storage::url($partner->img) }}" alt="{{ $partner->name ?? 'Partner' }}"
                                 class="h-16 mx-6">
                         @endforeach
                     </div>
                     <!-- Duplicate Logos for Continuous Effect -->
                     <div class="flex flex-shrink-0">
                         @foreach ($partners as $partner)
-                            <img src="{{ asset('images/' . $partner->img) }}" alt="{{ $partner->name ?? 'Partner' }}"
+                            <img src="{{ Storage::url($partner->img) }}" alt="{{ $partner->name ?? 'Partner' }}"
                                 class="h-16 mx-6">
                         @endforeach
                     </div>
@@ -77,16 +82,27 @@
     <!-- Video Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-scale')"
         class="relative h-screen bg-gray-900 opacity-0 scale-95">
-        <video class="w-full h-full object-cover" autoplay muted loop playsinline>
-            <source src="{{ asset('videos/placeholder-video.mp4') }}" type="video/mp4">
-            Your browser does not support the video tag.
+        <video x-ref="video" class="w-full h-full object-cover" autoplay muted loop playsinline loading="lazy">
+            <source src="{{ asset('videos/intro.mp4') }}" type="video/mp4">
+            متصفحك لا يدعم تشغيل الفيديو.
         </video>
+
+        <!-- Mute/Unmute Button -->
+        <div x-data="{ isMuted: true }" class="absolute bottom-4 right-4 z-10">
+            <button @click="isMuted = !isMuted; $refs.video.muted = isMuted"
+                class="flex items-center justify-center w-12 h-12 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-all duration-300 focus:outline-none"
+                :class="{ 'bg-orange-600': !isMuted }" aria-label="mute">
+                <i x-show="isMuted" class="fas fa-volume-mute text-xl"></i>
+                <i x-show="!isMuted" class="fas fa-volume-up text-xl"></i>
+            </button>
+        </div>
     </section>
 
     <!-- Services Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="relative py-16 bg-cover bg-center opacity-0 translate-y-10"
-        style="background-image: url('{{ asset('images/services-bg.jpg') }}')">
+        class="relative py-16  opacity-0 translate-y-10 bg-no-repeat bg-cover
+                    bg-fixed parallax-bg"
+        style="background-image: url('{{ asset('images/sections/Project hero.jpg') }}')">
         <!-- Lightened Overlay -->
         <div class="absolute inset-0 bg-white bg-opacity-50"></div>
         <div class="container relative z-10">
@@ -114,17 +130,21 @@
                                 <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $service->name }}</h3>
                                 <p class="text-gray-600 mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($service->description), 100) !!}</p>
                                 <a href="{{ route('services.show', $service->slug) }}"
-                                    class="text-blue-600 hover:underline">عرض المزيد</a>
+                                    class="text-blue-600 hover:underline" aria-label="service {{ $service->slug }}">عرض
+                                    المزيد</a>
                             </div>
                         @endforeach
                     </div>
                     <!-- Navigation Arrows -->
                     <button x-on:click="prev()" x-bind:class="{ 'opacity-50 cursor-not-allowed': currentIndex === 0 }"
-                        class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg text-gray-900 hover:bg-gray-200">
+                        class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg text-gray-900 hover:bg-gray-200"
+                        aria-label="prev">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <button x-on:click="next()" x-bind:class="{ 'opacity-50 cursor-not-allowed': currentIndex >= maxIndex() }"
-                        class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg text-gray-900 hover:bg-gray-200">
+                    <button x-on:click="next()"
+                        x-bind:class="{ 'opacity-50 cursor-not-allowed': currentIndex >= maxIndex() }"
+                        class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white rounded-full p-3 shadow-lg text-gray-900 hover:bg-gray-200"
+                        aria-label="next">
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
@@ -146,10 +166,11 @@
                         class="relative bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 opacity-0 {{ $index % 2 === 0 ? 'translate-x-10' : '-translate-x-10' }}">
                         <!-- Image -->
                         <div class="relative">
-                            <img src="{{ asset('images/' . $project->img) }}" alt="{{ $project->name }}"
+                            <img src="{{ Storage::url($project->img) }}" alt="{{ $project->name }}"
                                 class="w-full h-48 object-cover rounded-t-lg">
                             <!-- Status Badge -->
-                            <span class="absolute top-4 left-4 bg-gray-900 bg-opacity-75 text-white text-sm font-semibold px-3 py-1 rounded-full project-badge">
+                            <span
+                                class="absolute top-4 left-4 bg-gray-900 bg-opacity-75 text-white text-sm font-semibold px-3 py-1 rounded-full project-badge">
                                 {{ __('status.' . $project->status) }}
                             </span>
                             <!-- Sold Overlay (Conditional) -->
@@ -163,7 +184,8 @@
                             <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $project->name }}</h3>
                             <p class="text-gray-600 mb-4">{{ $project->projectCategory->name }}</p>
                             <a href="{{ route('projects.show', $project->slug) }}"
-                                class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-gray-200 transition-colors duration-300">
+                                class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-gray-200 transition-colors duration-300"
+                                aria-label="project {{ $project->slug }}">
                                 استكشف
                             </a>
                         </div>
@@ -174,7 +196,8 @@
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
                 class="text-center mt-12 opacity-0 translate-y-10">
                 <a href="{{ route('projects') }}"
-                    class="inline-block px-8 py-4 secondary-bg text-white font-semibold rounded-md hover:bg-orange-800 transition-colors duration-300">
+                    class="inline-block px-8 py-4 secondary-bg text-white font-semibold rounded-md hover:bg-orange-800 transition-colors duration-300"
+                    aria-label="projects">
                     استكشف المزيد من المشاريع
                 </a>
             </div>
@@ -188,11 +211,11 @@
             <!-- Title -->
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">الضمانات</h2>
             <!-- Guarantees Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @foreach ($facilities as $index => $facility)
                     <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                         :x-intersect:delay="{{ $index * 200 }}"
-                        class="flex items-start bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 opacity-0 scale-95 guarantee-item">
+                        class="relative flex items-start bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 opacity-0 scale-95 guarantee-item">
                         <i class="{{ $facility->icon }} text-4xl text-gray-900 mr-4"></i>
                         <div>
                             <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $facility->title }}</h3>
@@ -228,7 +251,9 @@
                         }, 5000); // Change set every 5 seconds
                     }
                 }
-            }' class="relative overflow-hidden review-slider" @mouseenter="pause = true" @mouseleave="pause = false" wire:ignore>
+            }'
+                class="relative overflow-hidden review-slider" @mouseenter="pause = true" @mouseleave="pause = false"
+                wire:ignore>
                 <!-- Debug -->
                 <div x-show="false" x-text="JSON.stringify(reviews)"></div>
                 <!-- Slider Container -->
@@ -238,7 +263,8 @@
                         <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
                             :x-intersect:delay="index % reviewsPerPage * 200"
                             class="flex-shrink-0 w-80 bg-white rounded-lg shadow-md p-6 text-center mx-3 opacity-0 translate-y-10">
-                            <img :src="review.icon" alt="Reviewer" class="w-16 h-16 rounded-full mx-auto mb-4 object-cover">
+                            <img :src="review.icon" alt="Reviewer"
+                                class="w-16 h-16 rounded-full mx-auto mb-4 object-cover">
                             <h3 class="text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
                             <p class="text-gray-600 italic mb-4" x-text="review.title"></p>
                             <p class="text-gray-700" x-text="review.description"></p>
@@ -271,8 +297,7 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 @foreach ($counters as $index => $counter)
                     <div x-intersect.once="$el.classList.add('animate-item', 'fade-in-scale'); $dispatch('start-count', { id: $el.id })"
-                        id="feature-{{ $index + 1 }}"
-                        x-data="{ count: 0 }"
+                        id="feature-{{ $index + 1 }}" x-data="{ count: 0 }"
                         x-on:start-count.window="if ($event.detail.id === 'feature-{{ $index + 1 }}') { let start = 0; const end = parseInt($el.dataset.count); const duration = 2000; const interval = duration / end; const timer = setInterval(() => { if (start < end) { start++; count = start; } else { clearInterval(timer); } }, interval); }"
                         class="bg-white rounded-lg shadow-md p-6 text-center opacity-0 scale-95"
                         data-count="{{ $counter->value }}">
@@ -297,14 +322,15 @@
                     <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
                         :x-intersect:delay="{{ $index * 200 }}"
                         class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 opacity-0 translate-y-10">
-                        <img src="{{ asset('images/' . $blog->image) }}" alt="{{ $blog->title }}"
+                        <img src="{{ Storage::url($blog->image) }}" alt="{{ $blog->title }}"
                             class="w-full h-48 object-cover rounded-t-lg blog-image">
                         <div class="p-6">
                             <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $blog->title }}</h3>
                             <p class="text-gray-600 text-sm mb-4">{{ $blog->created_at->format('d F Y') }}</p>
                             <p class="text-gray-700 mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($blog->introduction), 100) !!}</p>
                             <a href="{{ route('blogs.show', $blog->slug) }}"
-                                class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
+                                class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300"
+                                aria-label="blog {{ $blog->slug }}">
                                 استكشف
                             </a>
                         </div>
@@ -315,7 +341,8 @@
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
                 class="text-center mt-12 opacity-0 translate-y-10">
                 <a href="{{ route('blogs.index') }}"
-                    class="inline-block px-8 py-4 bg-black text-white font-semibold rounded-md hover:bg-gray-800 transition-colors duration-300">
+                    class="inline-block px-8 py-4 bg-black text-white font-semibold rounded-md hover:bg-gray-800 transition-colors duration-300"
+                    aria-label="blogs">
                     عرض الكل
                 </a>
             </div>
@@ -329,6 +356,7 @@
                 transform: translateY(20px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -340,6 +368,7 @@
                 transform: translateX(100px);
                 opacity: 0;
             }
+
             to {
                 transform: translateX(0);
                 opacity: 1;
@@ -351,6 +380,7 @@
                 transform: translateX(-100px);
                 opacity: 0;
             }
+
             to {
                 transform: translateX(0);
                 opacity: 1;
@@ -361,6 +391,7 @@
             0% {
                 transform: translateX(0);
             }
+
             100% {
                 transform: translateX(-50%);
             }
@@ -371,6 +402,7 @@
                 transform: translateY(10px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -382,6 +414,7 @@
                 transform: translateY(10px);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -393,6 +426,7 @@
                 transform: scale(0.95);
                 opacity: 0;
             }
+
             to {
                 transform: scale(1);
                 opacity: 1;
@@ -472,53 +506,64 @@
 
         /* RTL Adjustments */
         [dir="rtl"] .slider-container {
-            direction: ltr; /* Ensure transform works consistently */
+            direction: ltr;
+            /* Ensure transform works consistently */
         }
 
         [dir="rtl"] .project-badge {
             left: auto;
-            right: 1rem; /* Adjust badge position in RTL */
+            right: 1rem;
+            /* Adjust badge position in RTL */
         }
 
         [dir="rtl"] .guarantee-item .fas {
             margin-right: 0;
-            margin-left: 1rem; /* Adjust icon spacing in RTL */
+            margin-left: 1rem;
+            /* Adjust icon spacing in RTL */
         }
 
         [dir="rtl"] .review-slider {
-            direction: ltr; /* Ensure slider direction consistency */
+            direction: ltr;
+            /* Ensure slider direction consistency */
         }
 
         [dir="rtl"] .slide-in-left {
-            animation: slide-in-right 0.7s ease-out forwards; /* Reverse for RTL */
+            animation: slide-in-right 0.7s ease-out forwards;
+            /* Reverse for RTL */
         }
 
         [dir="rtl"] .slide-in-right {
-            animation: slide-in-left 0.7s ease-out forwards; /* Reverse for RTL */
+            animation: slide-in-left 0.7s ease-out forwards;
+            /* Reverse for RTL */
         }
 
         [dir="rtl"] .fa-map-marker-alt,
         [dir="rtl"] .fa-phone,
         [dir="rtl"] .fa-envelope {
             margin-right: 0;
-            margin-left: 0.5rem; /* Adjust icon spacing in RTL */
+            margin-left: 0.5rem;
+            /* Adjust icon spacing in RTL */
         }
 
         [dir="rtl"] .blog-image {
             border-top-right-radius: 0;
-            border-top-left-radius: 0.5rem; /* Adjust image border radius in RTL */
+            border-top-left-radius: 0.5rem;
+            /* Adjust image border radius in RTL */
         }
 
         /* Responsive Adjustments */
         @media (max-width: 640px) {
             .blog-image {
-                height: 10rem; /* Smaller image height on mobile */
+                height: 10rem;
+                /* Smaller image height on mobile */
             }
         }
 
         /* Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
-            .animate-section, .animate-item {
+
+            .animate-section,
+            .animate-item {
                 animation: none !important;
                 transform: none !important;
                 opacity: 1 !important;
@@ -529,11 +574,18 @@
     <!-- Alpine.js Intersection Observer -->
     <script>
         document.addEventListener('alpine:init', () => {
-            Alpine.directive('intersect', (el, { value, expression }, { evaluate, cleanup }) => {
+            Alpine.directive('intersect', (el, {
+                value,
+                expression
+            }, {
+                evaluate,
+                cleanup
+            }) => {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            const delay = parseInt(el.getAttribute('x-intersect:delay') || '0', 10);
+                            const delay = parseInt(el.getAttribute('x-intersect:delay') ||
+                                '0', 10);
                             setTimeout(() => {
                                 evaluate(expression);
                             }, delay);
@@ -542,7 +594,9 @@
                             }
                         }
                     });
-                }, { threshold: 0.1 });
+                }, {
+                    threshold: 0.1
+                });
                 observer.observe(el);
                 cleanup(() => observer.disconnect());
             });

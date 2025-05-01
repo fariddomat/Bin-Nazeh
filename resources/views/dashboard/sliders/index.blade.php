@@ -5,7 +5,7 @@
 
         <div class="overflow-x-auto mt-4">
             <x-autocrud::table
-                :columns="['id', 'title', 'description', 'img']"
+                :columns="['id', 'title', 'description']"
                 :data="$sliders"
                 routePrefix="dashboard.sliders"
                 :show="true"

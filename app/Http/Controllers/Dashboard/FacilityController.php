@@ -9,6 +9,10 @@ use App\Models\Facility;
 
 class FacilityController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
 
     public function index()
     {
@@ -27,12 +31,9 @@ class FacilityController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'img' => 'required|image|max:2048'
+            'icon' => 'required|string|max:255'
         ]);
-                if ($request->hasFile('img')) {
-            $validated['img'] = $request->file('img')->store('public/imgs');
-        }
-
+        
         $facility = \App\Models\Facility::create($validated);
         
         return redirect()->route('dashboard.facilities.index')->with('success', 'Facility created successfully.');
@@ -58,13 +59,9 @@ class FacilityController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'img' => 'required|image|max:2048'
+            'icon' => 'required|string|max:255'
         ]);
-                if ($request->hasFile('img')) {
-            $validated['img'] = $request->file('img')->store('public/imgs');
-            if ($facility->img) Storage::delete($facility->img);
-        }
-
+        
         $facility->update($validated);
         
         return redirect()->route('dashboard.facilities.index')->with('success', 'Facility updated successfully.');

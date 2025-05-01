@@ -212,7 +212,7 @@ return [
     'privacy' =>' سياسة الخصوصية',
 
 
-    
+
         'BlogCategory' => 'فئة المدونة',
         'content' => 'المحتوى',
         'communications' => 'الاتصالات',
@@ -270,5 +270,9 @@ return [
         'status_percent' => 'نسبة الحالة',
         'project_category_id' => 'فئة المشروع',
         'images' => 'الصور',
-    
+
+
+    'reviews'=>'التقييمات',
+    'facilities'=>'الضمانات',
+    'social_media'=>'وسائل التواصل',
 ];

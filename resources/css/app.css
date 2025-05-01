@@ -7,43 +7,43 @@
     font-weight: 100;
     font-style: normal;
   }
-  
+
   .ibm-plex-sans-arabic-extralight {
     font-family: "IBM Plex Sans Arabic", sans-serif;
     font-weight: 200;
     font-style: normal;
   }
-  
+
   .ibm-plex-sans-arabic-light {
     font-family: "IBM Plex Sans Arabic", sans-serif;
     font-weight: 300;
     font-style: normal;
   }
-  
+
   .ibm-plex-sans-arabic-regular {
     font-family: "IBM Plex Sans Arabic", sans-serif;
     font-weight: 400;
     font-style: normal;
   }
-  
+
   .ibm-plex-sans-arabic-medium {
     font-family: "IBM Plex Sans Arabic", sans-serif;
     font-weight: 500;
     font-style: normal;
   }
-  
+
   .ibm-plex-sans-arabic-semibold {
     font-family: "IBM Plex Sans Arabic", sans-serif;
     font-weight: 600;
     font-style: normal;
   }
-  
+
   .ibm-plex-sans-arabic-bold {
     font-family: "IBM Plex Sans Arabic", sans-serif;
     font-weight: 700;
     font-style: normal;
   }
-  
+
 /* code */
 .bg-black,
 .bg-gray-900,
@@ -105,7 +105,7 @@ body {
 }
 
 .header.scrolled .header-logo {
-    transform: scale(0.8);
+    transform: scale(0.7);
 }
 
 /* Active Link */
@@ -167,6 +167,9 @@ html[dir="rtl"] .mobile-menu.open {
     /* Black background */
     color: #ffffff;
     /* White text */
+    font-weight: 500;
+    font-size: 1rem;
+
 }
 
 .footer a:hover {
@@ -225,7 +228,30 @@ html[dir="rtl"] .mobile-menu.open {
     100% { transform: rotate(360deg); }
 }
 
-header .nav{
-    font-size: 18px;
-    font-weight: 600;
+header nav{
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.guarantee-item::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 20px;
+    height: 20px;
+    background-color: #1F2937; /* Tailwind's gray-900 */
+    transform: rotate(45deg);
+    border-bottom-left-radius: 0.5rem;
+}
+.icon-notched::after {
+    content: '';
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 12px;
+    height: 12px;
+    background-color: #1F2937; /* Tailwind's gray-900 */
+    transform: rotate(45deg);
+    border-bottom-left-radius: 4px;
 }

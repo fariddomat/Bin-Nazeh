@@ -153,7 +153,9 @@ return [
     'images'=>'Images',
     'control_panel'=>'Control Panel',
 
-
+    'reviews'=>'Reviews',
+    'facilities'=>'Facilities',
+    'social_media'=>'Social Media',
 
 
 ];

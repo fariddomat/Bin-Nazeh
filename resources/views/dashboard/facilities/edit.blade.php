@@ -20,10 +20,9 @@
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">@lang('site.img')</label>
-                <input type="file" name="img" accept="image/*" class="w-full border border-gray-300 rounded p-2">                @isset($facility->img)
-                    <img src="{{ Storage::url($facility->img) }}" alt="img" class="mt-2 w-32 h-32 rounded">
-                @endisset                @error('img')
+                <label class="block text-sm font-medium text-gray-700">@lang('site.icon')</label>
+                <input type="text" name="icon" value="{{ old('icon', $facility->icon) }}" class="w-full border border-gray-300 rounded p-2">
+                @error('icon')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>

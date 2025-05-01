@@ -1,19 +1,38 @@
 <x-site-layout>
     <!-- Hero Section (Parallax) -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="relative h-[75vh] overflow-hidden opacity-0 translate-y-10"
-        data-parallax>
+        class="relative h-[95vh] overflow-hidden opacity-0 translate-y-10" data-parallax>
         <div class="absolute inset-0 bg-cover bg-center parallax-bg"
-            style="background-image: url('{{ asset('images/categories-hero.jpg') }}')">
-            <!-- Dark Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
+            style="background-image: url('{{ asset('images/sections/Project hero.jpg') }}')">
+            <!-- Dark Overlay with Gradient -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
             <!-- Centered Title -->
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
-                <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">فئات المشاريع</h1>
-                <p class="text-lg md:text-xl mt-4 animate-slide-in-up">
-                    استكشف مجموعتنا المتنوعة من المشاريع العقارية المبتكرة
-                </p>
+            <div x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+                class="mt-32 py-16 opacity-0 translate-y-10">
+                <div class="container">
+                    <div class="relative max-w-3xl mx-auto border-2 border-orange-500 rounded-lg p-8 shadow-lg">
+                        <!-- Decorative Icon -->
+                        <i
+                            class="fas fa-building text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 px-4"></i>
+                        <div class="text-center text-white">
+                            <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">فئات المشاريع</h1>
+                            <p class="text-lg md:text-xl mt-4 animate-slide-in-up">استكشف مجموعتنا المتنوعة من المشاريع
+                                العقارية المبتكرة
+                            </p>
+                        </div>
+                        <!-- Centered Button with Pulse -->
+                        <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
+                            class="mt-8 text-center opacity-0 scale-95">
+                            <a href="#mission"
+                                class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
+                                استكشف المزيد
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
         </div>
     </section>
 
@@ -75,29 +94,65 @@
     <!-- Custom Animations and Styles -->
     <style>
         @keyframes text-slide-in {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes slide-in-up {
-            from { transform: translateY(10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes fade-in-slide-up {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes fade-in-scale {
-            from { transform: scale(0.95); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         @keyframes pulse-once {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         .animate-text-slide-in {
@@ -213,11 +268,14 @@
 
         /* Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
-            .animate-section, .animate-item {
+
+            .animate-section,
+            .animate-item {
                 animation: none !important;
                 transform: none !important;
                 opacity: 1 !important;
             }
+
             .category-card:hover {
                 transform: none !important;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
@@ -228,18 +286,27 @@
     <!-- Alpine.js and Parallax Script -->
     <script>
         document.addEventListener('alpine:init', () => {
-            Alpine.directive('intersect', (el, { value, expression }, { evaluate, cleanup }) => {
+            Alpine.directive('intersect', (el, {
+                value,
+                expression
+            }, {
+                evaluate,
+                cleanup
+            }) => {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            const delay = parseInt(el.getAttribute('x-intersect:delay') || '0', 10);
+                            const delay = parseInt(el.getAttribute('x-intersect:delay') ||
+                                '0', 10);
                             setTimeout(() => {
                                 evaluate(expression);
                             }, delay);
                             observer.unobserve(el);
                         }
                     });
-                }, { threshold: 0.1 });
+                }, {
+                    threshold: 0.1
+                });
                 observer.observe(el);
                 cleanup(() => observer.disconnect());
             });

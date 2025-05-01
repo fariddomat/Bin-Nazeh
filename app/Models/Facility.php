@@ -10,16 +10,16 @@ class Facility extends Model
     
     use SoftDeletes;
 
-    protected $fillable = ['title', 'description', 'img'];
+    protected $fillable = ['title', 'description', 'icon'];
 
     public static function rules()
     {
         return [
             'title' => 'required|string|max:255',
             'description' => 'required|string',
-            'img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'icon' => 'required|string|max:255'
         ];
     }
 
-    protected $searchable = ['title', 'description'];
+    protected $searchable = ['title', 'description', 'icon'];
 }

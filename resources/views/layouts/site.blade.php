@@ -6,6 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="description"
+        content="{{ $metaDescription ?? 'بن نازح - شركة رائدة في التطوير العقاري تقدم حلولاً مبتكرة ومستدامة في المملكة العربية السعودية.' }}">
 
     <title>{{ config('app.name', 'Bin Nazeh') }}</title>
 
@@ -14,8 +16,10 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('noty/noty.css') }}">
@@ -41,21 +45,23 @@
                 <!-- Logo and Name -->
                 <div class="flex items-center space-x-2 space-x-reverse">
                     <img src="{{ asset('logo/bin nazeh 3.png') }}" alt="Bin Nazeh Logo"
-                        class="header-logo h-20 w-20 transition-transform duration-300" />
+                        class="header-logo h-20 md:h-[9rem] w-20 md:w-[9rem] md:pt-8 transition-transform duration-300" />
                 </div>
 
                 <!-- Desktop Navigation -->
                 <nav class="hidden md:flex space-x-6 space-x-reverse nav-items" dir="ltr">
                     <a href="{{ route('home') }}"
                         class="nav-link hover:text-gray-200 transition-colors duration-200 {{ request()->is('/') ? 'active' : '' }}"
-                        wire:navigate>الرئيسية</a>
+                        wire:navigate aria-label="home">الرئيسية</a>
                     <a href="{{ route('about') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"
-                        wire:navigate>نبذة عنا</a>
+                        wire:navigate aria-label="about">نبذة عنا</a>
                     <a href="{{ route('services') }}"
-                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate>خدماتنا</a>
+                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
+                        aria-label="service">خدماتنا</a>
                     <div x-data="{ open: false }" class="relative">
                         <button @click="open = !open"
-                            class="nav-link hover:text-gray-200 transition-colors duration-200 flex items-center">
+                            class="nav-link hover:text-gray-200 transition-colors duration-200 flex items-center"
+                            aria-label="projects">
                             المشاريع
                             <i class="fas fa-chevron-down mr-1"></i>
                         </button>
@@ -63,25 +69,28 @@
                             class="absolute top-full right-0 mt-2 bg-white text-gray-900 rounded-md shadow-lg w-48">
                             @foreach (\App\Models\ProjectCategory::all() as $item)
                                 <a href="{{ route('projects', $item) }}" class="block px-4 py-2 hover:bg-gray-100"
-                                    wire:navigate>{{ $item->name }}</a>
+                                    wire:navigate aria-label="project {{ $item->name }}">{{ $item->name }}</a>
                             @endforeach
                         </div>
                     </div>
                     <a href="{{ route('register-interest') }}"
-                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate>سجل
+                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
+                        aria-label="regiter interest">سجل
                         اهتمامك</a>
                     <a href="{{ route('blogs.index') }}"
-                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate>الأخبار</a>
+                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
+                        aria-label="blogs">الأخبار</a>
                     <a href="{{ route('contact') }}"
-                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate>تواصل معنا</a>
+                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
+                        aria-label="contact">تواصل معنا</a>
                 </nav>
 
                 <!-- Mobile Menu Button and Search -->
                 <div class="flex items-center space-x-4 space-x-reverse">
-                    <button class="md:hidden" @click="menuOpen = !menuOpen">
+                    <button class="md:hidden" @click="menuOpen = !menuOpen" aria-label="menu">
                         <i class="fas fa-bars text-2xl"></i>
                     </button>
-                    <button @click="searchOpen = !searchOpen">
+                    <button @click="searchOpen = !searchOpen" aria-label="search">
                         <i class="fas fa-search text-xl"></i>
                     </button>
                 </div>
@@ -91,20 +100,15 @@
         <!-- Search Popup -->
         <div x-show="searchOpen" x-cloak
             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-            x-transition:enter="transition ease-out duration-300"
-            x-transition:enter-start="opacity-0"
-            x-transition:enter-end="opacity-100"
-            x-transition:leave="transition ease-in duration-200"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0">
+            x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
             <div class="bg-white rounded-lg p-6 w-full max-w-xl mx-4 relative"
-                x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="transform scale-95"
-                x-transition:enter-end="transform scale-100"
-                x-transition:leave="transition ease-in duration-200"
-                x-transition:leave-start="transform scale-100"
-                x-transition:leave-end="transform scale-95">
-                <button class="absolute top-4 left-4 text-gray-600 hover:text-gray-800" @click="searchOpen = false">
+                x-transition:enter="transition ease-out duration-300" x-transition:enter-start="transform scale-95"
+                x-transition:enter-end="transform scale-100" x-transition:leave="transition ease-in duration-200"
+                x-transition:leave-start="transform scale-100" x-transition:leave-end="transform scale-95">
+                <button class="absolute top-4 left-4 text-gray-600 hover:text-gray-800" @click="searchOpen = false"
+                    aria-label="search exit">
                     <i class="fas fa-times text-xl"></i>
                 </button>
                 <h3 class="text-2xl font-bold text-gray-900 mb-4 text-center">ابحث في الموقع</h3>
@@ -125,7 +129,8 @@
                     </div>
                     <div class="text-center">
                         <button type="submit"
-                            class="px-6 py-3 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition-all duration-300">
+                            class="px-6 py-3 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition-all duration-300"
+                            aria-label="search submit">
                             ابحث الآن
                         </button>
                     </div>
@@ -136,31 +141,37 @@
         <!-- Mobile Menu -->
         <div class="mobile-menu fixed top-0 right-0 h-full w-64 bg-gray-900 text-white p-6 md:hidden z-50"
             x-show="menuOpen" x-bind:class="{ 'open': menuOpen }">
-            <button class="absolute top-4 left-4" @click="menuOpen = false">
+            <button class="absolute top-4 left-4" @click="menuOpen = false" aria-label="menu exit">
                 <i class="fas fa-times text-2xl"></i>
             </button>
             <nav class="mt-12 space-y-4">
                 <a href="{{ route('home') }}"
                     class="block hover:text-gray-300 {{ request()->is('/') ? 'font-bold border-r-2 border-white' : '' }}"
-                    wire:navigate>الرئيسية</a>
-                <a href="{{ route('about') }}" class="block hover:text-gray-300" wire:navigate>نبذة عنا</a>
-                <a href="{{ route('services') }}" class="block hover:text-gray-300" wire:navigate>خدماتنا</a>
+                    wire:navigate aria-label="home">الرئيسية</a>
+                <a href="{{ route('about') }}" class="block hover:text-gray-300" wire:navigate
+                    aria-label="about">نبذة عنا</a>
+                <a href="{{ route('services') }}" class="block hover:text-gray-300" wire:navigate
+                    aria-label="services">خدماتنا</a>
                 <div x-data="{ open: false }">
-                    <button @click="open = !open" class="block hover:text-gray-300 flex justify-between w-full">
+                    <button @click="open = !open" class="block hover:text-gray-300 flex justify-between w-full"
+                        aria-label="project open">
                         المشاريع
                         <i class="fas fa-chevron-down"></i>
                     </button>
                     <div x-show="open" class="pr-4 space-y-2">
                         @foreach (\App\Models\ProjectCategory::all() as $item)
-                            <a href="{{ route('projects', $item) }}" class="block hover:text-gray-300"
-                                wire:navigate>{{ $item->name }}</a>
+                            <a href="{{ route('projects', $item) }}" class="block hover:text-gray-300" wire:navigate
+                                aria-label="project {{ $item->name }}">{{ $item->name }}</a>
                         @endforeach
                     </div>
                 </div>
-                <a href="{{ route('register-interest') }}" class="block hover:text-gray-300" wire:navigate>سجل
+                <a href="{{ route('register-interest') }}" class="block hover:text-gray-300" wire:navigate
+                    aria-label="register interest">سجل
                     اهتمامك</a>
-                <a href="{{ route('blogs.index') }}" class="block hover:text-gray-300" wire:navigate>الأخبار</a>
-                <a href="{{ route('contact') }}" class="block hover:text-gray-300" wire:navigate>تواصل معنا</a>
+                <a href="{{ route('blogs.index') }}" class="block hover:text-gray-300" wire:navigate
+                    aria-label="blogs">الأخبار</a>
+                <a href="{{ route('contact') }}" class="block hover:text-gray-300" wire:navigate
+                    aria-label="contact">تواصل معنا</a>
             </nav>
         </div>
 
@@ -188,21 +199,23 @@
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <ul class="space-y-2">
-                                <li><a href="{{ route('home') }}" class="hover:text-gray-300"
-                                        wire:navigate>الرئيسية</a></li>
-                                <li><a href="{{ route('about') }}" class="hover:text-gray-300" wire:navigate>نبذة
+                                <li><a href="{{ route('home') }}" class="hover:text-gray-300" wire:navigate
+                                        aria-label="home">الرئيسية</a></li>
+                                <li><a href="{{ route('about') }}" class="hover:text-gray-300" wire:navigate
+                                        aria-label="about">نبذة
                                         عنا</a></li>
-                                <li><a href="{{ route('services') }}" class="hover:text-gray-300"
-                                        wire:navigate>خدماتنا</a></li>
+                                <li><a href="{{ route('services') }}" class="hover:text-gray-300" wire:navigate
+                                        aria-label="services">خدماتنا</a></li>
                             </ul>
                         </div>
                         <div>
                             <ul class="space-y-2">
                                 <li><a href="{{ route('register-interest') }}" class="hover:text-gray-300"
-                                        wire:navigate>سجل اهتمامك</a></li>
-                                <li><a href="{{ route('blogs.index') }}" class="hover:text-gray-300"
-                                        wire:navigate>الأخبار</a></li>
-                                <li><a href="{{ route('contact') }}" class="hover:text-gray-300" wire:navigate>تواصل
+                                        wire:navigate aria-label="register interest">سجل اهتمامك</a></li>
+                                <li><a href="{{ route('blogs.index') }}" class="hover:text-gray-300" wire:navigate
+                                        aria-label="blogs">الأخبار</a></li>
+                                <li><a href="{{ route('contact') }}" class="hover:text-gray-300" wire:navigate
+                                        aria-label="contact">تواصل
                                         معنا</a></li>
                             </ul>
                         </div>
@@ -213,15 +226,18 @@
                 <div>
                     <h3 class="text-xl font-bold mb-4">النشرة البريدية</h3>
                     <p class="text-gray-300 mb-4">اشترك في نشرتنا البريدية للحصول على آخر الأخبار والعروض.</p>
-                    <form id="newsletter-form" action="{{ route('newsletter.subscribe') }}" method="POST" class="space-y-4">
+                    <form id="newsletter-form" action="{{ route('newsletter.subscribe') }}" method="POST"
+                        class="space-y-4">
                         @csrf
                         <div class="relative">
                             <input type="text" name="mobile" id="mobile" placeholder="أدخل رقم هاتفك "
                                 class="w-full p-3 pr-10 border border-gray-600 rounded-lg bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-orange-500">
-                            <i class="fas fa-phone absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                            <i
+                                class="fas fa-phone absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         </div>
                         <button type="submit"
-                            class="w-full p-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-all duration-300">
+                            class="w-full p-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-all duration-300"
+                            aria-label="newsletter">
                             اشترك الآن
                         </button>
                     </form>
@@ -236,10 +252,14 @@
                         <li><i class="fas fa-map-marker-alt mr-2"></i> الرياض، المملكة العربية السعودية</li>
                     </ul>
                     <div class="mt-4 flex space-x-4 space-x-reverse">
-                        <a href="#" class="hover:text-gray-300"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="hover:text-gray-300"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="hover:text-gray-300"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="hover:text-gray-300"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="hover:text-gray-300" aria-label="facebook"><i
+                                class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="hover:text-gray-300" aria-label="twitter"><i
+                                class="fab fa-twitter"></i></a>
+                        <a href="#" class="hover:text-gray-300" aria-label="instagram"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="#" class="hover:text-gray-300" aria-label="linkedin"><i
+                                class="fab fa-linkedin-in"></i></a>
                     </div>
                 </div>
             </div>
@@ -271,13 +291,13 @@
         });
 
         // Newsletter Form Submission with AJAX
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#newsletter-form').ajaxForm({
-                beforeSubmit: function () {
+                beforeSubmit: function() {
                     // Disable button to prevent multiple submissions
                     $('#newsletter-form button').prop('disabled', true).text('جارٍ الإرسال...');
                 },
-                success: function (response) {
+                success: function(response) {
                     $('#newsletter-form button').prop('disabled', false).text('اشترك الآن');
                     new Noty({
                         type: response.success ? 'success' : 'error',
@@ -288,7 +308,7 @@
                         $('#newsletter-form')[0].reset();
                     }
                 },
-                error: function (response) {
+                error: function(response) {
                     $('#newsletter-form button').prop('disabled', false).text('اشترك الآن');
                     new Noty({
                         type: 'error',
@@ -300,4 +320,5 @@
         });
     </script>
 </body>
+
 </html>

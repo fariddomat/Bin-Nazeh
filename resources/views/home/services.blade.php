@@ -1,17 +1,37 @@
 <x-site-layout>
     <!-- Hero Section (Parallax) -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="relative h-[75vh] overflow-hidden opacity-0 translate-y-10"
-        data-parallax>
+        class="relative h-[95vh] overflow-hidden opacity-0 translate-y-10" data-parallax>
         <div class="absolute inset-0 bg-cover bg-center parallax-bg"
-            style="background-image: url('{{ asset('images/services-hero.jpg') }}')">
+            style="background-image: url('{{ asset('images/sections/Register interest hero.jpg') }}')">
             <!-- Dark Overlay with Gradient -->
             <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
             <!-- Centered Title -->
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
-                <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">خدماتنا</h1>
-                <p class="text-lg md:text-xl mt-4 animate-slide-in-up">حلول عقارية مبتكرة لتلبية تطلعاتكم</p>
+            <div x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+                class="mt-32 py-16 opacity-0 translate-y-10">
+                <div class="container">
+                    <div class="relative max-w-3xl mx-auto border-2 border-orange-500 rounded-lg p-8 shadow-lg">
+                        <!-- Decorative Icon -->
+                        <i
+                            class="fas fa-building text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 px-4"></i>
+                        <div class="text-center text-white">
+                            <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">خدماتنا</h1>
+                            <p class="text-lg md:text-xl mt-4 animate-slide-in-up">حلول عقارية مبتكرة لتلبية تطلعاتكم
+                            </p>
+                        </div>
+                        <!-- Centered Button with Pulse -->
+                        <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
+                            class="mt-8 text-center opacity-0 scale-95">
+                            <a href="#mission"
+                                class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
+                                استكشف المزيد
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
         </div>
     </section>
 
@@ -22,8 +42,7 @@
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">خدماتنا المميزة</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <!-- Text -->
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')"
-                    class="opacity-0 translate-x-10">
+                <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')" class="opacity-0 translate-x-10">
                     <h3 class="text-2xl font-bold text-orange-500 mb-4">نقدم التميز في كل خدمة</h3>
                     <p class="text-gray-600 text-lg leading-relaxed">
                         في بن نازح، نقدم مجموعة شاملة من الخدمات العقارية التي تجمع بين الابتكار، الجودة، والاستدامة.
@@ -34,35 +53,13 @@
                 <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
                     class="opacity-0 -translate-x-10 relative p-4">
                     <div class="gold-border"></div>
-                    <img src="{{ asset('images/services-intro.jpg') }}" alt="Services Introduction" class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
+                    <img src="{{ asset('images/services-intro.jpg') }}" alt="Services Introduction"
+                        class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Who We Are Section (Enhanced Design) -->
-    <section id="who-we-are" x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="bg-gradient-to-r from-gray-50 to-white py-16 opacity-0 translate-y-10">
-        <div class="container">
-            <div class="relative max-w-3xl mx-auto border-2 border-orange-500 rounded-lg p-8 shadow-lg">
-                <!-- Decorative Icon -->
-                <i class="fas fa-building text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 bg-white px-4"></i>
-                <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mt-8 mb-6">لماذا نحن</h2>
-                <p class="text-gray-600 text-lg leading-relaxed text-center">
-                    بن نازح هي شركة رائدة في التطوير العقاري، تأسست لتقديم حلول مبتكرة ومستدامة تلبي تطلعات عملائنا.
-                    مع فريق من الخبراء، نحن ملتزمون بالجودة والتصميم العصري، نسعى للتميز ورضا العملاء.
-                </p>
-                <!-- Centered Button with Pulse -->
-                <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
-                    class="mt-8 text-center opacity-0 scale-95">
-                    <a href="#mission"
-                        class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
-                        استكشف المزيد
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Services Grid Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
@@ -77,7 +74,8 @@
                         <i class="{{ $service->icon ?? 'fas fa-cog' }} text-4xl text-orange-500 mb-4"></i>
                         <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $service->name }}</h3>
                         <p class="text-gray-600 mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($service->description), 100) !!}</p>
-                        <a href="{{ route('services.show', $service->slug) }}" class="text-blue-600 hover:underline">عرض المزيد</a>
+                        <a href="{{ route('services.show', $service->slug) }}" class="text-blue-600 hover:underline">عرض
+                            المزيد</a>
                     </div>
                 @endforeach
             </div>
@@ -92,39 +90,89 @@
     <!-- Custom Animations and Styles -->
     <style>
         @keyframes text-slide-in {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes slide-in-right {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         @keyframes slide-in-left {
-            from { transform: translateX(-100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         @keyframes fade-in-slide-up {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes fade-in-scale {
-            from { transform: scale(0.95); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         @keyframes slide-in-up {
-            from { transform: translateY(10px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         @keyframes pulse-once {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         .animate-text-slide-in {
@@ -254,11 +302,14 @@
 
         /* Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
-            .animate-section, .animate-item {
+
+            .animate-section,
+            .animate-item {
                 animation: none !important;
                 transform: none !important;
                 opacity: 1 !important;
             }
+
             .service-card:hover {
                 transform: none !important;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
@@ -269,18 +320,27 @@
     <!-- Alpine.js and Parallax Script -->
     <script>
         document.addEventListener('alpine:init', () => {
-            Alpine.directive('intersect', (el, { value, expression }, { evaluate, cleanup }) => {
+            Alpine.directive('intersect', (el, {
+                value,
+                expression
+            }, {
+                evaluate,
+                cleanup
+            }) => {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            const delay = parseInt(el.getAttribute('x-intersect:delay') || '0', 10);
+                            const delay = parseInt(el.getAttribute('x-intersect:delay') ||
+                                '0', 10);
                             setTimeout(() => {
                                 evaluate(expression);
                             }, delay);
                             observer.unobserve(el);
                         }
                     });
-                }, { threshold: 0.1 });
+                }, {
+                    threshold: 0.1
+                });
                 observer.observe(el);
                 cleanup(() => observer.disconnect());
             });

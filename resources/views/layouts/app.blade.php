@@ -19,8 +19,10 @@
     <script src="{{ asset('noty/noty.min.js') }}" defer></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -177,6 +179,12 @@
                         <x-responsive-nav-link href="{{ route('dashboard.reviews.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.reviews.')">
                             @lang('site.reviews') <i class="fas fa-star"></i>
                         </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('dashboard.facilities.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.facilities.')">
+                            @lang('site.facilities') <i class="fas fa-wrench"></i>
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('dashboard.social_media.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.social_media.')">
+                            @lang('site.social_media') <i class="fab fa-google"></i>
+                        </x-responsive-nav-link>
                     </div>
                 </details>
 
@@ -185,7 +193,7 @@
                     $isCommActive = Str::startsWith(request()->route()->getName(), [
                         'dashboard.news_letters.',
                         'dashboard.careers.',
-                        'dashboard.contact_uses.'
+                        'dashboard.contact_uses.',
                     ]);
                 @endphp
                 <details class="group" {{ $isCommActive ? 'open' : '' }}>
@@ -200,7 +208,7 @@
                         <x-responsive-nav-link href="{{ route('dashboard.careers.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.careers.')">
                             @lang('site.careers') <i class="fas fa-briefcase"></i>
                         </x-responsive-nav-link>
-                         <x-responsive-nav-link href="{{ route('dashboard.contact_uses.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.contact_uses.')">
+                        <x-responsive-nav-link href="{{ route('dashboard.contact_uses.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.contact_uses.')">
                             @lang('site.contact_us') <i class="fas fa-address-book"></i>
                         </x-responsive-nav-link>
                     </div>
@@ -230,9 +238,7 @@
 
                 <!-- Pages Group -->
                 @php
-                    $isPagesActive = Str::startsWith(request()->route()->getName(), [
-                        'dashboard.terms.',
-                    ]);
+                    $isPagesActive = Str::startsWith(request()->route()->getName(), ['dashboard.terms.']);
                 @endphp
                 <details class="group" {{ $isPagesActive ? 'open' : '' }}>
                     <summary
