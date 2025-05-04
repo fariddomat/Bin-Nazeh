@@ -7,6 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('logo/bin nazeh 5.png') }}">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="{{ $metaTitle ?? config('app.name', 'Bin Nazeh') }}">
+    <meta property="og:description"
+        content="{{ $metaDescription ?? 'بن نازح - شركة رائدة في التطوير العقاري تقدم حلولاً مبتكرة ومستدامة في المملكة العربية السعودية.' }}">
+    <meta property="og:image" content="{{ $metaImage ?? asset('logo/bin nazeh 5.png') }}">
+    <meta property="og:url" content="{{ request()->fullUrl() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ config('app.name', 'Bin Nazeh') }}">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $metaTitle ?? config('app.name', 'Bin Nazeh') }}">
+    <meta name="twitter:description"
+        content="{{ $metaDescription ?? 'بن نازح - شركة رائدة في التطوير العقاري تقدم حلولاً مبتكرة ومستدامة في المملكة العربية السعودية.' }}">
+    <meta name="twitter:image" content="{{ $metaImage ?? asset('logo/bin nazeh 5.png') }}">
+
     <title>{{ config('app.name', 'Dashboard') }}</title>
 
     <!-- Fonts -->
@@ -327,33 +346,34 @@
     </script>
 
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script  type="text/javascript">
+    <script type="text/javascript">
         var imageGalleryBrowseUrl = "{{ route('dashboard.imageGallery.browser') }}";
         var imageGalleryUploadUrl = "{{ route('dashboard.imageGallery.uploader') }}";
         $(function() {
-    $("textarea").each(function(index) {
-        // Skip if the textarea is invalid or hidden (e.g., display: none)
-        if (!this || $(this).is(':hidden') || $(this).parents().is(':hidden')) {
-            return true; // Continue to next iteration
-        }
+            $("textarea").each(function(index) {
+                // Skip if the textarea is invalid or hidden (e.g., display: none)
+                if (!this || $(this).is(':hidden') || $(this).parents().is(':hidden')) {
+                    return true; // Continue to next iteration
+                }
 
-        // Assign a unique ID if none exists
-        if (!this.id) {
-            this.id = 'textarea-' + index + '-' + Math.random().toString(36).substr(2, 9); // Unique ID
-        }
+                // Assign a unique ID if none exists
+                if (!this.id) {
+                    this.id = 'textarea-' + index + '-' + Math.random().toString(36).substr(2,
+                    9); // Unique ID
+                }
 
-        // Initialize CKEditor only if not already initialized
-        if (!CKEDITOR.instances[this.id]) {
-            CKEDITOR.replace(this.id, {
-                filebrowserBrowseUrl: imageGalleryBrowseUrl,
-                filebrowserUploadUrl: imageGalleryUploadUrl+"?_token=" +
-                    $("meta[name=csrf-token]").attr("content"),
-                removeButtons: "About",
-                contentsLangDirection: $(this).attr('dir') || 'rtl'
+                // Initialize CKEditor only if not already initialized
+                if (!CKEDITOR.instances[this.id]) {
+                    CKEDITOR.replace(this.id, {
+                        filebrowserBrowseUrl: imageGalleryBrowseUrl,
+                        filebrowserUploadUrl: imageGalleryUploadUrl + "?_token=" +
+                            $("meta[name=csrf-token]").attr("content"),
+                        removeButtons: "About",
+                        contentsLangDirection: $(this).attr('dir') || 'rtl'
+                    });
+                }
             });
-        }
-    });
-});
+        });
     </script>
 
 

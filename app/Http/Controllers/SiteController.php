@@ -17,6 +17,8 @@ use App\Models\About;
 use App\Models\Career;
 use App\Models\Certificate;
 use App\Models\NewsLetter;
+use App\Models\Privacy;
+use App\Models\Term;
 use App\Models\Why;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -115,7 +117,7 @@ class SiteController extends Controller
             ->paginate(9);
         $categories = ProjectCategory::all();
         $category = ProjectCategory::where('id', $category)->first();
-        
+
         return view('home.projects', compact('projects', 'categories', 'category'));
     }
 
@@ -223,6 +225,23 @@ class SiteController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'تم الاشتراك في النشرة البريدية بنجاح!',
+        ]);
+    }
+
+    public function terms()
+    {
+        $term = Term::latest()->first(); // جلب أحدث سجل
+        return view('home.terms', [
+            'content' => $term ? $term->content : 'لم يتم العثور على شروط وأحكام.',
+            'metaDescription' => 'اطلع على شروط وأحكام بن نازح لاستخدام الموقع والخدمات.',
+        ]);
+    }
+    public function privacy()
+    {
+        $privacy = Privacy::latest()->first(); // جلب أحدث سجل
+        return view('home.privacy', [
+            'content' => $privacy ? $privacy->content : 'لم يتم العثور على سياسة خصوصية.',
+            'metaDescription' => 'تعرف على سياسة الخصوصية لبن نازح وكيفية حماية بياناتك.',
         ]);
     }
 }

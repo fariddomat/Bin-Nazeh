@@ -37,6 +37,9 @@ Route::post('/contact-us', [SiteController::class, 'contactStore'])->name('conta
 Route::get('/search',[SiteController::class, 'search'])->name('search');
 Route::post('/newsletter/subscribe', [SiteController::class, 'newsletter'])->name('newsletter.subscribe');
 
+Route::get('/terms', [SiteController::class, 'terms'])->name('terms');
+Route::get('/privacy', [SiteController::class, 'privacy'])->name('privacy');
+
 Route::middleware(['web'])->group(function () {
     Route::view('dashboard', 'dashboard')
         ->middleware(['auth', 'verified'])

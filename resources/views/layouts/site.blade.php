@@ -9,6 +9,25 @@
     <meta name="description"
         content="{{ $metaDescription ?? 'بن نازح - شركة رائدة في التطوير العقاري تقدم حلولاً مبتكرة ومستدامة في المملكة العربية السعودية.' }}">
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('logo/bin nazeh 5.png') }}">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="{{ $metaTitle ?? config('app.name', 'Bin Nazeh') }}">
+    <meta property="og:description"
+        content="{{ $metaDescription ?? 'بن نازح - شركة رائدة في التطوير العقاري تقدم حلولاً مبتكرة ومستدامة في المملكة العربية السعودية.' }}">
+    <meta property="og:image" content="{{ $metaImage ?? asset('logo/bin nazeh 5.png') }}">
+    <meta property="og:url" content="{{ request()->fullUrl() }}">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ config('app.name', 'Bin Nazeh') }}">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $metaTitle ?? config('app.name', 'Bin Nazeh') }}">
+    <meta name="twitter:description"
+        content="{{ $metaDescription ?? 'بن نازح - شركة رائدة في التطوير العقاري تقدم حلولاً مبتكرة ومستدامة في المملكة العربية السعودية.' }}">
+    <meta name="twitter:image" content="{{ $metaImage ?? asset('logo/bin nazeh 5.png') }}">
+
     <title>{{ config('app.name', 'Bin Nazeh') }}</title>
 
     <!-- Fonts -->
@@ -58,28 +77,21 @@
                     <a href="{{ route('services') }}"
                         class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
                         aria-label="service">خدماتنا</a>
-                        <div x-data="{ open: false }" class="relative">
-                            <a href="{{ route('project-categories') }}"
-                               @mouseover="open = true"
-                               @click.away="open = false"
-                               class="nav-link hover:text-gray-200 transition-colors duration-500 flex items-center"
-                               wire:navigate
-                               aria-label="projects"><i class="fas fa-chevron-down mr-1"></i>
-                                المشاريع
+                    <div x-data="{ open: false }" class="relative">
+                        <a href="{{ route('project-categories') }}" @mouseover="open = true" @click.away="open = false"
+                            class="nav-link hover:text-gray-200 transition-colors duration-500 flex items-center"
+                            wire:navigate aria-label="projects"><i class="fas fa-chevron-down mr-1"></i>
+                            المشاريع
 
-                            </a>
-                            <div x-show="open"
-                                 @mouseover="open = true"
-                                 @mouseleave="open = false"
-                                 class="absolute top-full right-0 mt-2 bg-white text-gray-900 rounded-md shadow-lg w-48">
-                                @foreach (\App\Models\ProjectCategory::all() as $item)
-                                    <a href="{{ route('projects', $item) }}"
-                                       class="block px-4 py-2 hover:bg-gray-100"
-                                       wire:navigate
-                                       aria-label="project {{ $item->name }}">{{ $item->name }}</a>
-                                @endforeach
-                            </div>
+                        </a>
+                        <div x-show="open" @mouseover="open = true" @mouseleave="open = false"
+                            class="absolute top-full right-0 mt-2 bg-white text-gray-900 rounded-md shadow-lg w-48">
+                            @foreach (\App\Models\ProjectCategory::all() as $item)
+                                <a href="{{ route('projects', $item) }}" class="block px-4 py-2 hover:bg-gray-100"
+                                    wire:navigate aria-label="project {{ $item->name }}">{{ $item->name }}</a>
+                            @endforeach
                         </div>
+                    </div>
                     <a href="{{ route('register-interest') }}"
                         class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
                         aria-label="regiter interest">سجل
