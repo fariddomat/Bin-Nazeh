@@ -238,7 +238,10 @@
 
                 <!-- Pages Group -->
                 @php
-                    $isPagesActive = Str::startsWith(request()->route()->getName(), ['dashboard.terms.', 'dashboard.privacies.index']);
+                    $isPagesActive = Str::startsWith(request()->route()->getName(), [
+                        'dashboard.terms.',
+                        'dashboard.privacies.index',
+                    ]);
                 @endphp
                 <details class="group" {{ $isPagesActive ? 'open' : '' }}>
                     <summary
@@ -321,6 +324,36 @@
                 window.location.href = url;
             });
         });
+    </script>
+
+    <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
+    <script  type="text/javascript">
+        var imageGalleryBrowseUrl = "{{ route('dashboard.imageGallery.browser') }}";
+        var imageGalleryUploadUrl = "{{ route('dashboard.imageGallery.uploader') }}";
+        $(function() {
+    $("textarea").each(function(index) {
+        // Skip if the textarea is invalid or hidden (e.g., display: none)
+        if (!this || $(this).is(':hidden') || $(this).parents().is(':hidden')) {
+            return true; // Continue to next iteration
+        }
+
+        // Assign a unique ID if none exists
+        if (!this.id) {
+            this.id = 'textarea-' + index + '-' + Math.random().toString(36).substr(2, 9); // Unique ID
+        }
+
+        // Initialize CKEditor only if not already initialized
+        if (!CKEDITOR.instances[this.id]) {
+            CKEDITOR.replace(this.id, {
+                filebrowserBrowseUrl: imageGalleryBrowseUrl,
+                filebrowserUploadUrl: imageGalleryUploadUrl+"?_token=" +
+                    $("meta[name=csrf-token]").attr("content"),
+                removeButtons: "About",
+                contentsLangDirection: $(this).attr('dir') || 'rtl'
+            });
+        }
+    });
+});
     </script>
 
 

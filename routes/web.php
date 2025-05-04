@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dashboard\BlogCategoryController;
 use App\Http\Controllers\Dashboard\BlogController;
+use App\Http\Controllers\Dashboard\ImageGalleryController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\SiteController;
 use App\Livewire\UserForm;
@@ -106,6 +107,11 @@ Route::prefix('dashboard')
 
         Route::resource('/abouts', \App\Http\Controllers\Dashboard\AboutController::class);
         Route::post('/abouts/{id}/restore', [\App\Http\Controllers\Dashboard\AboutController::class, 'restore'])->name('abouts.restore');
+
+
+        Route::get('/imageGallery/browser', [ImageGalleryController::class, 'browser'])->name('imageGallery.browser');
+        Route::post('/imageGallery/uploader', [ImageGalleryController::class, 'uploader'])->name('imageGallery.uploader');
+
     });
 
 require __DIR__ . '/auth.php';
