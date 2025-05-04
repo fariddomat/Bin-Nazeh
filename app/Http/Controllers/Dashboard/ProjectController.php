@@ -59,7 +59,7 @@ class ProjectController extends Controller
         }
 
         $project = \App\Models\Project::create($validated);
-        
+
         return redirect()->route('dashboard.projects.index')->with('success', 'Project created successfully.');
     }
 
@@ -92,7 +92,7 @@ class ProjectController extends Controller
             'scheme_name' => 'required|string|max:255',
             'floors_count' => 'required|numeric',
             'details' => 'required|string',
-            'img' => 'required|image|max:2048',
+            'img' => 'nullable|image|max:2048',
             'cover_img' => 'nullable|image|max:2048',
             'status' => 'required|in:not_started,pending,done',
             'status_percent' => 'required|numeric',
@@ -115,7 +115,7 @@ class ProjectController extends Controller
         }
 
         $project->update($validated);
-        
+
         return redirect()->route('dashboard.projects.index')->with('success', 'Project updated successfully.');
     }
 

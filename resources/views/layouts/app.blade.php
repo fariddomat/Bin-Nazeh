@@ -238,7 +238,7 @@
 
                 <!-- Pages Group -->
                 @php
-                    $isPagesActive = Str::startsWith(request()->route()->getName(), ['dashboard.terms.']);
+                    $isPagesActive = Str::startsWith(request()->route()->getName(), ['dashboard.terms.', 'dashboard.privacies.index']);
                 @endphp
                 <details class="group" {{ $isPagesActive ? 'open' : '' }}>
                     <summary
@@ -248,6 +248,10 @@
                     <div class="pl-6 space-y-2 py-2">
                         <x-responsive-nav-link href="{{ route('dashboard.terms.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.terms.')">
                             @lang('site.terms') <i class="fas fa-file-contract"></i>
+                        </x-responsive-nav-link>
+
+                        <x-responsive-nav-link href="{{ route('dashboard.privacies.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.privacies.')">
+                            @lang('site.privacy') <i class="fas fa-file"></i>
                         </x-responsive-nav-link>
 
                     </div>

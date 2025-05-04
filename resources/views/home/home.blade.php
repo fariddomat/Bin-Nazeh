@@ -234,7 +234,7 @@
             <!-- Title -->
             <h2 class="text-4xl md:text-5xl font-bold text-white text-center mb-12">آراء العملاء</h2>
             <!-- Reviews Slider -->
-            <div x-data='{
+            <div dir="ltr" x-data='{
                 reviews: @json($reviews, JSON_UNESCAPED_SLASHES),
                 currentIndex: 0,
                 reviewsPerPage: 3,

@@ -53,7 +53,7 @@
                 <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
                     class="opacity-0 -translate-x-10 relative p-4">
                     <div class="gold-border"></div>
-                    <img src="{{ asset('images/services-intro.jpg') }}" alt="Services Introduction"
+                    <img src="{{ asset('images/sections/Register interest section.jpg') }}" alt="Services Introduction"
                         class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
                 </div>
             </div>
@@ -74,7 +74,7 @@
                         <i class="{{ $service->icon ?? 'fas fa-cog' }} text-4xl text-orange-500 mb-4"></i>
                         <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $service->name }}</h3>
                         <p class="text-gray-600 mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($service->description), 100) !!}</p>
-                        <a href="{{ route('services.show', $service->slug) }}" class="text-blue-600 hover:underline">عرض
+                        <a wire:navigate href="{{ route('services.show', $service->slug) }}" class="text-blue-600 hover:underline">عرض
                             المزيد</a>
                     </div>
                 @endforeach

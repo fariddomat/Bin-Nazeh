@@ -1,34 +1,17 @@
 <x-site-layout>
     <!-- Hero Section (Parallax) -->
-    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="relative h-[75vh] overflow-hidden opacity-0 translate-y-10"
-        data-parallax>
-        <div class="absolute inset-0 bg-cover bg-center parallax-bg"
-            style="background-image: url('{{ $blog->image ? asset('images/' . $blog->image) : asset('images/blog-placeholder.jpg') }}')">
-            <!-- Dark Overlay with Gradient -->
-            <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
-            <!-- Centered Title -->
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
-                <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">
-                    {{ $blog->title }}
-                </h1>
-                <p class="text-lg md:text-xl mt-4 animate-slide-in-up">
-                    {{ $blog->created_at->format('Y-m-d') }}
-                </p>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Blog Content Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="bg-white py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
+        class="bg-white opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
         <div class="container">
-            <div class="max-w-3xl mx-auto">
+            <div class="pt-12 pb-12 mx-auto">
                 <!-- Main Image -->
                 <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                     class="relative p-4 mb-8 opacity-0 scale-95">
                     <div class="gold-border"></div>
-                    <img src="{{ $blog->image ? asset('images/' . $blog->image) : asset('images/blog-placeholder.jpg') }}"
+                    <img src="{{ $blog->image ? Storage::url($blog->image) : asset('images/blog-placeholder.jpg') }}"
                         alt="{{ $blog->image_alt ?? $blog->title }}"
                         class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
                 </div>
@@ -54,7 +37,7 @@
                                 <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                                     class="relative p-4 opacity-0 scale-95">
                                     <div class="gold-border"></div>
-                                    <img src="{{ $blog->index_image ? asset('images/' . $blog->index_image) : ($blog->image ? asset('images/' . $blog->image) : asset('images/blog-placeholder.jpg')) }}"
+                                    <img src="{{ $blog->index_image ? Storage::url( $blog->index_image) : ($blog->image ? Storage::url($blog->image) : asset('images/blog-placeholder.jpg')) }}"
                                         alt="{{ $blog->index_image_alt ?? $blog->image_alt ?? $blog->title }}"
                                         class="w-full h-64 object-cover rounded-lg shadow-md relative z-10">
                                 </div>
@@ -113,7 +96,7 @@
                             <!-- Image with Gold Border -->
                             <div class="relative p-4">
                                 <div class="gold-border"></div>
-                                <img src="{{ $relatedBlog->image ? asset('images/' . $relatedBlog->image) : asset('images/blog-placeholder.jpg') }}"
+                                <img src="{{ $relatedBlog->image ? Storage::url('images/' . $relatedBlog->image) : asset('images/blog-placeholder.jpg') }}"
                                     alt="{{ $relatedBlog->image_alt ?? $relatedBlog->title }}"
                                     class="w-full h-64 object-cover rounded-lg relative z-10">
                             </div>
@@ -122,7 +105,7 @@
                                 <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $relatedBlog->title }}</h3>
                                 <p class="text-gray-600 text-sm mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($relatedBlog->introduction), 100) !!}</p>
                                 <p class="text-gray-500 text-sm mb-4">{{ $relatedBlog->created_at->format('Y-m-d') }}</p>
-                                <a href="{{ route('blogs.show', $relatedBlog->slug) }}"
+                                <a wire:navigate href="{{ route('blogs.show', $relatedBlog->slug) }}"
                                     class="text-blue-600 hover:underline">اقرأ المزيد</a>
                             </div>
                         </div>
@@ -146,11 +129,11 @@
             </p>
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                 class="opacity-0 scale-95">
-                <a href="{{ route('blogs.index') }}"
+                <a wire:navigate href="{{ route('blogs.index') }}"
                     class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300 mr-4">
                     تصفح المدونة
                 </a>
-                <a href="{{ route('contact') }}"
+                <a wire:navigate href="{{ route('contact') }}"
                     class="inline-block px-8 py-4 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition-all duration-300">
                     تواصل معنا
                 </a>

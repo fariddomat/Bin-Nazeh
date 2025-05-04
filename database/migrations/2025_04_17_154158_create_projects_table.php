@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('details');
             $table->string('img');
             $table->string('cover_img')->nullable();
+            $table->text('images')->nullable();
             $table->enum('status', ['not_started', 'pending', 'done']);
             $table->integer('status_percent');
             $table->foreignId('project_category_id')->constrained('project_categories')->onDelete('cascade');

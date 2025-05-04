@@ -90,7 +90,7 @@ body {
 /* Header Styles */
 .header {
     transition: all 0.3s ease-in-out;
-    background: #173c4d;
+    background: #000;
     /* Black background */
     color: #ffffff;
     /* White text */
@@ -163,7 +163,7 @@ html[dir="rtl"] .mobile-menu.open {
 
 /* Footer Styles */
 .footer {
-    background: #173c4d;
+    background: #000;
     /* Black background */
     color: #ffffff;
     /* White text */

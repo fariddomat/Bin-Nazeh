@@ -117,4 +117,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
     Route::resource('/social_media', \App\Http\Controllers\Dashboard\SocialMediaController::class);
     Route::post('/social_media/{id}/restore', [\App\Http\Controllers\Dashboard\SocialMediaController::class, 'restore'])->name('social_media.restore');
 });
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
+    Route::resource('/privacies', \App\Http\Controllers\Dashboard\PrivacyController::class);
+    Route::post('/privacies/{id}/restore', [\App\Http\Controllers\Dashboard\PrivacyController::class, 'restore'])->name('privacies.restore');
+});
 

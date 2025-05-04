@@ -1,23 +1,4 @@
 <x-site-layout>
-    <!-- Hero Section (Parallax) -->
-    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="relative h-[75vh] overflow-hidden opacity-0 translate-y-10"
-        data-parallax>
-        <div class="absolute inset-0 bg-cover bg-center parallax-bg"
-            style="background-image: url('{{ $service->img ? asset('images/' . $service->img) : asset('images/service-hero.jpg') }}')">
-            <!-- Dark Gradient Overlay -->
-            <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
-            <!-- Centered Title -->
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
-                <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">
-                    {{ $service->name }}
-                </h1>
-                <p class="text-lg md:text-xl mt-4 animate-slide-in-up">
-                    حلول مبتكرة لتحقيق رؤيتك العقارية
-                </p>
-            </div>
-        </div>
-    </section>
 
     <!-- Service Details Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
@@ -50,7 +31,7 @@
                 <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
                     class="opacity-0 -translate-x-10 relative p-4">
                     <div class="gold-border"></div>
-                    <img src="{{ $service->img ? asset('images/' . $service->img) : asset('images/service-details.jpg') }}"
+                    <img src="{{ $service->img ? Storage::url($service->img) : asset('images/service-details.jpg') }}"
                         alt="{{ $service->name }}"
                         class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
                 </div>

@@ -58,21 +58,28 @@
                     <a href="{{ route('services') }}"
                         class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
                         aria-label="service">خدماتنا</a>
-                    <div x-data="{ open: false }" class="relative">
-                        <button @click="open = !open"
-                            class="nav-link hover:text-gray-200 transition-colors duration-200 flex items-center"
-                            aria-label="projects">
-                            المشاريع
-                            <i class="fas fa-chevron-down mr-1"></i>
-                        </button>
-                        <div x-show="open" @click.away="open = false"
-                            class="absolute top-full right-0 mt-2 bg-white text-gray-900 rounded-md shadow-lg w-48">
-                            @foreach (\App\Models\ProjectCategory::all() as $item)
-                                <a href="{{ route('projects', $item) }}" class="block px-4 py-2 hover:bg-gray-100"
-                                    wire:navigate aria-label="project {{ $item->name }}">{{ $item->name }}</a>
-                            @endforeach
+                        <div x-data="{ open: false }" class="relative">
+                            <a href="{{ route('project-categories') }}"
+                               @mouseover="open = true"
+                               @click.away="open = false"
+                               class="nav-link hover:text-gray-200 transition-colors duration-500 flex items-center"
+                               wire:navigate
+                               aria-label="projects"><i class="fas fa-chevron-down mr-1"></i>
+                                المشاريع
+
+                            </a>
+                            <div x-show="open"
+                                 @mouseover="open = true"
+                                 @mouseleave="open = false"
+                                 class="absolute top-full right-0 mt-2 bg-white text-gray-900 rounded-md shadow-lg w-48">
+                                @foreach (\App\Models\ProjectCategory::all() as $item)
+                                    <a href="{{ route('projects', $item) }}"
+                                       class="block px-4 py-2 hover:bg-gray-100"
+                                       wire:navigate
+                                       aria-label="project {{ $item->name }}">{{ $item->name }}</a>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
                     <a href="{{ route('register-interest') }}"
                         class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
                         aria-label="regiter interest">سجل

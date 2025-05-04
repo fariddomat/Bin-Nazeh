@@ -155,11 +155,11 @@
             </p>
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                 class="opacity-0 scale-95">
-                <a href="{{ route('projects') }}"
+                <a wire:navigate href="{{ route('project-categories') }}"
                     class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300 mr-4">
                     تصفح المشاريع
                 </a>
-                <a href="{{ route('blogs.index') }}"
+                <a wire:navigate href="{{ route('blogs.index') }}"
                     class="inline-block px-8 py-4 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition-all duration-300">
                     زر المدونة
                 </a>

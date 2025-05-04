@@ -27,9 +27,8 @@
                 @enderror
             </div>            <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.icon')</label>
-                <input type="file" name="icon" accept="image/*" class="w-full border border-gray-300 rounded p-2">                @isset($service->icon)
-                    <img src="{{ Storage::url($service->icon) }}" alt="icon" class="mt-2 w-32 h-32 rounded">
-                @endisset                @error('icon')
+                <input type="text" name="icon" value="{{ old('icon', $service->icon) }}" class="w-full border border-gray-300 rounded p-2">
+                         @error('icon')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>            <div class="mb-4">

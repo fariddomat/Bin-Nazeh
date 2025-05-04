@@ -51,14 +51,14 @@
                             class="category-card bg-white rounded-lg shadow-md overflow-hidden text-center opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
                             <div class="relative p-4">
                                 <div class="gold-border"></div>
-                                <img src="{{ $category->img ? asset('images/' . $category->img) : asset('images/default-category.jpg') }}"
+                                <img src="{{ $category->img ? Storage::url($category->img) : asset('images/default-category.jpg') }}"
                                     alt="{{ $category->name }}"
                                     class="w-full h-64 object-cover rounded-lg relative z-10">
                             </div>
                             <div class="p-6">
                                 <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $category->name }}</h3>
                                 <p class="text-gray-600 mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($category->description), 100) !!}</p>
-                                <a href="{{ route('projects', $category->id) }}"
+                                <a wire:navigate href="{{ route('projects', $category->id) }}"
                                     class="text-blue-600 hover:underline">عرض المزيد</a>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
             </p>
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                 class="opacity-0 scale-95">
-                <a href="{{ route('contact') }}"
+                <a  wire:navigate href="{{ route('contact') }}"
                     class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300">
                     تواصل معنا
                 </a>

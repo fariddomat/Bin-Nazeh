@@ -7,12 +7,12 @@
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">مقالاتنا</h2>
             <!-- Category Filter -->
             <div class="mb-8 flex flex-wrap justify-center gap-4">
-                <a href="{{ route('blogs.index') }}"
+                <a wire:navigate href="{{ route('blogs.index') }}"
                     class="px-4 py-2 {{ !$category ? 'bg-orange-500 text-white' : 'bg-white text-black' }} rounded-md hover:bg-orange-500 hover:text-white transition-all duration-300">
                     الكل
                 </a>
                 @foreach ($categories as $cat)
-                    <a href="{{ route('blogs.index', $cat->slug) }}"
+                    <a wire:navigate href="{{ route('blogs.index', $cat->slug) }}"
                         class="px-4 py-2 {{ $category && $category->slug === $cat->slug ? 'bg-orange-500 text-white' : 'bg-white text-black' }} rounded-md hover:bg-orange-500 hover:text-white transition-all duration-300">
                         {{ $cat->name }}
                     </a>
@@ -28,7 +28,7 @@
                             <!-- Image with Gold Border -->
                             <div class="relative p-4">
                                 <div class="gold-border"></div>
-                                <img src="{{ $blog->image ? asset('images/' . $blog->image) : asset('images/blog-placeholder.jpg') }}"
+                                <img src="{{ $blog->image ? Storage::url($blog->image) : asset('images/blog-placeholder.jpg') }}"
                                     alt="{{ $blog->image_alt ?? $blog->title }}"
                                     class="w-full h-64 object-cover rounded-lg relative z-10">
                             </div>
@@ -37,7 +37,7 @@
                                 <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $blog->title }}</h3>
                                 <p class="text-gray-600 text-sm mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($blog->introduction), 100) !!}</p>
                                 <p class="text-gray-500 text-sm mb-4">{{ $blog->created_at->format('Y-m-d') }}</p>
-                                <a href="{{ route('blogs.show', $blog->slug) }}"
+                                <a wire:navigate href="{{ route('blogs.show', $blog->slug) }}"
                                     class="text-blue-600 hover:underline">اقرأ المزيد</a>
                             </div>
                         </div>
@@ -118,7 +118,7 @@
             </p>
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                 class="opacity-0 scale-95">
-                <a href="{{ route('contact') }}"
+                <a wire:navigate href="{{ route('contact') }}"
                     class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300">
                     تواصل معنا
                 </a>

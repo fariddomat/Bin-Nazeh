@@ -26,7 +26,7 @@
                 @enderror
             </div>            <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.icon')</label>
-                <input type="file" name="icon" accept="image/*" class="w-full border border-gray-300 rounded p-2">                @error('icon')
+                <input type="text" value="{{ old('icon') }}" name="icon"class="w-full border border-gray-300 rounded p-2">                @error('icon')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>            <div class="mb-4">

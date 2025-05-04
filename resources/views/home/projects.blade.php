@@ -51,7 +51,7 @@
                             <!-- Image -->
                             <div class="relative p-4">
                                 <div class="gold-border"></div>
-                                <img src="{{ $project->img ? asset('images/' . $project->img) : asset('images/coming-soon.jpg') }}"
+                                <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
                                     alt="{{ $project->name }}"
                                     class="w-full h-64 object-cover rounded-lg relative z-10">
                                 <!-- Status Badge -->
@@ -96,7 +96,7 @@
                                     <li><strong>نسبة الإنجاز:</strong> {{ $project->status_percent ?? 0 }}%</li>
                                 </ul>
                                 <div class="mt-4 text-center">
-                                    <a href="{{ route('projects.show', $project->slug) }}"
+                                    <a  wire:navigate href="{{ route('projects.show', $project->slug) }}"
                                         class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300">
                                         عرض التفاصيل
                                     </a>
@@ -125,7 +125,7 @@
             </p>
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                 class="opacity-0 scale-95">
-                <a href="{{ route('contact') }}"
+                <a  wire:navigate href="{{ route('contact') }}"
                     class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300">
                     تواصل معنا
                 </a>

@@ -1,20 +1,37 @@
 <x-site-layout>
     <!-- Hero Section (Parallax) -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="relative h-[75vh] overflow-hidden opacity-0 translate-y-10"
+        class="relative h-[95vh] overflow-hidden opacity-0 translate-y-10"
         data-parallax>
         <div class="absolute inset-0 bg-cover bg-center parallax-bg"
-            style="background-image: url('{{ $project->cover_img ? asset('images/' . $project->cover_img) : ($project->img ? asset('images/' . $project->img) : asset('images/coming-soon.jpg')) }}')">
+            style="background-image: url('{{ $project->cover_img ? Storage::url($project->cover_img) : ($project->img ? asset('images/' . $project->img) : asset('images/coming-soon.jpg')) }}')">
             <!-- Dark Gradient Overlay -->
             <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
             <!-- Centered Title -->
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white">
-                <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">
-                    {{ $project->name }}
-                </h1>
-                <p class="text-lg md:text-xl mt-4 animate-slide-in-up">
-                    تجربة سكنية فاخرة في قلب {{ $project->address ?? 'الرياض' }}
-                </p>
+            <div x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+                class="mt-32 py-16 opacity-0 translate-y-10">
+                <div class="container">
+                    <div class="relative max-w-3xl mx-auto border-2 border-orange-500 rounded-lg p-8 shadow-lg">
+                        <!-- Decorative Icon -->
+                        <i
+                            class="fas fa-building text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 px-4"></i>
+                        <div class="text-center text-white">
+                            <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">                    {{ $project->name }}
+                            </h1>
+                            <p class="text-lg md:text-xl mt-4 animate-slide-in-up">                    تجربة سكنية فاخرة في قلب {{ $project->address ?? 'الرياض' }}
+
+                            </p>
+                        </div>
+                        <!-- Centered Button with Pulse -->
+                        <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
+                            class="mt-8 text-center opacity-0 scale-95">
+                            <a href="#mission"
+                                class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
+                                استكشف المزيد
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -38,7 +55,7 @@
                 <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
                     class="opacity-0 -translate-x-10 relative p-4">
                     <div class="gold-border"></div>
-                    <img src="{{ $project->img ? asset('images/' . $project->img) : asset('images/coming-soon.jpg') }}"
+                    <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
                         alt="{{ $project->name }}"
                         class="w-full h-96 object-cover rounded-lg relative z-10">
                 </div>
@@ -53,24 +70,24 @@
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">
                 معرض الصور
             </h2>
-            <div x-data="{
+            <div x-data='{
+                slides: @json(json_decode($project->images, true) ?? []),
                 currentSlide: 0,
-                slides: @json($project->images ?? []),
                 zoomedImage: null
-            }" class="relative">
+            }' class="relative">
                 <!-- Slider -->
                 <div class="overflow-hidden">
                     <div class="flex transition-transform duration-500 ease-in-out"
                         :style="'transform: translateX(-' + (currentSlide * 100) + '%)'">
                         @if (!empty($project->images))
-                            {{-- @foreach ($project->images as $image)
+                            @foreach (json_decode($project->images, true) ?? [] as $image)
                                 <div class="w-full flex-shrink-0">
-                                    <img src="{{ asset('images/' . $image) }}"
+                                    <img src="{{ Storage::url($image) }}"
                                         alt="{{ $project->name }} Image"
                                         class="w-full h-96 object-cover rounded-lg cursor-pointer hover:scale-105 transition-transform duration-300"
-                                        @click="zoomedImage = '{{ asset('images/' . $image) }}'">
+                                        @click="zoomedImage = '{{  Storage::url($image) }}'">
                                 </div>
-                            @endforeach --}}
+                            @endforeach
                         @else
                             <div class="w-full flex-shrink-0">
                                 <img src="{{ asset('images/coming-soon.jpg') }}"
@@ -81,7 +98,7 @@
                     </div>
                 </div>
                 <!-- Navigation Buttons -->
-                {{-- @if (!empty($project->images) && count($project->images) > 1)
+                @if (!empty(json_decode($project->images, true) ?? []) && count(json_decode($project->images, true) ?? []) > 1)
                     <button @click="currentSlide = currentSlide > 0 ? currentSlide - 1 : slides.length - 1"
                         class="absolute top-1/2 left-4 transform -translate-y-1/2 bg-orange-500 text-white p-2 rounded-full hover:bg-orange-600">
                         <i class="fas fa-chevron-left"></i>
@@ -90,7 +107,7 @@
                         class="absolute top-1/2 right-4 transform -translate-y-1/2 bg-orange-500 text-white p-2 rounded-full hover:bg-orange-600">
                         <i class="fas fa-chevron-right"></i>
                     </button>
-                @endif --}}
+                @endif
                 <!-- Zoom Modal -->
                 <div x-show="zoomedImage"
                     x-transition:enter="transition ease-out duration-300"
@@ -179,7 +196,7 @@
     </section>
 
     <!-- Apartments Section -->
-    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+    {{-- <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-gray-100 py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">
@@ -206,10 +223,10 @@
                 </div>
             @endif
         </div>
-    </section>
+    </section> --}}
 
     <!-- Extra Section -->
-    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+    {{-- <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-white py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">
@@ -227,7 +244,7 @@
                 @endif
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- Call-to-Action Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
@@ -241,7 +258,7 @@
             </p>
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                 class="opacity-0 scale-95">
-                <a href="{{ route('contact') }}"
+                <a  wire:navigate href="{{ route('contact') }}"
                     class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300">
                     تواصل معنا
                 </a>
