@@ -36,7 +36,7 @@ Route::get('/contact-us', [SiteController::class, 'contact'])->name('contact');
 Route::post('/contact-us', [SiteController::class, 'contactStore'])->name('contact.store');
 Route::get('/search',[SiteController::class, 'search'])->name('search');
 Route::post('/newsletter/subscribe', [SiteController::class, 'newsletter'])->name('newsletter.subscribe');
-
+Route::post('/service-request', [SiteController::class, 'serviceRequest']);
 Route::get('/terms', [SiteController::class, 'terms'])->name('terms');
 Route::get('/privacy', [SiteController::class, 'privacy'])->name('privacy');
 
@@ -133,5 +133,13 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
 Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
     Route::resource('/infos', \App\Http\Controllers\Dashboard\InfoController::class);
     Route::post('/infos/{id}/restore', [\App\Http\Controllers\Dashboard\InfoController::class, 'restore'])->name('infos.restore');
+});
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
+    Route::resource('/steps', \App\Http\Controllers\Dashboard\StepController::class);
+    Route::post('/steps/{id}/restore', [\App\Http\Controllers\Dashboard\StepController::class, 'restore'])->name('steps.restore');
+});
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
+    Route::resource('/orders', \App\Http\Controllers\Dashboard\OrderController::class);
+    Route::post('/orders/{id}/restore', [\App\Http\Controllers\Dashboard\OrderController::class, 'restore'])->name('orders.restore');
 });
 

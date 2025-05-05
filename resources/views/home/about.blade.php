@@ -10,14 +10,14 @@
             <div id="who-we-are" x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')" class="mt-32">
                 <div class="container">
                     @foreach (\App\Models\About::where('name', 'Who We Are')->get() as $about)
-                        <div class="relative max-w-3xl mx-auto border-2 border-orange-500 rounded-lg p-8 shadow-lg">
+                        <div class="relative max-w-4xl mx-auto border-2 border-orange-500 rounded-lg p-8 shadow-lg">
                             <!-- Decorative Icon -->
                             <i
                                 class="{{ $about->icon }} text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 px-4"></i>
                             <h2 class="text-4xl md:text-5xl font-bold text-white text-center mt-8 mb-6">من نحن</h2>
-                            <p class="text-white text-lg leading-relaxed text-center">
-                                {{ $about->discription }}
-                            </p>
+                            <div class="text-white text-lg leading-relaxed text-center">
+                                {!! $about->discription !!}
+                            </div>
                             <!-- Centered Button with Pulse -->
                             <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                                 class="mt-8 text-center opacity-0 scale-95">
@@ -45,9 +45,9 @@
                     <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')"
                         class="opacity-0 translate-x-10">
                         <h3 class="text-2xl font-bold text-orange-500 mb-4">رسالتنا</h3>
-                        <p class="text-gray-600 text-lg leading-relaxed">
-                            {{ $about->discription }}
-                        </p>
+                        <div class="text-gray-600 text-lg leading-relaxed ">
+                                {!! $about->discription !!}
+                            </div>
                     </div>
                     <!-- Image with Gold Border -->
                     <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
@@ -66,8 +66,8 @@
         class="bg-white py-16 opacity-0 translate-y-10">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">قيمنا وأهدافنا</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach (\App\Models\About::whereIn('name', ['Vision', 'Success Standards', 'Values'])->orderBy('sort_id')->get() as $about)
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @foreach (\App\Models\About::whereIn('name', ['Vision', 'Values'])->orderBy('sort_id')->get() as $about)
                     <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                         x-intersect:delay="{{ $loop->index * 200 }}"
                         class="value-card bg-white rounded-lg shadow-md p-6 text-center opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
@@ -75,9 +75,9 @@
                         <h3 class="text-xl font-bold text-gray-900 mb-2">
                             {{ $about->name == 'Vision' ? 'رؤيتنا' : ($about->name == 'Success Standards' ? 'معايير النجاح' : 'قيمنا') }}
                         </h3>
-                        <p class="text-gray-600">
-                            {{ $about->discription }}
-                        </p>
+                        <div class="text-gray-600">
+                            {!! $about->discription !!}
+                        </div>
                     </div>
                 @endforeach
             </div>
@@ -102,9 +102,9 @@
                     <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
                         class="opacity-0 -translate-x-10">
                         <h3 class="text-2xl font-bold text-orange-500 mb-4">بيئة عمل محفزة</h3>
-                        <p class="text-gray-600 text-lg leading-relaxed">
-                            {{ $about->discription }}
-                        </p>
+                        <div class="text-gray-600 text-lg leading-relaxed">
+                                {!! $about->discription !!}
+                            </div>
                     </div>
                 </div>
             @endforeach
@@ -117,9 +117,9 @@
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">المسؤولية المجتمعية</h2>
             @foreach (\App\Models\About::where('name', 'Social Responsibility')->get() as $about)
-                <p class="text-gray-600 text-lg leading-relaxed max-w-3xl mx-auto">
-                    {{ $about->discription }}
-                </p>
+                <div class="text-gray-600 text-lg leading-relaxed max-w-3xl mx-auto">
+                    {!! $about->discription !!}
+                </div>
             @endforeach
         </div>
     </section>

@@ -5,8 +5,6 @@ namespace App\Exceptions;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
-
 class Handler extends ExceptionHandler
 {
     /**
@@ -25,26 +23,8 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->renderable(function (Throwable $e, $request) {
-            if ($request->is('api/*')) {
-                return response()->json([
-                    'message' => $e->getMessage() ?: 'An error occurred.',
-                ], $e instanceof HttpException ? $e->getStatusCode() : 500);
-            }
-
-            if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException) {
-                return response()->view('errors.404', [], 404);
-            }
-
-            if ($e instanceof \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException) {
-                return response()->view('errors.403', [], 403);
-            }
-
-            if ($this->isHttpException($e)) {
-                return $this->renderHttpException($e);
-            }
-
-            return response()->view('errors.500', [], 500);
+        $this->reportable(function (Throwable $e) {
+            //
         });
     }
 }

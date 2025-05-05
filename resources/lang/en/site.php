@@ -156,6 +156,8 @@ return [
     'reviews'=>'Reviews',
     'facilities'=>'Facilities',
     'social_media'=>'Social Media',
+    'steps'=>'Steps',
+    'project_type'=>'Project Type',
 
 
 ];

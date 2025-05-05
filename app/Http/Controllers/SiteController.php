@@ -17,7 +17,9 @@ use App\Models\About;
 use App\Models\Career;
 use App\Models\Certificate;
 use App\Models\NewsLetter;
+use App\Models\Order;
 use App\Models\Privacy;
+use App\Models\Step;
 use App\Models\Term;
 use App\Models\Why;
 use Illuminate\Http\Request;
@@ -38,6 +40,11 @@ class SiteController extends Controller
             $blogs = Blog::where('show_at_home', true)->take(3)->get();
             $projects = Project::where('status', 'done')->take(3)->get();
             $services = Service::take(5)->get();
+            $steps = Step::get()->map(fn($step) => [
+                'icon' => $step->icon ?? '',
+                'name' => $step->name ?? 'مجهول',
+                'description' =>  strip_tags($step->description) ?? 'بدون وصف'
+            ]);
             $counters = Counter::all();
             $partners = Partner::all();
             $facilities = Facility::take(6)->get();
@@ -48,7 +55,7 @@ class SiteController extends Controller
                 'description' => $review->description ?? 'بدون وصف'
             ]);
 
-            return view('home.home', compact('sliders', 'blogs', 'services', 'projects', 'counters', 'partners', 'reviews', 'facilities'));
+            return view('home.home', compact('sliders', 'blogs', 'steps', 'services', 'projects', 'counters', 'partners', 'reviews', 'facilities'));
         } catch (\Exception $e) {
             \Log::error('HomeController Error: ' . $e->getMessage() . ' | File: ' . $e->getFile() . ' | Line: ' . $e->getLine());
             return response('Internal Server Error', 500);
@@ -226,6 +233,27 @@ class SiteController extends Controller
             'success' => true,
             'message' => 'تم الاشتراك في النشرة البريدية بنجاح!',
         ]);
+    }
+
+
+    public function serviceRequest(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'service_id' => 'required|exists:services,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:255',
+            'project_type' => 'required|string|max:255',
+            'message' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $order = Order::create($request->all());
+
+        return response()->json(['message' => 'Order created successfully', 'order' => $order], 201);
     }
 
     public function terms()

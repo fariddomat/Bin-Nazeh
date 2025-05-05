@@ -16,11 +16,8 @@
                 <p class="text-gray-900">{{ $service->description ?? '—' }}</p>
             </div>            <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.icon')</label>
-                @isset($service->icon)
-                    <img src="{{ Storage::url($service->icon) }}" alt="icon" class="mt-2 w-48 h-48 rounded">
-                @else
-                    <p class="text-gray-900">—</p>
-                @endisset
+                <p class="text-gray-900">{{ $service->icon ?? '—' }}</p>
+
             </div>            <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.img')</label>
                 @isset($service->img)

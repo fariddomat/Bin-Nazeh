@@ -15,12 +15,12 @@
                         {{ $service->name }}
                     </h3>
                     <p class="text-gray-600 text-lg leading-relaxed mb-4">
-                        {!! nl2br(e($service->description)) !!}
+                        {!! $service->description !!}
                     </p>
                     @if (!empty($service->features))
                         <ul class="text-gray-600 text-lg space-y-2">
                             @foreach ($service->features as $feature)
-                                <li><i class="fas fa-check-circle text-orange-500 mr-2"></i> {{ $feature }}</li>
+                                <li><i class="fas fa-check-circle text-orange-500 mr-2"></i> {!! $feature !!}</li>
                             @endforeach
                         </ul>
                     @else
@@ -39,110 +39,120 @@
         </div>
     </section>
 
-    <!-- Order Service Form Section -->
-    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="bg-white py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
-        <div class="container">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">
-                اطلب الخدمة الآن
-            </h2>
-            <div class="max-w-2xl mx-auto relative border-2 border-gradient-gold rounded-lg p-8 shadow-lg">
-                <!-- Form -->
-                <div x-data="{ form: { name: '', email: '', phone: '', project_type: '{{ $service->slug }}', message: '', service_id: '{{ $service->id }}' }, submitted: false, errors: {} }"
-                    @submit.prevent="
-                        errors = {};
-                        if (!form.name) errors.name = 'الاسم مطلوب';
-                        if (!form.email || !form.email.includes('@')) errors.email = 'البريد الإلكتروني غير صالح';
-                        if (!form.phone) errors.phone = 'رقم الهاتف مطلوب';
-                        if (!form.project_type) errors.project_type = 'نوع المشروع مطلوب';
-                        if (!form.message) errors.message = 'الرسالة مطلوبة';
-                        if (Object.keys(errors).length === 0) {
-                            // Simulate form submission (replace with actual fetch to backend)
-                            fetch('/api/service-request', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify(form)
-                            }).then(response => {
-                                if (response.ok) {
-                                    submitted = true;
-                                    form = { name: '', email: '', phone: '', project_type: '{{ $service->slug }}', message: '', service_id: '{{ $service->id }}' };
-                                } else {
-                                    errors.submit = 'حدث خطأ أثناء الإرسال';
-                                }
-                            });
-                        }
-                    ">
-                    <form class="space-y-6 p-3">
-                        <!-- Hidden Service ID -->
-                        <input type="hidden" x-model="form.service_id">
-                        <!-- Name -->
-                        <div>
-                            <label for="name" class="block text-gray-900 font-semibold mb-2">الاسم</label>
-                            <input id="name" type="text" x-model="form.name"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
-                                :class="{ 'border-red-500': errors.name }">
-                            <p x-show="errors.name" class="text-red-500 text-sm mt-1" x-text="errors.name"></p>
-                        </div>
-                        <!-- Email -->
-                        <div>
-                            <label for="email" class="block text-gray-900 font-semibold mb-2">البريد الإلكتروني</label>
-                            <input id="email" type="email" x-model="form.email"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
-                                :class="{ 'border-red-500': errors.email }">
-                            <p x-show="errors.email" class="text-red-500 text-sm mt-1" x-text="errors.email"></p>
-                        </div>
-                        <!-- Phone -->
-                        <div>
-                            <label for="phone" class="block text-gray-900 font-semibold mb-2">رقم الهاتف</label>
-                            <input id="phone" type="tel" x-model="form.phone"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
-                                :class="{ 'border-red-500': errors.phone }">
-                            <p x-show="errors.phone" class="text-red-500 text-sm mt-1" x-text="errors.phone"></p>
-                        </div>
-                        <!-- Project Type -->
-                        <div>
-                            <label for="project_type" class="block text-gray-900 font-semibold mb-2">نوع المشروع</label>
-                            <select id="project_type" x-model="form.project_type"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
-                                :class="{ 'border-red-500': errors.project_type }">
-                                <option value="">اختر نوع المشروع</option>
-                                <option value="{{ $service->slug }}" selected>{{ $service->name }}</option>
-                                <option value="residential">سكني</option>
-                                <option value="commercial">تجاري</option>
-                                <option value="industrial">صناعي</option>
-                            </select>
-                            <p x-show="errors.project_type" class="text-red-500 text-sm mt-1" x-text="errors.project_type"></p>
-                        </div>
-                        <!-- Message -->
-                        <div>
-                            <label for="message" class="block text-gray-900 font-semibold mb-2">رسالتك</label>
-                            <textarea id="message" x-model="form.message" rows="5"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
-                                :class="{ 'border-red-500': errors.message }"></textarea>
-                            <p x-show="errors.message" class="text-red-500 text-sm mt-1" x-text="errors.message"></p>
-                        </div>
-                        <!-- Submit Button -->
-                        <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
-                            class="text-center opacity-0 scale-95">
-                            <button type="submit"
-                                class="px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300">
-                                إرسال الطلب
-                            </button>
-                        </div>
-                    </form>
-                    <!-- Success Message -->
-                    <div x-show="submitted" x-transition:enter="transition ease-out duration-300"
-                        x-transition:enter-start="opacity-0 translate-y-4"
-                        x-transition:enter-end="opacity-100 translate-y-0"
-                        class="mt-6 text-center text-green-600 font-semibold">
-                        تم إرسال طلبك بنجاح! سنتواصل معك قريبًا.
-                    </div>
-                    <!-- Error Message -->
-                    <div x-show="errors.submit" class="mt-6 text-center text-red-500 font-semibold" x-text="errors.submit"></div>
-                </div>
-            </div>
-        </div>
-    </section>
+     <!-- Order Service Form Section -->
+     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+     class="bg-white py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
+     <div class="container">
+         <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">
+             اطلب الخدمة الآن
+         </h2>
+         <div class="max-w-2xl mx-auto relative border-2 border-gradient-gold rounded-lg p-8 shadow-lg">
+             <!-- Form -->
+             <div x-data="{
+                 form: { name: '', email: '', phone: '', project_type: '{{ $service->slug }}', message: '', service_id: '{{ $service->id }}' },
+                 submitted: false,
+                 errors: {}
+             }" @submit.prevent="
+                 errors = {};
+                 if (!form.name) errors.name = 'الاسم مطلوب';
+                 if (!form.email || !form.email.includes('@')) errors.email = 'البريد الإلكتروني غير صالح';
+                 if (!form.phone) errors.phone = 'رقم الهاتف مطلوب';
+                 if (!form.project_type) errors.project_type = 'نوع المشروع مطلوب';
+                 if (!form.message) errors.message = 'الرسالة مطلوبة';
+                 if (Object.keys(errors).length === 0) {
+                     fetch('/api/service-request', {
+                         method: 'POST',
+                         headers: { 'Content-Type': 'application/json' },
+                         body: JSON.stringify(form)
+                     }).then(response => {
+                         if (response.ok) {
+                             submitted = true;
+                             form = { name: '', email: '', phone: '', project_type: '{{ $service->slug }}', message: '', service_id: '{{ $service->id }}' };
+                         } else {
+                             return response.json().then(data => {
+                                 if (data.errors) {
+                                     errors = { ...errors, ...data.errors };
+                                 } else {
+                                     errors.submit = 'حدث خطأ أثناء الإرسال';
+                                 }
+                             });
+                         }
+                     }).catch(() => {
+                         errors.submit = 'حدث خطأ في الاتصال بالخادم';
+                     });
+                 }
+             ">
+                 <form class="space-y-6 p-3">
+                     <!-- Hidden Service ID -->
+                     <input type="hidden" x-model="form.service_id">
+                     <!-- Name -->
+                     <div>
+                         <label for="name" class="block text-gray-900 font-semibold mb-2">الاسم</label>
+                         <input id="name" type="text" x-model="form.name"
+                             class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                             :class="{ 'border-red-500': errors.name }">
+                         <p x-show="errors.name" class="text-red-500 text-sm mt-1" x-text="errors.name"></p>
+                     </div>
+                     <!-- Email -->
+                     <div>
+                         <label for="email" class="block text-gray-900 font-semibold mb-2">البريد الإلكتروني</label>
+                         <input id="email" type="email" x-model="form.email"
+                             class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                             :class="{ 'border-red-500': errors.email }">
+                         <p x-show="errors.email" class="text-red-500 text-sm mt-1" x-text="errors.email"></p>
+                     </div>
+                     <!-- Phone -->
+                     <div>
+                         <label for="phone" class="block text-gray-900 font-semibold mb-2">رقم الهاتف</label>
+                         <input id="phone" type="tel" x-model="form.phone"
+                             class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                             :class="{ 'border-red-500': errors.phone }">
+                         <p x-show="errors.phone" class="text-red-500 text-sm mt-1" x-text="errors.phone"></p>
+                     </div>
+                     <!-- Project Type -->
+                     <div>
+                         <label for="project_type" class="block text-gray-900 font-semibold mb-2">نوع المشروع</label>
+                         <select id="project_type" x-model="form.project_type"
+                             class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                             :class="{ 'border-red-500': errors.project_type }">
+                             <option value="">اختر نوع المشروع</option>
+                             <option value="{{ $service->slug }}" selected>{{ $service->name }}</option>
+                             <option value="residential">سكني</option>
+                             <option value="commercial">تجاري</option>
+                             <option value="industrial">صناعي</option>
+                         </select>
+                         <p x-show="errors.project_type" class="text-red-500 text-sm mt-1" x-text="errors.project_type"></p>
+                     </div>
+                     <!-- Message -->
+                     <div>
+                         <label for="message" class="block text-gray-900 font-semibold mb-2">رسالتك</label>
+                         <textarea id="message" x-model="form.message" rows="5"
+                             class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
+                             :class="{ 'border-red-500': errors.message }"></textarea>
+                         <p x-show="errors.message" class="text-red-500 text-sm mt-1" x-text="errors.message"></p>
+                     </div>
+                     <!-- Submit Button -->
+                     <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
+                         class="text-center opacity-0 scale-95">
+                         <button type="submit"
+                             class="px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300">
+                             إرسال الطلب
+                         </button>
+                     </div>
+                 </form>
+                 <!-- Success Message -->
+                 <div x-show="submitted" x-transition:enter="transition ease-out duration-300"
+                     x-transition:enter-start="opacity-0 translate-y-4"
+                     x-transition:enter-end="opacity-100 translate-y-0"
+                     class="mt-6 text-center text-green-600 font-semibold">
+                     تم إرسال طلبك بنجاح! سنتواصل معك قريبًا.
+                 </div>
+                 <!-- Error Message -->
+                 <div x-show="errors.submit" class="mt-6 text-center text-red-500 font-semibold" x-text="errors.submit"></div>
+             </div>
+         </div>
+     </div>
+ </section>
 
     <!-- Related Services Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
@@ -157,9 +167,7 @@
                         <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             :x-intersect:delay="{{ $index * 200 }}"
                             class="service-card bg-white rounded-lg shadow-md p-6 text-center opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
-                            <img src="{{ $relatedService->img ? asset('images/' . $relatedService->img) : asset('images/default-service.jpg') }}"
-                                alt="{{ $relatedService->name }}"
-                                class="w-full h-48 object-cover rounded-t-lg mb-4">
+                            <i class="{{ $service->icon ?? 'fas fa-cog' }} text-4xl text-orange-500 mb-4"></i>
                             <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $relatedService->name }}</h3>
                             <p class="text-gray-600 mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($relatedService->description), 100) !!}</p>
                             <a href="{{ route('services.show', $relatedService->slug) }}"

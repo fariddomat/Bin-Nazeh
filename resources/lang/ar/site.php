@@ -275,4 +275,7 @@ return [
     'reviews'=>'التقييمات',
     'facilities'=>'الضمانات',
     'social_media'=>'وسائل التواصل',
+    'steps'=>'خطوات المشاريع',
+    'project_type'=>'نوع المشروع',
+
 ];

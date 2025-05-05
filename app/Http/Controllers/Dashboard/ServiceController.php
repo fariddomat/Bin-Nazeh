@@ -22,7 +22,7 @@ class ServiceController extends Controller
 
     public function create()
     {
-        
+
         return view('dashboard.services.create', compact([],));
     }
 
@@ -32,33 +32,31 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255',
             'description' => 'required|string',
-            'icon' => 'nullable|image|max:2048',
+            'icon' => 'nullable|max:255',
             'img' => 'nullable|image|max:2048'
         ]);
-                if ($request->hasFile('icon')) {
-            $validated['icon'] = $request->file('icon')->store('public/icons');
-        }
+
         if ($request->hasFile('img')) {
             $validated['img'] = $request->file('img')->store('public/imgs');
         }
 
         $service = \App\Models\Service::create($validated);
-        
+
         return redirect()->route('dashboard.services.index')->with('success', 'Service created successfully.');
     }
 
     public function show($id)
     {
         $service = \App\Models\Service::findOrFail($id);
-        
+
         return view('dashboard.services.show', compact('service'));
     }
 
     public function edit($id)
     {
         $service = \App\Models\Service::findOrFail($id);
-        
-        return view('dashboard.services.edit', compact('service', ));
+
+        return view('dashboard.services.edit', compact('service',));
     }
 
     public function update(Request $request, $id)
@@ -68,24 +66,21 @@ class ServiceController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'nullable|string|max:255',
             'description' => 'required|string',
-            'icon' => 'nullable|image|max:2048',
+            'icon' => 'nullable|max:255',
             'img' => 'nullable|image|max:2048'
         ]);
-                if ($request->hasFile('icon')) {
-            $validated['icon'] = $request->file('icon')->store('public/icons');
-            if ($service->icon) Storage::delete($service->icon);
-        }
+
         if ($request->hasFile('img')) {
             $validated['img'] = $request->file('img')->store('public/imgs');
             if ($service->img) Storage::delete($service->img);
         }
 
         $service->update($validated);
-        
+
         return redirect()->route('dashboard.services.index')->with('success', 'Service updated successfully.');
     }
 
-        public function destroy($id)
+    public function destroy($id)
     {
         $service = \App\Models\Service::findOrFail($id);
         $service->delete();

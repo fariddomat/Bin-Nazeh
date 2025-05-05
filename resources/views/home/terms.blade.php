@@ -45,7 +45,7 @@
                 </p>
                 <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                     class="opacity-0 scale-95">
-                    <a href="{{ route('contact') }}"
+                    <a wire:navigate href="{{ route('contact') }}"
                         class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300"
                         aria-label="تواصل مع بن نازح">
                         تواصل معنا الآن

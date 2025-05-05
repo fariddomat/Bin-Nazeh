@@ -122,7 +122,8 @@
 
                 <!-- Services Group -->
                 @php
-                    $isServiceActive = Str::startsWith(request()->route()->getName(), ['dashboard.services.']);
+                    $isServiceActive = Str::startsWith(request()->route()->getName(), ['dashboard.services.',
+                'dashboard.orders.']);
                 @endphp
                 <details class="group" {{ $isServiceActive ? 'open' : '' }}>
                     <summary
@@ -132,6 +133,9 @@
                     <div class="pl-6 space-y-2 py-2">
                         <x-responsive-nav-link href="{{ route('dashboard.services.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.services.')">
                             @lang('site.services') <i class="fas fa-cog"></i>
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('dashboard.orders.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.orders.')">
+                            @lang('site.orders') <i class="fas fa-briefcase"></i>
                         </x-responsive-nav-link>
                     </div>
                 </details>
@@ -164,6 +168,7 @@
                     $isContentActive = Str::startsWith(request()->route()->getName(), [
                         'dashboard.infos.',
                         'dashboard.abouts.',
+                        'dashboard.steps.',
                         'dashboard.sliders.',
                         'dashboard.counters.',
                         'dashboard.partners.',
@@ -183,6 +188,9 @@
                         </x-responsive-nav-link>
                         <x-responsive-nav-link href="{{ route('dashboard.abouts.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.abouts.')">
                             @lang('site.abouts') <i class="fas fa-info-circle"></i>
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link href="{{ route('dashboard.steps.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.steps.')">
+                            @lang('site.steps') <i class="fas fa-bars"></i>
                         </x-responsive-nav-link>
                         <x-responsive-nav-link href="{{ route('dashboard.sliders.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.sliders.')">
                             @lang('site.sliders') <i class="fas fa-images"></i>

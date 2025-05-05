@@ -37,7 +37,7 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeDialogTabs = 'image:advanced;link:advanced';
 	config.contentsCss = '/css/fonts.css';
 	//the next line add the new font to the combobox in CKEditor
-	config.font_names = config.font_names +';29ltbukrabold;29ltbukrabolditalic;29ltbukralight;29ltbukraregular;' +
+	config.font_names = 'IBM Plex Sans Arabic;'+config.font_names +';29ltbukrabold;29ltbukrabolditalic;29ltbukralight;29ltbukraregular;' +
 	'Al-Jazeera-Arabic-Regular;Amiri-Bold;Amiri-BoldSlanted;Amiri-Regular;Amiri-Slanted;'+
 	'AmiriQuran;AmiriQuranColored;Droid;Cairo;Jozoor-Font;Hacen-Algeria-Bd' ;
 };

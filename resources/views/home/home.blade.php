@@ -35,7 +35,7 @@
                     </div>
                     <!-- Explore Button (Bottom Left) -->
                     <div class="absolute bottom-8 left-8 animate-slide-in-left">
-                        <a href="{{ route('home') }}"
+                        <a wire:navigate href="{{ route('about') }}"
                             class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md hover:bg-gray-200 transition-colors duration-300"
                             aria-label="home">
                             استكشف المزيد
@@ -50,30 +50,64 @@
         </div>
     </section>
 
-    <!-- Partners Section -->
-    <section x-intersect="$el.classList.add('animate-section', 'slide-in-left')"
-        class="secondary-bg py-16 opacity-0 translate-x-10">
-        <div class="container text-center">
+
+
+    {{-- Partners Section --}}
+    <section x-data="{
+        offset: 0,
+        pause: false,
+        scrollWidth: 0,
+        track: null,
+        shouldScroll: {{ count($partners) > 6 ? 'true' : 'false' }},
+        start() {
+            if (!this.shouldScroll) return;
+
+            this.track = this.$refs.track;
+            this.scrollWidth = this.track.scrollWidth / 2;
+
+            const move = () => {
+                if (!this.pause) {
+                    this.offset += 0.5; // Slower, smoother scroll
+                    if (this.offset >= this.scrollWidth) {
+                        this.offset = 0;
+                    }
+                    this.track.style.transform = `translateX(-${this.offset}px)`;
+                }
+                requestAnimationFrame(move);
+            };
+            move();
+        }
+    }" x-init="start()" class="bg-gradient-to-b from-gray-900 to-gray-800 py-16 overflow-hidden">
+        <div class="container mx-auto px-4 text-center">
             <!-- Title -->
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-12">شركائنا</h2>
-            <!-- Continuous Logo Slider -->
-            <div class="overflow-hidden">
-                <div class="flex animate-continuous-slide" x-data="{ pause: false }" @mouseenter="pause = true"
-                    @mouseleave="pause = false">
-                    <!-- Logos (Repeated for seamless loop) -->
-                    <div class="flex flex-shrink-0">
+            <h2 class="text-4xl md:text-5xl font-bold text-white mb-12 tracking-tight transition-all duration-500 ease-in-out transform hover:scale-105">
+                شركاؤنا
+            </h2>
+
+            <div class="relative overflow-hidden w-full">
+                <div x-ref="track"
+                     @mouseenter="pause = true"
+                     @mouseleave="pause = false"
+                     class="flex justify-self-center w-max will-change-transform transition-transform duration-300 ease-out"
+                     :class="{ 'justify-center flex-wrap gap-8': !shouldScroll, 'gap-12': shouldScroll }"
+                     :style="shouldScroll ? `transform: translateX(-${offset}px)` : ''">
+                    @if (count($partners) > 6)
+                        <!-- Repeat logos twice for infinite scroll -->
+                        @for ($i = 0; $i < 2; $i++)
+                            @foreach ($partners as $partner)
+                                <img src="{{ Storage::url($partner->img) }}"
+                                     alt="{{ $partner->name ?? 'Partner' }}"
+                                     class="w-40 md:w-48 h-16 mx-4 object-contain grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300">
+                            @endforeach
+                        @endfor
+                    @else
+                        <!-- Show logos statically, centered -->
                         @foreach ($partners as $partner)
-                            <img src="{{ Storage::url($partner->img) }}" alt="{{ $partner->name ?? 'Partner' }}"
-                                class="h-16 mx-6">
+                            <img src="{{ Storage::url($partner->img) }}"
+                                 alt="{{ $partner->name ?? 'Partner' }}"
+                                 class="w-40 md:w-72 h-40 md:h-72 mx-4 rounded-md grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300">
                         @endforeach
-                    </div>
-                    <!-- Duplicate Logos for Continuous Effect -->
-                    <div class="flex flex-shrink-0">
-                        @foreach ($partners as $partner)
-                            <img src="{{ Storage::url($partner->img) }}" alt="{{ $partner->name ?? 'Partner' }}"
-                                class="h-16 mx-6">
-                        @endforeach
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -98,8 +132,115 @@
         </div>
     </section>
 
+    {{-- Project Steps Section --}}
+    <section x-data="stepSlider({{ Js::from($steps) }})" x-init="init()" @resize.window="updateChunking()"
+        @mouseenter="stopAutoSlide()" @mouseleave="startAutoSlide()"
+        class="relative py-20 bg-fixed bg-center bg-cover opacity-0 translate-y-10 animate-section fade-in-slide-up"
+        style="background-image: url('{{ asset('images/sections/Project hero.jpg') }}')"
+        x-intersect="$el.classList.add('opacity-100', 'translate-y-0')">
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-white bg-opacity-60 backdrop-blur-sm"></div>
+
+        <div class="container relative z-10">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-14">
+                مراحل تطوير المشروع العقاري في بن نازح
+            </h2>
+
+            <!-- Step Groups -->
+            <div class="relative">
+                <template x-for="(group, index) in chunkedSteps" :key="index">
+                    <div x-show="currentChunk === index" x-transition:enter="transition ease-out duration-700"
+                        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-500"
+                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+                        class="grid gap-8 sm:grid-cols-1 md:grid-cols-3">
+                        <template x-for="(step, stepIndex) in group" :key="stepIndex">
+                            <div class="text-center bg-white bg-opacity-80 rounded-lg p-6 shadow-md">
+                                <div class="flex items-center justify-center mb-4">
+                                    <div
+                                        class="w-16 h-16 bg-orange-500 text-white flex items-center justify-center rounded-full text-2xl">
+                                        <i :class="`fas ${step.icon}`"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2" x-text="step.name"></h3>
+                                <p class="text-gray-600 text-base leading-relaxed" x-text="step.description"></p>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <!-- Navigation Arrows -->
+                <div class="absolute top-1/2 left-0 transform -translate-y-1/2 z-20">
+                    <button @click="prevChunk"
+                        class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
+                        <i class="fas fa-chevron-right transform rotate-180"></i>
+                    </button>
+                </div>
+                <div class="absolute top-1/2 right-0 transform -translate-y-1/2 z-20">
+                    <button @click="nextChunk"
+                        class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dots -->
+            <div class="flex justify-center mt-10 space-x-2">
+                <template x-for="(group, index) in chunkedSteps" :key="index">
+                    <button @click="currentChunk = index"
+                        :class="{
+                            'bg-orange-500 w-4 h-4': currentChunk === index,
+                            'bg-gray-400 w-3 h-3': currentChunk !== index
+                        }"
+                        class="rounded-full transition-all duration-300 focus:outline-none"></button>
+                </template>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alpine.js Script -->
+    <script>
+        function stepSlider(stepsFromLaravel) {
+            return {
+                steps: stepsFromLaravel,
+                chunkedSteps: [],
+                currentChunk: 0,
+                interval: null,
+                init() {
+                    this.updateChunking();
+                    this.startAutoSlide();
+                },
+                updateChunking() {
+                    const chunkSize = window.innerWidth >= 768 ? 3 : 1;
+                    this.chunkedSteps = [];
+                    for (let i = 0; i < this.steps.length; i += chunkSize) {
+                        this.chunkedSteps.push(this.steps.slice(i, i + chunkSize));
+                    }
+                    this.currentChunk = 0;
+                },
+                startAutoSlide() {
+                    this.interval = setInterval(() => {
+                        this.nextChunk();
+                    }, 8000);
+                },
+                stopAutoSlide() {
+                    clearInterval(this.interval);
+                    this.interval = null;
+                },
+                nextChunk() {
+                    this.currentChunk = (this.currentChunk + 1) % this.chunkedSteps.length;
+                },
+                prevChunk() {
+                    this.currentChunk = (this.currentChunk - 1 + this.chunkedSteps.length) % this.chunkedSteps.length;
+                }
+            };
+        }
+    </script>
+
+
     <!-- Services Section -->
-    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+    {{-- <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="relative py-16  opacity-0 translate-y-10 bg-no-repeat bg-cover
                     bg-fixed parallax-bg"
         style="background-image: url('{{ asset('images/sections/Project hero.jpg') }}')">
@@ -150,11 +291,11 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <!-- Projects Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="primary-bg bg py-16 opacity-0 translate-y-10">
+        class="bg-gradient-to-b from-gray-900 to-gray-800 g bg py-16 opacity-0 translate-y-10">
         <div class="container">
             <!-- Title -->
             <h2 class="text-4xl md:text-5xl font-bold text-white text-center mb-12">مشاريعنا</h2>
@@ -170,23 +311,28 @@
                                 class="w-full h-48 object-cover rounded-t-lg">
                             <!-- Status Badge -->
                             <span class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
-                                    :class="{
-                                        'bg-gray-500': '{{ $project->status }}' === 'not_started',
-                                        'bg-orange-500': '{{ $project->status }}' === 'pending',
-                                        'bg-green-500': '{{ $project->status }}' === 'done'
-                                    }">
-                                    @switch($project->status)
-                                        @case('not_started')
-                                            لم يبدأ
-                                            @break
-                                        @case('pending')
-                                            قيد التنفيذ
-                                            @break
-                                        @case('done')
-                                            مكتمل
-                                            @break
-                                    @endswitch
-                                </span>
+                                :class="{
+                                    'bg-gray-500': '{{ $project->status }}'
+                                    === 'not_started',
+                                    'bg-orange-500': '{{ $project->status }}'
+                                    === 'pending',
+                                    'bg-green-500': '{{ $project->status }}'
+                                    === 'done'
+                                }">
+                                @switch($project->status)
+                                    @case('not_started')
+                                        لم يبدأ
+                                    @break
+
+                                    @case('pending')
+                                        قيد التنفيذ
+                                    @break
+
+                                    @case('done')
+                                        مكتمل
+                                    @break
+                                @endswitch
+                            </span>
                             <!-- Sold Overlay (Conditional) -->
                             <div x-data="{ isSold: {{ $project->is_sold ? 'true' : 'false' }} }" x-show="isSold"
                                 class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-t-lg">
@@ -197,7 +343,7 @@
                         <div class="p-6 text-center">
                             <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $project->name }}</h3>
                             <p class="text-gray-600 mb-4">{{ $project->projectCategory->name }}</p>
-                            <a href="{{ route('projects.show', $project->slug) }}"
+                            <a wire:navigate href="{{ route('projects.show', $project->slug) }}"
                                 class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-md border border-orange-300 hover:bg-orange-800 transition-colors duration-300"
                                 aria-label="project {{ $project->slug }}">
                                 استكشف
@@ -209,7 +355,7 @@
             <!-- Explore More Button -->
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
                 class="text-center mt-12 opacity-0 translate-y-10">
-                <a href="{{ route('projects') }}"
+                <a wire:navigate href="{{ route('project-categories') }}"
                     class="inline-block px-8 py-4 secondary-bg text-white font-semibold rounded-md hover:bg-orange-800 transition-colors duration-300"
                     aria-label="projects">
                     استكشف المزيد من المشاريع
@@ -243,35 +389,35 @@
 
     <!-- Reviews Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="secondary-bg py-16 opacity-0 translate-y-10">
+        class="bg-gradient-to-b from-gray-900 to-gray-800  py-16 opacity-0 translate-y-10 overflow-x-hidden">
         <div class="container">
             <!-- Title -->
             <h2 class="text-4xl md:text-5xl font-bold text-white text-center mb-12">آراء العملاء</h2>
+
             <!-- Reviews Slider -->
-            <div dir="ltr" x-data='{
-                reviews: @json($reviews, JSON_UNESCAPED_SLASHES),
-                currentIndex: 0,
-                reviewsPerPage: 3,
-                cardWidth: 320, // w-80 ≈ 320px
-                pause: false,
-                maxIndex() { return Math.ceil(this.reviews.length / this.reviewsPerPage) - 1; },
-                next() { if (this.currentIndex < this.maxIndex()) this.currentIndex++; else this.currentIndex = 0; },
-                init() {
-                    if (this.reviews.length > 0) {
-                        setInterval(() => {
-                            if (!this.pause) {
-                                this.next();
-                            }
-                        }, 5000); // Change set every 5 seconds
-                    }
+            <div dir="ltr"
+                x-data='{
+            reviews: @json($reviews, JSON_UNESCAPED_SLASHES),
+            currentIndex: 0,
+            reviewsPerPage: 3,
+            cardWidth: 320,
+            pause: false,
+            maxIndex() { return Math.ceil(this.reviews.length / this.reviewsPerPage) - 1; },
+            next() { this.currentIndex = (this.currentIndex + 1) % (this.maxIndex() + 1); },
+            init() {
+                if (this.reviews.length > 0) {
+                    setInterval(() => {
+                        if (!this.pause) {
+                            this.next();
+                        }
+                    }, 5000);
                 }
-            }'
-                class="relative overflow-hidden review-slider" @mouseenter="pause = true" @mouseleave="pause = false"
-                wire:ignore>
-                <!-- Debug -->
-                <div x-show="false" x-text="JSON.stringify(reviews)"></div>
+            }
+        }'
+                class="relative review-slider" @mouseenter="pause = true" @mouseleave="pause = false" wire:ignore>
+
                 <!-- Slider Container -->
-                <div class="flex transition-transform duration-500"
+                <div class="flex transition-transform duration-500 flex-nowrap"
                     :style="{ 'transform': `translateX(-${currentIndex * cardWidth * reviewsPerPage}px)` }">
                     <template x-for="(review, index) in reviews" :key="index">
                         <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
@@ -280,11 +426,12 @@
                             <img :src="review.icon" alt="Reviewer"
                                 class="w-16 h-16 rounded-full mx-auto mb-4 object-cover">
                             <h3 class="text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
-                            <p class="text-gray-600 italic mb-4" x-text="review.title"></p>
+                            <p class="text-gray-600 italic mb-2" x-text="review.title"></p>
                             <p class="text-gray-700" x-text="review.description"></p>
                         </div>
                     </template>
                 </div>
+
                 <!-- Navigation Dots -->
                 <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
                     class="flex justify-center mt-6 space-x-2 space-x-reverse opacity-0 translate-y-10">
@@ -294,12 +441,15 @@
                             :class="{ 'bg-gray-900': currentIndex === index - 1, 'bg-gray-300': currentIndex !== index - 1 }"></span>
                     </template>
                 </div>
-                <div x-show="reviews.length === 0" class="text-center text-gray-600 py-8">
+
+                <!-- Fallback Message -->
+                <div x-show="reviews.length === 0" class="text-center text-gray-300 py-8">
                     <p>لا توجد آراء متاحة</p>
                 </div>
             </div>
         </div>
     </section>
+
 
     <!-- Features Section (Counters) -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
@@ -342,7 +492,7 @@
                             <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $blog->title }}</h3>
                             <p class="text-gray-600 text-sm mb-4">{{ $blog->created_at->format('d F Y') }}</p>
                             <p class="text-gray-700 mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($blog->introduction), 100) !!}</p>
-                            <a href="{{ route('blogs.show', $blog->slug) }}"
+                            <a wire:navigate href="{{ route('blogs.show', $blog->slug) }}"
                                 class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300"
                                 aria-label="blog {{ $blog->slug }}">
                                 استكشف
@@ -354,7 +504,7 @@
             <!-- View All Button -->
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
                 class="text-center mt-12 opacity-0 translate-y-10">
-                <a href="{{ route('blogs.index') }}"
+                <a wire:navigate href="{{ route('blogs.index') }}"
                     class="inline-block px-8 py-4 bg-black text-white font-semibold rounded-md hover:bg-gray-800 transition-colors duration-300"
                     aria-label="blogs">
                     عرض الكل
@@ -513,9 +663,11 @@
             animation: spin 1s linear infinite;
         }
 
-        .service-card:hover {
+        .service-card:hover,
+        .step-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
         }
 
         /* RTL Adjustments */
