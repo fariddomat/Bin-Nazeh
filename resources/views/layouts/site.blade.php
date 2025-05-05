@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}"
     livewire:navigate>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @php
+        $info=\App\Models\Info::first();
+    @endphp
     <meta name="description"
-        content="{{ $metaDescription ?? 'بن نازح - شركة رائدة في التطوير العقاري تقدم حلولاً مبتكرة ومستدامة في المملكة العربية السعودية.' }}">
+        content="{{ strip_tags($info->description) }} ">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('logo/bin nazeh 5.png') }}">
+    <link rel="icon" type="image/x-icon" href="{{ Storage::url($info->logo_2) }}">
 
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="{{ $metaTitle ?? config('app.name', 'Bin Nazeh') }}">
+    <meta property="og:title" content="{{ $metaTitle ?? $info->name }}">
     <meta property="og:description"
-        content="{{ $metaDescription ?? 'بن نازح - شركة رائدة في التطوير العقاري تقدم حلولاً مبتكرة ومستدامة في المملكة العربية السعودية.' }}">
-    <meta property="og:image" content="{{ $metaImage ?? asset('logo/bin nazeh 5.png') }}">
+        content="{{ strip_tags($info->description) }} ">
+    <meta property="og:image" content="{{ Storage::url($info->logo_2) }}">
     <meta property="og:url" content="{{ request()->fullUrl() }}">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="{{ config('app.name', 'Bin Nazeh') }}">
+    <meta property="og:site_name" content="{{ $info->name }}">
 
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $metaTitle ?? config('app.name', 'Bin Nazeh') }}">
+    <meta name="twitter:title" content="{{ $metaTitle ?? $info->name }}">
     <meta name="twitter:description"
-        content="{{ $metaDescription ?? 'بن نازح - شركة رائدة في التطوير العقاري تقدم حلولاً مبتكرة ومستدامة في المملكة العربية السعودية.' }}">
-    <meta name="twitter:image" content="{{ $metaImage ?? asset('logo/bin nazeh 5.png') }}">
+        content="{{ strip_tags($info->description) }} ">
+    <meta name="twitter:image" content="{{ Storage::url($info->logo_2) }}">
 
-    <title>{{ config('app.name', 'Bin Nazeh') }}</title>
+    <title>{{ $info->name }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -205,10 +207,9 @@
                 <!-- Column 1: Logo and Company Info -->
                 <div>
                     <img src="{{ asset('logo/bin nazeh 3.png') }}" alt="Bin Nazeh Logo" class="h-24 w-24 mb-4" />
-                    <h3 class="text-xl font-bold mb-2">بن نازح</h3>
+                    <h3 class="text-xl font-bold mb-2">{{ $info->name }}</h3>
                     <p class="text-gray-300">
-                        بن نازح هي شركة رائدة في مجال التطوير العقاري، تقدم حلولاً مبتكرة ومستدامة لتلبية احتياجات
-                        عملائها في جميع أنحاء المملكة العربية السعودية.
+                       {{ strip_tags($info->description) }}
                     </p>
                 </div>
 
@@ -225,6 +226,8 @@
                                         عنا</a></li>
                                 <li><a href="{{ route('services') }}" class="hover:text-gray-300" wire:navigate
                                         aria-label="services">خدماتنا</a></li>
+                                <li><a href="{{ route('privacy') }}" class="hover:text-gray-300" wire:navigate
+                                        aria-label="privacy">سياسة الخصوصية</a></li>
                             </ul>
                         </div>
                         <div>
@@ -235,6 +238,9 @@
                                         aria-label="blogs">الأخبار</a></li>
                                 <li><a href="{{ route('contact') }}" class="hover:text-gray-300" wire:navigate
                                         aria-label="contact">تواصل
+                                        معنا</a></li>
+                                <li><a href="{{ route('terms') }}" class="hover:text-gray-300" wire:navigate
+                                        aria-label="terms">الشروط والأحكام
                                         معنا</a></li>
                             </ul>
                         </div>
@@ -266,19 +272,17 @@
                 <div>
                     <h3 class="text-xl font-bold mb-4">معلومات التواصل</h3>
                     <ul class="space-y-2 text-gray-300">
-                        <li><i class="fas fa-phone mr-2"></i> +966 123 456 789</li>
-                        <li><i class="fas fa-envelope mr-2"></i> info@binnazeh.com</li>
-                        <li><i class="fas fa-map-marker-alt mr-2"></i> الرياض، المملكة العربية السعودية</li>
+                        <li><i class="fas fa-phone mr-2"></i> <a href="tel:{{ $info->phone_1 }}">{{ $info->phone_1 }}</a></li>
+                        <li><i class="fas fa-envelope mr-2"></i> <a href="mailto:{{ $info->email }}">{{ $info->email }}</a></li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i> {{ $info->location }}</li>
                     </ul>
                     <div class="mt-4 flex space-x-4 space-x-reverse">
-                        <a href="#" class="hover:text-gray-300" aria-label="facebook"><i
-                                class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="hover:text-gray-300" aria-label="twitter"><i
-                                class="fab fa-twitter"></i></a>
-                        <a href="#" class="hover:text-gray-300" aria-label="instagram"><i
-                                class="fab fa-instagram"></i></a>
-                        <a href="#" class="hover:text-gray-300" aria-label="linkedin"><i
-                                class="fab fa-linkedin-in"></i></a>
+                        @foreach (\App\Models\SocialMedia::all() as $item)
+
+                        <a href="{{ $item->link }}" class="hover:text-gray-300" aria-label="{{$item->name}}"><i
+                                class="fab {{ $item->icon }}"></i>
+                            </a>
+                        @endforeach
                     </div>
                 </div>
             </div>

@@ -55,7 +55,7 @@
                                     alt="{{ $project->name }}"
                                     class="w-full h-64 object-cover rounded-lg relative z-10">
                                 <!-- Status Badge -->
-                                <span class="absolute top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
+                                <span class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
                                     :class="{
                                         'bg-gray-500': '{{ $project->status }}' === 'not_started',
                                         'bg-orange-500': '{{ $project->status }}' === 'pending',
@@ -63,7 +63,7 @@
                                     }">
                                     @switch($project->status)
                                         @case('not_started')
-                                            غير بدأ
+                                            لم يبدأ
                                             @break
                                         @case('pending')
                                             قيد التنفيذ

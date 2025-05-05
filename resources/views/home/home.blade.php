@@ -169,10 +169,24 @@
                             <img src="{{ Storage::url($project->img) }}" alt="{{ $project->name }}"
                                 class="w-full h-48 object-cover rounded-t-lg">
                             <!-- Status Badge -->
-                            <span
-                                class="absolute top-4 left-4 bg-gray-900 bg-opacity-75 text-white text-sm font-semibold px-3 py-1 rounded-full project-badge">
-                                {{ __('status.' . $project->status) }}
-                            </span>
+                            <span class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
+                                    :class="{
+                                        'bg-gray-500': '{{ $project->status }}' === 'not_started',
+                                        'bg-orange-500': '{{ $project->status }}' === 'pending',
+                                        'bg-green-500': '{{ $project->status }}' === 'done'
+                                    }">
+                                    @switch($project->status)
+                                        @case('not_started')
+                                            لم يبدأ
+                                            @break
+                                        @case('pending')
+                                            قيد التنفيذ
+                                            @break
+                                        @case('done')
+                                            مكتمل
+                                            @break
+                                    @endswitch
+                                </span>
                             <!-- Sold Overlay (Conditional) -->
                             <div x-data="{ isSold: {{ $project->is_sold ? 'true' : 'false' }} }" x-show="isSold"
                                 class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-t-lg">
@@ -184,7 +198,7 @@
                             <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $project->name }}</h3>
                             <p class="text-gray-600 mb-4">{{ $project->projectCategory->name }}</p>
                             <a href="{{ route('projects.show', $project->slug) }}"
-                                class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-gray-200 transition-colors duration-300"
+                                class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-md border border-orange-300 hover:bg-orange-800 transition-colors duration-300"
                                 aria-label="project {{ $project->slug }}">
                                 استكشف
                             </a>
@@ -329,7 +343,7 @@
                             <p class="text-gray-600 text-sm mb-4">{{ $blog->created_at->format('d F Y') }}</p>
                             <p class="text-gray-700 mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($blog->introduction), 100) !!}</p>
                             <a href="{{ route('blogs.show', $blog->slug) }}"
-                                class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300"
+                                class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300"
                                 aria-label="blog {{ $blog->slug }}">
                                 استكشف
                             </a>

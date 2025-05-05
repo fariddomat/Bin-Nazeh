@@ -162,6 +162,7 @@
                 <!-- Content Group -->
                 @php
                     $isContentActive = Str::startsWith(request()->route()->getName(), [
+                        'dashboard.infos.',
                         'dashboard.abouts.',
                         'dashboard.sliders.',
                         'dashboard.counters.',
@@ -177,6 +178,9 @@
                         @lang('site.content') <i class="fas fa-file-alt"></i>
                     </summary>
                     <div class="pl-6 space-y-2 py-2">
+                        <x-responsive-nav-link href="{{ route('dashboard.infos.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.infos.')">
+                            @lang('site.about_me') <i class="fas fa-info"></i>
+                        </x-responsive-nav-link>
                         <x-responsive-nav-link href="{{ route('dashboard.abouts.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.abouts.')">
                             @lang('site.abouts') <i class="fas fa-info-circle"></i>
                         </x-responsive-nav-link>

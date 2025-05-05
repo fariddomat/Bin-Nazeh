@@ -130,4 +130,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
     Route::resource('/privacies', \App\Http\Controllers\Dashboard\PrivacyController::class);
     Route::post('/privacies/{id}/restore', [\App\Http\Controllers\Dashboard\PrivacyController::class, 'restore'])->name('privacies.restore');
 });
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
+    Route::resource('/infos', \App\Http\Controllers\Dashboard\InfoController::class);
+    Route::post('/infos/{id}/restore', [\App\Http\Controllers\Dashboard\InfoController::class, 'restore'])->name('infos.restore');
+});
 
