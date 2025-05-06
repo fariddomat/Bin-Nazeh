@@ -302,55 +302,56 @@
             <!-- Projects Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @foreach ($projects as $index => $project)
-                    <div x-intersect="$el.classList.add('animate-item', '{{ $index % 2 === 0 ? 'slide-in-left' : 'slide-in-right' }}')"
-                        :x-intersect:delay="{{ $index * 200 }}"
-                        class="relative bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 opacity-0 {{ $index % 2 === 0 ? 'translate-x-10' : '-translate-x-10' }}">
-                        <!-- Image -->
-                        <div class="relative">
-                            <img src="{{ Storage::url($project->img) }}" alt="{{ $project->name }}"
-                                class="w-full h-48 object-cover rounded-t-lg">
-                            <!-- Status Badge -->
-                            <span class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
-                                :class="{
-                                    'bg-gray-500': '{{ $project->status }}'
-                                    === 'not_started',
-                                    'bg-orange-500': '{{ $project->status }}'
-                                    === 'pending',
-                                    'bg-green-500': '{{ $project->status }}'
-                                    === 'done'
-                                }">
-                                @switch($project->status)
-                                    @case('not_started')
-                                        لم يبدأ
-                                    @break
+                <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                    x-intersect:delay="{{ ($index % 3) * 200 }}"
+                    class="project-card bg-white shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden material-card"
+                    :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                        === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                        !== '0' }">
+                    <!-- Image -->
+                    <div class="relative">
+                        <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
+                            alt="{{ $project->name }}" class="w-full h-64 object-cover rounded-t-inherit">
+                        <!-- Status Badge -->
+                        <span
+                            class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
+                            :class="{
+                                'bg-gray-500': '{{ $project->status }}'
+                                === 'not_started',
+                                'bg-orange-500': '{{ $project->status }}'
+                                === 'pending',
+                                'bg-green-500': '{{ $project->status }}'
+                                === 'done'
+                            }">
+                            @switch($project->status)
+                                @case('not_started')
+                                    لم يبدأ
+                                @break
 
-                                    @case('pending')
-                                        قيد التنفيذ
-                                    @break
+                                @case('pending')
+                                    قيد التنفيذ
+                                @break
 
-                                    @case('done')
-                                        مكتمل
-                                    @break
-                                @endswitch
-                            </span>
-                            <!-- Sold Overlay (Conditional) -->
-                            <div x-data="{ isSold: {{ $project->is_sold ? 'true' : 'false' }} }" x-show="isSold"
-                                class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-t-lg">
-                                <span class="text-white text-2xl font-bold">تم البيع</span>
-                            </div>
-                        </div>
-                        <!-- Content -->
-                        <div class="p-6 text-center">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $project->name }}</h3>
-                            <p class="text-gray-600 mb-4">{{ $project->projectCategory->name }}</p>
+                                @case('done')
+                                    مكتمل
+                                @break
+                            @endswitch
+                        </span>
+                    </div>
+                    <!-- Details -->
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">
+                            {{ $project->name }}
+                        </h3>
+                        <div class="mt-4 text-center">
                             <a wire:navigate href="{{ route('projects.show', $project->slug) }}"
-                                class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-md border border-orange-300 hover:bg-orange-800 transition-colors duration-300"
-                                aria-label="project {{ $project->slug }}">
-                                استكشف
+                                class="inline-block px-6 py-3 bg-blue-900 text-white font-semibold rounded-md hover:bg-orange-500 transition-all duration-300">
+                                عرض التفاصيل
                             </a>
                         </div>
                     </div>
-                @endforeach
+                </div>
+            @endforeach
             </div>
             <!-- Explore More Button -->
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
