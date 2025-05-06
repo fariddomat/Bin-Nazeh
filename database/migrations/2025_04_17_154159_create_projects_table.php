@@ -13,12 +13,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->nullable();
             $table->date('date_of_build');
-            $table->text('address');
-            $table->text('address_location')->nullable();
-            $table->text('virtual_location')->nullable();
+            $table->longText('address');
+            $table->longText('address_location')->nullable();
+            $table->longText('virtual_location')->nullable();
             $table->string('scheme_name');
             $table->integer('floors_count');
-            $table->text('details');
+            $table->longText('details');
             $table->string('img');
             $table->string('cover_img')->nullable();
             $table->text('images')->nullable();

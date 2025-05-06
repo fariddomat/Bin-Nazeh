@@ -29,9 +29,10 @@ class ProjectPdfController extends Controller
 
     public function store(Request $request, Project $project)
     {
+
+        $request['project_id']= $project;
         $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'file' => 'required|file|max:2048'
+            'file' => 'required|file'
         ]);
 
         if ($request->hasFile('file')) {
@@ -69,9 +70,9 @@ class ProjectPdfController extends Controller
             abort(404);
         }
 
+        $request['project_id']= $project;
         $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
-            'file' => 'nullable|file|max:2048'
+            'file' => 'nullable|file'
         ]);
 
         if ($request->hasFile('file')) {

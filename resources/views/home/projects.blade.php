@@ -79,25 +79,10 @@
                                 <h3 class="text-xl font-bold text-gray-900 mb-2">
                                     {{ $project->name }}
                                 </h3>
-                                <ul class="text-gray-600 text-sm space-y-2">
-                                    <li><strong>الموقع:</strong> {{ $project->address ?? 'غير محدد' }}</li>
-                                    <li><strong>عدد الطوابق:</strong> {{ $project->floors_count ?? 'غير محدد' }}</li>
-                                    @if ($project->address_location)
-                                        <li>
-                                            <strong>موقع المشروع:</strong>
-                                            <a href="{{ $project->address_location }}" target="_blank"
-                                                class="text-blue-600 hover:underline">عرض الخريطة</a>
-                                        </li>
-                                    @else
-                                        <li><strong>موقع المشروع:</strong> غير محدد</li>
-                                    @endif
-                                    <li><strong>اسم المخطط:</strong> {{ $project->scheme_name ?? 'غير محدد' }}</li>
-                                    <li><strong>تاريخ البناء:</strong> {{ $project->date_of_build ? $project->date_of_build : 'غير محدد' }}</li>
-                                    <li><strong>نسبة الإنجاز:</strong> {{ $project->status_percent ?? 0 }}%</li>
-                                </ul>
+
                                 <div class="mt-4 text-center">
                                     <a  wire:navigate href="{{ route('projects.show', $project->slug) }}"
-                                        class="inline-block px-6 py-3 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300">
+                                        class="inline-block px-6 py-3 bg-blue-900 text-white font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300">
                                         عرض التفاصيل
                                     </a>
                                 </div>

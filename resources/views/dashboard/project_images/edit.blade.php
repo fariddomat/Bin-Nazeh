@@ -4,25 +4,17 @@
             @lang('site.edit') @lang('site.dashboard.project_images')
         </h1>
 
-        <form action="{{ route('dashboard.project_images.update', $projectImage->id) }}" method="POST" class="bg-white p-6 rounded-lg shadow-md" enctype="multipart/form-data">
+        <form action="{{ route('dashboard.projects.project_images.update', [$project, $projectImage->id]) }}"
+            method="POST" class="bg-white p-6 rounded-lg shadow-md" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-                        <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">@lang('site.project_id')</label>
-                <select name="project_id" class="w-full border border-gray-300 rounded p-2">
-                    <option value="">@lang('site.select_project_id')</option>
-                    @foreach ($projects as $option)
-                        <option value="{{ $option->id }}" {{ $projectImage->project_id == $option->id ? 'selected' : '' }}>{{ $option->name }}</option>
-                    @endforeach
-                </select>
-                @error('project_id')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </div>            <div class="mb-4">
+            
+            <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.img')</label>
-                <input type="file" name="img" accept="image/*" class="w-full border border-gray-300 rounded p-2">                @isset($projectImage->img)
+                <input type="file" name="img" accept="image/*" class="w-full border border-gray-300 rounded p-2">
+                @isset($projectImage->img)
                     <img src="{{ Storage::url($projectImage->img) }}" alt="img" class="mt-2 w-32 h-32 rounded">
-                @endisset                @error('img')
+                    @endisset @error('img')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>

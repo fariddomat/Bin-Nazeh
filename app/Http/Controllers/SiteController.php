@@ -131,6 +131,7 @@ class SiteController extends Controller
     public function projectShow($slug)
     {
         $project = Project::where('slug', $slug)->with('projectCategory')->firstOrFail();
+        $project->load('apartments', 'projectImages', 'projectPdfs');
         return view('home.project', compact('project'));
     }
 

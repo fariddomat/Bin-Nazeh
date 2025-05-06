@@ -40,7 +40,7 @@
                 <p class="text-gray-900">{{ $apartment->price_bank ?? '—' }}</p>
             </div>            <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.details')</label>
-                <p class="text-gray-900">{{ $apartment->details ?? '—' }}</p>
+                <p class="text-gray-900">{!! $apartment->details ?? '—' !!}</p>
             </div>            <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.img')</label>
                 @isset($apartment->img)
@@ -55,9 +55,7 @@
                 <label class="block text-sm font-medium text-gray-700">@lang('site.youtube')</label>
                 <p class="text-gray-900">{{ $apartment->youtube ?? '—' }}</p>
             </div>
-            <a href="{{ route('dashboard.apartments.index') }}" class="mt-4 inline-block px-4 py-2 bg-gray-500 text-white rounded shadow hover:bg-gray-700">
-                @lang('site.back')
-            </a>
+
         </div>
     </div>
 </x-app-layout>

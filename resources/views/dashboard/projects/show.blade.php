@@ -35,7 +35,7 @@
             </div>
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.address')</label>
-                <p class="text-gray-900">{{ $project->address ?? '—' }}</p>
+                <p class="text-gray-900">{!! $project->address ?? '—' !!}</p>
             </div>
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.address_location')</label>
@@ -55,7 +55,7 @@
             </div>
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.details')</label>
-                <p class="text-gray-900">{{ $project->details ?? '—' }}</p>
+                <p class="text-gray-900">{!! $project->details ?? '—' !!}</p>
             </div>
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.img')</label>

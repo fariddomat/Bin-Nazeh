@@ -22,9 +22,7 @@
                     <p class="text-gray-900">—</p>
                 @endisset
             </div>
-            <a href="{{ route('dashboard.project_images.index') }}" class="mt-4 inline-block px-4 py-2 bg-gray-500 text-white rounded shadow hover:bg-gray-700">
-                @lang('site.back')
-            </a>
+           
         </div>
     </div>
 </x-app-layout>

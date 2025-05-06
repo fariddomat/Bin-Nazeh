@@ -29,8 +29,9 @@ class ProjectImageController extends Controller
 
     public function store(Request $request, Project $project)
     {
+
+        $request['project_id']= $project;
         $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
             'img' => 'required|image|max:2048'
         ]);
 
@@ -69,8 +70,8 @@ class ProjectImageController extends Controller
             abort(404);
         }
 
+        $request['project_id']= $project;
         $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
             'img' => 'required|image|max:2048'
         ]);
 

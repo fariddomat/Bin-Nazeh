@@ -17,7 +17,7 @@ class ApartmentController extends Controller
 
     public function index(Project $project)
     {
-        $apartments = $project->apartments()->get();
+        $apartments = $project->apartments()->withTrashed()->get();
         return view('dashboard.apartments.index', compact('project', 'apartments'));
     }
 
@@ -29,8 +29,8 @@ class ApartmentController extends Controller
 
     public function store(Request $request, Project $project)
     {
+        $request['project_id']= $project;
         $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
             'type' => 'required|string|max:255',
             'appendix' => 'sometimes|boolean',
             'code' => 'required|string|max:255',
@@ -80,8 +80,8 @@ class ApartmentController extends Controller
             abort(404);
         }
 
+        $request['project_id']= $project;
         $validated = $request->validate([
-            'project_id' => 'required|exists:projects,id',
             'type' => 'required|string|max:255',
             'appendix' => 'sometimes|boolean',
             'code' => 'required|string|max:255',

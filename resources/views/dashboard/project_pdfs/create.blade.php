@@ -4,22 +4,13 @@
             @lang('site.create') @lang('site.dashboard.project_pdfs')
         </h1>
 
-        <form action="{{ route('dashboard.project_pdfs.store') }}" method="POST" class="bg-white p-6 rounded-lg shadow-md" enctype="multipart/form-data">
+        <form action="{{ route('dashboard.projects.project_pdfs.store', $project) }}" method="POST"
+            class="bg-white p-6 rounded-lg shadow-md" enctype="multipart/form-data">
             @csrf
-                        <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">@lang('site.project_id')</label>
-                <select name="project_id" class="w-full border border-gray-300 rounded p-2">
-                    <option value="">@lang('site.select_project_id')</option>
-                    @foreach ($projects as $option)
-                        <option value="{{ $option->id }}" {{ old('project_id') == $option->id ? 'selected' : '' }}>{{ $option->name }}</option>
-                    @endforeach
-                </select>
-                @error('project_id')
-                    <span class="text-red-500 text-sm">{{ $message }}</span>
-                @enderror
-            </div>            <div class="mb-4">
+            
+            <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.file')</label>
-                <input type="file" name="file" class="w-full border border-gray-300 rounded p-2">                @error('file')
+                <input type="file" name="file" class="w-full border border-gray-300 rounded p-2"> @error('file')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>

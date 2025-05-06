@@ -159,5 +159,11 @@ return [
     'steps'=>'Steps',
     'project_type'=>'Project Type',
 
-
+    'type'=>'type',
+    'appendix'=>'appendix',
+    'room_count'=>'room count',
+    'area'=>'area',
+    'price_bank'=>'price_bank',
+    'youtube'=>'youtube',
+    'code'=>'code',
 ];

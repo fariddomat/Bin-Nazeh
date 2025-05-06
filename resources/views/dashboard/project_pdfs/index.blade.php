@@ -1,13 +1,17 @@
 <x-app-layout>
     <div class="container mx-auto p-6">
-        <h1 class="text-2xl font-bold mb-4">ProjectPdf</h1>
-        <a href="{{ route('dashboard.project_pdfs.create') }}" class="px-4 py-2 bg-blue-500 text-white rounded shadow" wire:navigate>➕ @lang('site.add') ProjectPdf</a>
+        <h1 class="text-2xl font-bold mb-4">Project PDFs for {{ $project->name }}</h1>
+        <a href="{{ route('dashboard.projects.project_pdfs.create', $project) }}"
+           class="px-4 py-2 bg-blue-500 text-white rounded shadow" wire:navigate>
+            ➕ @lang('site.add') Project PDF
+        </a>
 
         <div class="overflow-x-auto mt-4">
             <x-autocrud::table
-                :columns="['id', 'project_id', 'file']"
+                :columns="['id', 'file']"
                 :data="$projectPdfs"
-                routePrefix="dashboard.project_pdfs"
+                routePrefix="dashboard.projects.project_pdfs"
+                :parentId="$project->id"
                 :show="true"
                 :edit="true"
                 :delete="true"
