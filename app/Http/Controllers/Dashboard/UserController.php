@@ -125,6 +125,9 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user=User::findOrFail($id);
+        if (auth()->id() == $id) {
+            abort(403);
+        }
         $user->delete();
         session()->flash('success','تم الحذف بنجاح !');
         return redirect()->route('dashboard.users.index');

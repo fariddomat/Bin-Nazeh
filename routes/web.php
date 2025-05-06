@@ -34,7 +34,7 @@ Route::get('/register-interest', [SiteController::class, 'registerInterestCreate
 Route::post('/register-interest', [SiteController::class, 'registerInterestStore'])->name('register-interest.store');
 Route::get('/contact-us', [SiteController::class, 'contact'])->name('contact');
 Route::post('/contact-us', [SiteController::class, 'contactStore'])->name('contact.store');
-Route::get('/search',[SiteController::class, 'search'])->name('search');
+Route::get('/search', [SiteController::class, 'search'])->name('search');
 Route::post('/newsletter/subscribe', [SiteController::class, 'newsletter'])->name('newsletter.subscribe');
 Route::post('/service-request', [SiteController::class, 'serviceRequest']);
 Route::get('/terms', [SiteController::class, 'terms'])->name('terms');
@@ -114,7 +114,6 @@ Route::prefix('dashboard')
 
         Route::get('/imageGallery/browser', [ImageGalleryController::class, 'browser'])->name('imageGallery.browser');
         Route::post('/imageGallery/uploader', [ImageGalleryController::class, 'uploader'])->name('imageGallery.uploader');
-
     });
 
 require __DIR__ . '/auth.php';
@@ -142,4 +141,21 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
     Route::resource('/orders', \App\Http\Controllers\Dashboard\OrderController::class);
     Route::post('/orders/{id}/restore', [\App\Http\Controllers\Dashboard\OrderController::class, 'restore'])->name('orders.restore');
 });
-
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
+    Route::resource('projects.apartments', \App\Http\Controllers\Dashboard\ApartmentController::class)
+        ->parameters(['projects' => 'project', 'apartments' => 'apartment']);
+    Route::post('projects/{project}/apartments/{apartment}/restore', [\App\Http\Controllers\Dashboard\ApartmentController::class, 'restore'])
+        ->name('projects.apartments.restore');
+});
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
+    Route::resource('projects.project_images', \App\Http\Controllers\Dashboard\ProjectImageController::class)
+        ->parameters(['projects' => 'project', 'project_images' => 'projectImage']);
+    Route::post('projects/{project}/project_images/{projectImage}/restore', [\App\Http\Controllers\Dashboard\ProjectImageController::class, 'restore'])
+        ->name('projects.project_images.restore');
+});
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
+    Route::resource('projects.project_pdfs', \App\Http\Controllers\Dashboard\ProjectPdfController::class)
+        ->parameters(['projects' => 'project', 'project_pdfs' => 'projectPdf']);
+    Route::post('projects/{project}/project_pdfs/{projectPdf}/restore', [\App\Http\Controllers\Dashboard\ProjectPdfController::class, 'restore'])
+        ->name('projects.project_pdfs.restore');
+});

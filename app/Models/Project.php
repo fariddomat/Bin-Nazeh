@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Project extends Model
 {
-    
+
     use SoftDeletes;
 
     protected $fillable = ['name', 'slug', 'date_of_build', 'address', 'address_location', 'virtual_location', 'scheme_name', 'floors_count', 'details', 'img', 'cover_img', 'status', 'status_percent', 'project_category_id', 'sort_id', 'images'];
@@ -36,8 +36,33 @@ class Project extends Model
     }
 
     protected $searchable = ['name', 'slug', 'address', 'address_location', 'virtual_location', 'scheme_name', 'details'];
+
     public function ProjectCategory()
     {
         return $this->belongsTo(\App\Models\ProjectCategory::class, 'project_category_id');
+    }
+
+    /**
+     * Get the apartments associated with the project.
+     */
+    public function apartments()
+    {
+        return $this->hasMany(Apartment::class);
+    }
+
+    /**
+     * Get the project images associated with the project.
+     */
+    public function projectImages()
+    {
+        return $this->hasMany(ProjectImage::class);
+    }
+
+    /**
+     * Get the project PDFs associated with the project.
+     */
+    public function projectPdfs()
+    {
+        return $this->hasMany(ProjectPdf::class);
     }
 }
