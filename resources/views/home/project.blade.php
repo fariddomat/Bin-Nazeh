@@ -1,40 +1,39 @@
 <x-site-layout>
     <!-- Hero Section (Parallax) -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-    class="relative h-[95vh] overflow-hidden opacity-0 translate-y-10"
-    data-parallax>
-    <div class="absolute inset-0 bg-cover bg-center parallax-bg"
-        style="background-image: url('{{ $project->cover_img ? Storage::url($project->cover_img) : ($project->img ? asset('images/' . $project->img) : asset('images/coming-soon.jpg')) }}')">
-        <!-- Dark Gradient Overlay -->
-        <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
-        <!-- Centered Title -->
-        <div x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-            class="mt-32 py-16 opacity-0 translate-y-10">
-            <div class="container">
-                <div class="relative max-w-3xl mx-auto border-2 border-orange-500 rounded-lg p-8 shadow-lg">
-                    <!-- Decorative Icon -->
-                    <i
-                        class="fas fa-building text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 px-4"></i>
-                    <div class="text-center text-white">
-                        <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">                    {{ $project->name }}
-                        </h1>
-                        <p class="text-lg md:text-xl mt-4 animate-slide-in-up">                    تجربة سكنية فاخرة
+        class="relative h-[95vh] overflow-hidden opacity-0 translate-y-10" data-parallax>
+        <div class="absolute inset-0 bg-cover bg-center parallax-bg"
+            style="background-image: url('{{ $project->cover_img ? Storage::url($project->cover_img) : ($project->img ? asset('images/' . $project->img) : asset('images/coming-soon.jpg')) }}')">
+            <!-- Dark Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/60 to-transparent"></div>
+            <!-- Centered Title -->
+            <div x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+                class="mt-32 py-16 opacity-0 translate-y-10">
+                <div class="container">
+                    <div class="relative max-w-3xl mx-auto border-2 border-orange-500 rounded-lg p-8 shadow-lg">
+                        <!-- Decorative Icon -->
+                        <i
+                            class="fas fa-building text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 px-4"></i>
+                        <div class="text-center text-white">
+                            <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in"> {{ $project->name }}
+                            </h1>
+                            <p class="text-lg md:text-xl mt-4 animate-slide-in-up"> تجربة سكنية فاخرة
 
-                        </p>
-                    </div>
-                    <!-- Centered Button with Pulse -->
-                    <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
-                        class="mt-8 text-center opacity-0 scale-95">
-                        <a href="#mission"
-                            class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
-                            استكشف المزيد
-                        </a>
+                            </p>
+                        </div>
+                        <!-- Centered Button with Pulse -->
+                        <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
+                            class="mt-8 text-center opacity-0 scale-95">
+                            <a href="#mission"
+                                class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
+                                استكشف المزيد
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- Project Details Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
@@ -73,7 +72,7 @@
                             <strong>الحالة:</strong>
                             @switch($project->status)
                                 @case('not_started')
-                                    غير بدأ
+                                    لم يبدأ
                                 @break
 
                                 @case('pending')
@@ -88,25 +87,28 @@
                                     غير محدد
                             @endswitch
                         </li>
-                        <li>
-                            <i class="fas fa-map text-orange-500 mr-2"></i>
-                            <strong>موقع المشروع:</strong>
-                            @if ($project->address_location)
-                                <a href="{{ $project->address_location }}" target="_blank"
-                                    class="text-blue-600 hover:underline">عرض الخريطة</a>
-                            @else
-                                غير محدد
-                            @endif
-                        </li>
+
+                        @if ($project->address_location)
+                            <li>
+                                <i class="fas fa-map text-orange-500 mr-2"></i>
+                                <strong>موقع المشروع:</strong>
+                                @if ($project->address_location)
+                                    <a href="{{ $project->address_location }}" target="_blank"
+                                        class="text-blue-600 hover:underline">عرض الخريطة</a>
+                                @else
+                                    غير محدد
+                                @endif
+                            </li>
+                        @endif
                     </ul>
                     <!-- PDF Download Button -->
                     <div class="mt-6">
                         @if ($project->projectPdfs->isNotEmpty())
                             <div class="flex flex-wrap gap-4">
-                                @foreach ($project->projectPdfs as $pdf)
+                                @foreach ($project->projectPdfs as $index=> $pdf)
                                     <a href="{{ Storage::url($pdf->file) }}" download
-                                        class="inline-block px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-all duration-300">
-                                        <i class="fas fa-file-pdf mr-2"></i> تحميل PDF #{{ $pdf->id }}
+                                        class="inline-block px-6 py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-orange-500 transition-all duration-300">
+                                        <i class="fas fa-file-pdf mr-2"></i> تحميل البروشور #{{ $index + 1 }}
                                     </a>
                                 @endforeach
                             </div>
@@ -189,10 +191,12 @@
                                 x-transition:leave-start="opacity-100 max-h-screen"
                                 x-transition:leave-end="opacity-0 max-h-0"
                                 class="mt-4 text-gray-600 border-t border-gray-200 pt-4 space-y-4">
-                                <p>
-                                    <i class="fas fa-align-left text-orange-500 mr-2"></i>
-                                    <strong>حول الشقة:</strong> {!! $apartment->about ?? 'لا يوجد وصف متاح' !!}
-                                </p>
+                                @if ($apartment->about)
+                                    <p>
+                                        <i class="fas fa-align-left text-orange-500 mr-2"></i>
+                                        <strong>حول الشقة:</strong> {!! $apartment->about ?? 'لا يوجد وصف متاح' !!}
+                                    </p>
+                                @endif
                                 <p>
                                     <i class="fas fa-file-alt text-orange-500 mr-2"></i>
                                     <strong>التفاصيل:</strong> {!! $apartment->details ?? 'لا توجد تفاصيل متاحة' !!}
@@ -205,12 +209,14 @@
                                     <i class="fas fa-plus-circle text-orange-500 mr-2"></i>
                                     <strong>ملحق:</strong> {{ $apartment->appendix ? 'نعم' : 'لا' }}
                                 </p>
-                                <p>
-                                    <i class="fas fa-university text-orange-500 mr-2"></i>
-                                    <strong>سعر البنك:</strong>
-                                    {{ $apartment->price_bank ? number_format($apartment->price_bank, 2) : 'غير محدد' }}
-                                    ريال
-                                </p>
+                                @if ($apartment->price_bank && $apartment->price_bank > 0)
+                                    <p>
+                                        <i class="fas fa-university text-orange-500 mr-2"></i>
+                                        <strong>سعر البنك:</strong>
+                                        {{ $apartment->price_bank ? number_format($apartment->price_bank, 2) : 'غير محدد' }}
+                                        ريال
+                                    </p>
+                                @endif
                                 <!-- Apartment Image -->
                                 <div>
                                     <i class="fas fa-image text-orange-500 mr-2"></i>
@@ -218,7 +224,7 @@
                                     @if ($apartment->img)
                                         <img src="{{ Storage::url($apartment->img) }}"
                                             alt="{{ $apartment->type }} Image"
-                                            class="mt-2 w-full h-48 object-cover rounded-lg">
+                                            class="mt-2 w-full h-auto object-cover rounded-lg">
                                     @else
                                         <span class="text-gray-500">لا توجد صورة متاحة</span>
                                     @endif

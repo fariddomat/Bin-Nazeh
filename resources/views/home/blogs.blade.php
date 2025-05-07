@@ -24,7 +24,9 @@
                     @foreach ($blogs as $index => $blog)
                         <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             x-intersect:delay="{{ ($index % 3) * 200 }}"
-                            class="blog-card bg-white rounded-lg shadow-md overflow-hidden opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
+                            class="blog-card bg-white rounded-lg shadow-md overflow-hidden opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300" :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                            === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                            !== '0' }">
                             <!-- Image with Gold Border -->
                             <div class="relative p-4">
                                 <div class="gold-border"></div>

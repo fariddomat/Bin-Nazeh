@@ -94,18 +94,24 @@
                     @if (count($partners) > 6)
                         <!-- Repeat logos twice for infinite scroll -->
                         @for ($i = 0; $i < 2; $i++)
-                            @foreach ($partners as $partner)
+                            @foreach ($partners as $index=>$partner)
                                 <img src="{{ Storage::url($partner->img) }}"
                                      alt="{{ $partner->name ?? 'Partner' }}"
-                                     class="w-40 md:w-48 h-16 mx-4 object-contain grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300">
+                                     class="w-40 md:w-48 h-16 mx-4 object-contain grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300"
+                                     :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                                === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                                !== '0' }">
                             @endforeach
                         @endfor
                     @else
                         <!-- Show logos statically, centered -->
-                        @foreach ($partners as $partner)
+                        @foreach ($partners as $index=>$partner)
                             <img src="{{ Storage::url($partner->img) }}"
                                  alt="{{ $partner->name ?? 'Partner' }}"
-                                 class="w-40 md:w-72 h-40 md:h-72 mx-4 rounded-md grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300">
+                                 class="w-40 md:w-72 h-40 md:h-72 mx-4 rounded-md grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300"
+                                 :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                                === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                                !== '0' }">
                         @endforeach
                     @endif
                 </div>
@@ -156,7 +162,9 @@
                         x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                         class="grid gap-8 sm:grid-cols-1 md:grid-cols-3">
                         <template x-for="(step, stepIndex) in group" :key="stepIndex">
-                            <div class="text-center bg-white bg-opacity-80 rounded-lg p-6 shadow-md">
+                            <div class="text-center bg-white bg-opacity-80 rounded-lg p-6 shadow-md" :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                            === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                            !== '0' }">
                                 <div class="flex items-center justify-center mb-4">
                                     <div
                                         class="w-16 h-16 bg-orange-500 text-white flex items-center justify-center rounded-full text-2xl">
@@ -420,10 +428,12 @@
                 <!-- Slider Container -->
                 <div class="flex transition-transform duration-500 flex-nowrap"
                     :style="{ 'transform': `translateX(-${currentIndex * cardWidth * reviewsPerPage}px)` }">
-                    <template x-for="(review, index) in reviews" :key="index">
+                    <template x-for="(review, index) in reviews" :key="index" >
                         <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
                             :x-intersect:delay="index % reviewsPerPage * 200"
-                            class="flex-shrink-0 w-80 bg-white rounded-lg shadow-md p-6 text-center mx-3 opacity-0 translate-y-10">
+                            class="flex-shrink-0 w-80 bg-white rounded-lg shadow-md p-6 text-center mx-3 opacity-0 translate-y-10 material-card" :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                            === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                            !== '0' }">
                             <img :src="review.icon" alt="Reviewer"
                                 class="w-16 h-16 rounded-full mx-auto mb-4 object-cover">
                             <h3 class="text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
@@ -486,7 +496,9 @@
                 @foreach ($blogs as $index => $blog)
                     <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
                         :x-intersect:delay="{{ $index * 200 }}"
-                        class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 opacity-0 translate-y-10">
+                        class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 opacity-0 translate-y-10 material-card" :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                        === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                        !== '0' }">
                         <img src="{{ Storage::url($blog->image) }}" alt="{{ $blog->title }}"
                             class="w-full h-48 object-cover rounded-t-lg blog-image">
                         <div class="p-6">
@@ -717,7 +729,41 @@
             border-top-left-radius: 0.5rem;
             /* Adjust image border radius in RTL */
         }
+        /* material card */
+  /* Material Card Styling */
+        .material-card {
+            position: relative;
+            background: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
 
+        .material-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Inherit border radius for image */
+        .material-card img.rounded-t-inherit {
+            border-top-left-radius: inherit;
+            border-top-right-radius: inherit;
+        }
+/* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+
+            .animate-section,
+            .animate-item,
+            .material-card {
+                animation: none !important;
+                transform: none !important;
+                opacity: 1 !important;
+            }
+
+            .material-card:hover {
+                transform: none !important;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+            }
+        }
         /* Responsive Adjustments */
         @media (max-width: 640px) {
             .blog-image {
