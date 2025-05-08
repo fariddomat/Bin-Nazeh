@@ -7,6 +7,8 @@
             <!-- Dark Overlay with Gradient -->
             <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
             <!-- Who We Are Section -->
+            < Analysis complete. Response continues below.
+
             <div id="who-we-are" x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')" class="mt-32">
                 <div class="container">
                     @foreach (\App\Models\About::where('name', 'Who We Are')->get() as $about)
@@ -33,7 +35,6 @@
         </div>
     </section>
 
-
     <!-- Mission Section -->
     <section id="mission" x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-gray-100 py-16 opacity-0 translate-y-10">
@@ -42,16 +43,16 @@
             @foreach (\App\Models\About::where('name', 'Mission')->get() as $about)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <!-- Text -->
-                    <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')"
-                        class="opacity-0 translate-x-10">
+                    <div x-intersect="$el.classList.add('animate-item', 'fade-in')"
+                        class="">
                         <h3 class="text-2xl font-bold text-orange-500 mb-4">رسالتنا</h3>
-                        <div class="text-gray-600 text-lg leading-relaxed ">
-                                {!! $about->discription !!}
-                            </div>
+                        <div class="text-gray-600 text-lg leading-relaxed">
+                            {!! $about->discription !!}
+                        </div>
                     </div>
                     <!-- Image with Gold Border -->
-                    <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
-                        class="opacity-0 -translate-x-10 relative p-4">
+                    <div x-intersect="$el.classList.add('animate-item', 'fade-in')"
+                        class=" relative p-4">
                         <div class="gold-border"></div>
                         <img src="{{ $about->img ? Storage::url($about->img) : asset('images/mission.jpg') }}"
                             alt="Mission" class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
@@ -92,19 +93,19 @@
             @foreach (\App\Models\About::where('name', 'Work Environment')->get() as $about)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <!-- Image with Gold Border -->
-                    <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')"
-                        class="opacity-0 translate-x-10 relative p-4">
+                    <div x-intersect="$el.classList.add('animate-item', 'fade-in')"
+                        class="relative p-4">
                         <div class="gold-border"></div>
                         <img src="{{ $about->img ? Storage::url($about->img) : asset('images/work-environment.jpg') }}"
                             alt="Work Environment" class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
                     </div>
                     <!-- Text -->
-                    <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
-                        class="opacity-0 -translate-x-10">
+                    <div x-intersect="$el.classList.add('animate-item', 'fade-in')"
+                        class="">
                         <h3 class="text-2xl font-bold text-orange-500 mb-4">بيئة عمل محفزة</h3>
                         <div class="text-gray-600 text-lg leading-relaxed">
-                                {!! $about->discription !!}
-                            </div>
+                            {!! $about->discription !!}
+                        </div>
                     </div>
                 </div>
             @endforeach
@@ -129,6 +130,8 @@
         class="bg-white py-16 opacity-0 translate-y-10">
         <div class="container text-center">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-12">شركائنا</h2>
+
+
             <div class="overflow-hidden">
                 <div class="flex animate-continuous-slide" x-data="{ pause: false }" @mouseenter="pause = true"
                     @mouseleave="pause = false">
@@ -165,26 +168,12 @@
             }
         }
 
-        @keyframes slide-in-right {
+        @keyframes fade-in {
             from {
-                transform: translateX(100px);
                 opacity: 0;
             }
 
             to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slide-in-left {
-            from {
-                transform: translateX(-100px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
                 opacity: 1;
             }
         }
@@ -241,12 +230,8 @@
             animation: text-slide-in 0.8s ease-in-out forwards;
         }
 
-        .animate-slide-in-right {
-            animation: slide-in-right 0.8s ease-in-out forwards;
-        }
-
-        .animate-slide-in-left {
-            animation: slide-in-left 0.8s ease-in-out forwards;
+        .animate-fade-in {
+            animation: fade-in 0.8s ease-in-out forwards;
         }
 
         .animate-continuous-slide {
@@ -323,14 +308,6 @@
         }
 
         /* RTL Adjustments */
-        [dir="rtl"] .slide-in-left {
-            animation: slide-in-right 0.8s ease-in-out forwards;
-        }
-
-        [dir="rtl"] .slide-in-right {
-            animation: slide-in-left 0.8s ease-in-out forwards;
-        }
-
         [dir="rtl"] .gold-border::before {
             left: auto;
             right: 10px;

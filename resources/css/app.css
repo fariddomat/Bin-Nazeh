@@ -255,3 +255,44 @@ header nav{
     transform: rotate(45deg);
     border-bottom-left-radius: 4px;
 }
+
+
+/* Container Override */
+
+.container {
+    width: 100%;
+    padding-left: 1rem; /* Equivalent to Tailwind's px-4 */
+    padding-right: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (min-width: 640px) {
+    .container {
+        max-width: 540px; /* Bootstrap-like width for sm */
+    }
+}
+
+@media (min-width: 768px) {
+    .container {
+        max-width: 720px; /* Bootstrap-like width for md */
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        max-width: 960px; /* Bootstrap-like width for lg */
+    }
+}
+
+@media (min-width: 1280px) {
+    .container {
+        max-width: 1140px; /* Bootstrap-like width for xl */
+    }
+}
+
+@media (min-width: 1536px) {
+    .container {
+        max-width: 1320px; /* Bootstrap-like width for xxl */
+    }
+}

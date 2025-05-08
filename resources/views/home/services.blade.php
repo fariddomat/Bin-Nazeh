@@ -30,8 +30,6 @@
                     </div>
                 </div>
             </div>
-
-
         </div>
     </section>
 
@@ -42,7 +40,7 @@
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">خدماتنا المميزة</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <!-- Text -->
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')" class="opacity-0 translate-x-10">
+                <div x-intersect="$el.classList.add('animate-item', 'fade-in')" class="">
                     <h3 class="text-2xl font-bold text-orange-500 mb-4">نقدم التميز في كل خدمة</h3>
                     <p class="text-gray-600 text-lg leading-relaxed">
                         في بن نازح، نقدم مجموعة شاملة من الخدمات العقارية التي تجمع بين الابتكار، الجودة، والاستدامة.
@@ -50,8 +48,8 @@
                     </p>
                 </div>
                 <!-- Image with Gold Border -->
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
-                    class="opacity-0 -translate-x-10 relative p-4">
+                <div x-intersect="$el.classList.add('animate-item', 'fade-in')"
+                    class="relative p-4">
                     <div class="gold-border"></div>
                     <img src="{{ asset('images/sections/Register interest section.jpg') }}" alt="Services Introduction"
                         class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
@@ -59,7 +57,6 @@
             </div>
         </div>
     </section>
-
 
     <!-- Services Grid Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
@@ -101,26 +98,12 @@
             }
         }
 
-        @keyframes slide-in-right {
+        @keyframes fade-in {
             from {
-                transform: translateX(100px);
                 opacity: 0;
             }
 
             to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slide-in-left {
-            from {
-                transform: translateX(-100px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
                 opacity: 1;
             }
         }
@@ -179,12 +162,8 @@
             animation: text-slide-in 0.8s ease-in-out forwards;
         }
 
-        .animate-slide-in-right {
-            animation: slide-in-right 0.8s ease-in-out forwards;
-        }
-
-        .animate-slide-in-left {
-            animation: slide-in-left 0.8s ease-in-out forwards;
+        .animate-fade-in {
+            animation: fade-in 0.8s ease-in-out forwards;
         }
 
         .animate-section.fade-in-slide-up {
@@ -258,14 +237,6 @@
         }
 
         /* RTL Adjustments */
-        [dir="rtl"] .slide-in-left {
-            animation: slide-in-right 0.8s ease-in-out forwards;
-        }
-
-        [dir="rtl"] .slide-in-right {
-            animation: slide-in-left 0.8s ease-in-out forwards;
-        }
-
         [dir="rtl"] .gold-border::before {
             left: auto;
             right: 10px;

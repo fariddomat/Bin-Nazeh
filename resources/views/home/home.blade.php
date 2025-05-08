@@ -30,7 +30,7 @@
                         <h1 class="text-4xl md:text-6xl font-bold" x-text="slide.text"></h1>
                     </div>
                     <!-- Description (Bottom Right) -->
-                    <div class="absolute bottom-8 right-8 text-white max-w-sm animate-slide-in-right">
+                    <div class="absolute bottom-32 md:bottom-8 right-8 text-white max-w-sm animate-slide-in-right">
                         <p class="text-lg md:text-xl" x-text="slide.description"></p>
                     </div>
                     <!-- Explore Button (Bottom Left) -->
@@ -53,71 +53,72 @@
 
 
     {{-- Partners Section --}}
-    <section x-data="{
-        offset: 0,
-        pause: false,
-        scrollWidth: 0,
-        track: null,
-        shouldScroll: {{ count($partners) > 6 ? 'true' : 'false' }},
-        start() {
-            if (!this.shouldScroll) return;
+<section x-data="{
+    offset: 0,
+    pause: false,
+    scrollWidth: 0,
+    track: null,
+    shouldScroll: {{ count($partners) > 4 ? 'true' : 'false' }},
+    start() {
+        if (!this.shouldScroll) return;
 
-            this.track = this.$refs.track;
-            this.scrollWidth = this.track.scrollWidth / 2;
+        this.track = this.$refs.track;
+        this.scrollWidth = this.track.scrollWidth / 2;
 
-            const move = () => {
-                if (!this.pause) {
-                    this.offset += 0.5; // Slower, smoother scroll
-                    if (this.offset >= this.scrollWidth) {
-                        this.offset = 0;
-                    }
-                    this.track.style.transform = `translateX(-${this.offset}px)`;
+        const move = () => {
+            if (!this.pause) {
+                this.offset += 0.3;
+                if (this.offset >= this.scrollWidth) {
+                    this.offset = 0;
                 }
-                requestAnimationFrame(move);
-            };
-            move();
-        }
-    }" x-init="start()" class="bg-gradient-to-b from-gray-900 to-gray-800 py-16 overflow-hidden">
-        <div class="container mx-auto px-4 text-center">
-            <!-- Title -->
-            <h2 class="text-4xl md:text-5xl font-bold text-white mb-12 tracking-tight transition-all duration-500 ease-in-out transform hover:scale-105">
-                شركاؤنا
-            </h2>
+                this.track.style.transform = `translateX(-${this.offset}px)`;
+            }
+            requestAnimationFrame(move);
+        };
+        move();
+    }
+}" x-init="start()" class="bg-gradient-to-b from-gray-900 to-gray-800 py-8 sm:py-12 lg:py-16 overflow-hidden">
+    <div class="container mx-auto px-4 text-center">
+        <!-- Title -->
+        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8 sm:mb-10 lg:mb-12 tracking-tight transition-all duration-500 ease-in-out transform hover:scale-105">
+            شركاؤنا
+        </h2>
 
-            <div class="relative overflow-hidden w-full">
-                <div x-ref="track"
-                     @mouseenter="pause = true"
-                     @mouseleave="pause = false"
-                     class="flex justify-self-center w-max will-change-transform transition-transform duration-300 ease-out"
-                     :class="{ 'justify-center flex-wrap gap-8': !shouldScroll, 'gap-12': shouldScroll }"
-                     :style="shouldScroll ? `transform: translateX(-${offset}px)` : ''">
-                    @if (count($partners) > 6)
-                        <!-- Repeat logos twice for infinite scroll -->
-                        @for ($i = 0; $i < 2; $i++)
-                            @foreach ($partners as $index=>$partner)
-                                <img src="{{ Storage::url($partner->img) }}"
-                                     alt="{{ $partner->name ?? 'Partner' }}"
-                                     class="w-40 md:w-48 h-16 mx-4 object-contain grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300"
-                                     :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
-                                === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
-                                !== '0' }">
-                            @endforeach
-                        @endfor
-                    @else
-                        <!-- Show logos statically, centered -->
-                        @foreach ($partners as $index=>$partner)
+        <div class="relative overflow-hidden w-full">
+            <div x-ref="track"
+                 @mouseenter="pause = true"
+                 @mouseleave="pause = false"
+                 @touchstart="pause = true"
+                 @touchend="pause = false"
+                 class="flex w-max will-change-transform transition-transform duration-300 ease-out"
+                 :class="{ 'justify-center flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-10 w-full': !shouldScroll, 'gap-6 sm:gap-8 lg:gap-12': shouldScroll }"
+                 :style="shouldScroll ? `transform: translateX(-${offset}px)` : 'width: 100%'"
+                 style="width: 100%;">
+                @if (count($partners) > 4)
+                    <!-- Repeat logos twice for infinite scroll -->
+                    @for ($i = 0; $i < 2; $i++)
+                        @foreach ($partners as $index => $partner)
                             <img src="{{ Storage::url($partner->img) }}"
                                  alt="{{ $partner->name ?? 'Partner' }}"
-                                 class="w-40 md:w-72 h-40 md:h-72 mx-4 rounded-md grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300"
-                                 :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
-                                === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
-                                !== '0' }">
+                                 class="w-20 sm:w-28 md:w-36 lg:w-48 h-10 sm:h-12 md:h-14 lg:h-16 mx-2 sm:mx-3 md:mx-4 object-contain grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300"
+                                 :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}' === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}' !== '0' }">
                         @endforeach
-                    @endif
-                </div>
+                    @endfor
+                @else
+                    <!-- Show logos in a grid for 4 or fewer partners, optimized for mobile -->
+                    @foreach ($partners as $index => $partner)
+                        <div class="flex justify-center items-center w-1/2 sm:w-1/3 md:w-1/4 px-2 sm:px-3 mb-4 sm:mb-6">
+                            <img src="{{ Storage::url($partner->img) }}"
+                                 alt="{{ $partner->name ?? 'Partner' }}"
+                                 class="w-full max-w-[100px] sm:max-w-[140px] md:max-w-[180px] lg:max-w-[240px] h-auto rounded-md grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300"
+                                 :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}' === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}' !== '0' }">
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Video Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-scale')"
@@ -157,9 +158,6 @@
             <div class="relative">
                 <template x-for="(group, index) in chunkedSteps" :key="index">
                     <div x-show="currentChunk === index" x-transition:enter="transition ease-out duration-700"
-                        x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
-                        x-transition:leave="transition ease-in duration-500"
-                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                         class="grid gap-8 sm:grid-cols-1 md:grid-cols-3">
                         <template x-for="(step, stepIndex) in group" :key="stepIndex">
                             <div class="text-center bg-white bg-opacity-80 rounded-lg p-6 shadow-md" :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
@@ -179,7 +177,7 @@
                 </template>
 
                 <!-- Navigation Arrows -->
-                <div class="absolute top-1/2 left-0 transform -translate-y-1/2 z-20">
+                {{-- <div class="absolute top-1/2 left-0 transform -translate-y-1/2 z-20">
                     <button @click="prevChunk"
                         class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
                         <i class="fas fa-chevron-right transform rotate-180"></i>
@@ -190,7 +188,7 @@
                         class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
                         <i class="fas fa-chevron-right"></i>
                     </button>
-                </div>
+                </div> --}}
             </div>
 
             <!-- Dots -->
@@ -397,19 +395,21 @@
     </section>
 
     <!-- Reviews Section -->
-    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="bg-gradient-to-b from-gray-900 to-gray-800  py-16 opacity-0 translate-y-10 overflow-x-hidden">
-        <div class="container">
-            <!-- Title -->
-            <h2 class="text-4xl md:text-5xl font-bold text-white text-center mb-12">آراء العملاء</h2>
+<section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+class="bg-gradient-to-b from-gray-900 to-gray-800 py-8 sm:py-12 lg:py-16 opacity-0 translate-y-10 overflow-x-hidden">
+<div class="custom-container">
+    <!-- Title -->
+    <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-8 sm:mb-10 lg:mb-12">
+        آراء العملاء
+    </h2>
 
-            <!-- Reviews Slider -->
-            <div dir="ltr"
-                x-data='{
+    <!-- Reviews Slider -->
+    <div dir="ltr"
+        x-data='{
             reviews: @json($reviews, JSON_UNESCAPED_SLASHES),
             currentIndex: 0,
-            reviewsPerPage: 3,
-            cardWidth: 320,
+            reviewsPerPage: window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3,
+            cardWidth: window.innerWidth < 640 ? window.innerWidth * 0.9 : window.innerWidth < 1024 ? window.innerWidth * 0.45 : 320,
             pause: false,
             maxIndex() { return Math.ceil(this.reviews.length / this.reviewsPerPage) - 1; },
             next() { this.currentIndex = (this.currentIndex + 1) % (this.maxIndex() + 1); },
@@ -421,45 +421,73 @@
                         }
                     }, 5000);
                 }
+                window.addEventListener("resize", () => {
+                    this.reviewsPerPage = window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+                    this.cardWidth = window.innerWidth < 640 ? window.innerWidth * 0.9 : window.innerWidth < 1024 ? window.innerWidth * 0.45 : 320;
+                });
             }
         }'
-                class="relative review-slider" @mouseenter="pause = true" @mouseleave="pause = false" wire:ignore>
+        class="relative review-slider"
+        @mouseenter="pause = true"
+        @mouseleave="pause = false"
+        @touchstart="pause = true"
+        @touchend="pause = false"
+        wire:ignore>
 
-                <!-- Slider Container -->
-                <div class="flex transition-transform duration-500 flex-nowrap"
-                    :style="{ 'transform': `translateX(-${currentIndex * cardWidth * reviewsPerPage}px)` }">
-                    <template x-for="(review, index) in reviews" :key="index" >
-                        <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
-                            :x-intersect:delay="index % reviewsPerPage * 200"
-                            class="flex-shrink-0 w-80 bg-white rounded-lg shadow-md p-6 text-center mx-3 opacity-0 translate-y-10 material-card" :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
-                            === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
-                            !== '0' }">
-                            <img :src="review.icon" alt="Reviewer"
-                                class="w-16 h-16 rounded-full mx-auto mb-4 object-cover">
-                            <h3 class="text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
-                            <p class="text-gray-600 italic mb-2" x-text="review.title"></p>
-                            <p class="text-gray-700" x-text="review.description"></p>
-                        </div>
-                    </template>
+        <!-- Slider or Grid Container -->
+        <div x-show="reviews.length > 3"
+            class="flex transition-transform duration-500 flex-nowrap"
+            :style="{ 'transform': `translateX(-${currentIndex * cardWidth * reviewsPerPage}px)` }">
+            <template x-for="(review, index) in reviews" :key="index">
+                <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
+                    :x-intersect:delay="index % reviewsPerPage * 200"
+                    class="flex-shrink-0 w-[90vw] sm:w-[45vw] lg:w-80 bg-white rounded-lg shadow-md p-4 sm:p-6 text-center mx-2 sm:mx-3 opacity-0 translate-y-10 material-card"
+                    :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': index % 2 === 0, 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': index % 2 !== 0 }">
+                    <img :src="review.icon" alt="Reviewer"
+                        class="w-12 h-12 sm:w-16 sm:h-16 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
+                    <p class="text-sm sm:text-base text-gray-600 italic mb-2" x-text="review.title"></p>
+                    <p class="text-sm sm:text-base text-gray-700" x-text="review.description"></p>
                 </div>
-
-                <!-- Navigation Dots -->
-                <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
-                    class="flex justify-center mt-6 space-x-2 space-x-reverse opacity-0 translate-y-10">
-                    <template x-for="index in Math.ceil(reviews.length / reviewsPerPage)" :key="index">
-                        <span @click="currentIndex = index - 1"
-                            class="w-3 h-3 rounded-full cursor-pointer transition-colors duration-300"
-                            :class="{ 'bg-gray-900': currentIndex === index - 1, 'bg-gray-300': currentIndex !== index - 1 }"></span>
-                    </template>
-                </div>
-
-                <!-- Fallback Message -->
-                <div x-show="reviews.length === 0" class="text-center text-gray-300 py-8">
-                    <p>لا توجد آراء متاحة</p>
-                </div>
-            </div>
+            </template>
         </div>
-    </section>
+
+        <!-- Grid for 3 or fewer reviews -->
+        <div x-show="reviews.length <= 3"
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            <template x-for="(review, index) in reviews" :key="index">
+                <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
+                    :x-intersect:delay="index * 200"
+                    class="w-full bg-white rounded-lg shadow-md p-4 sm:p-6 text-center opacity-0 translate-y-10 material-card"
+                    :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': index % 2 === 0, 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': index % 2 !== 0 }">
+                    <img :src="review.icon" alt="Reviewer"
+                        class="w-12 h-12 sm:w-16 sm:h-16 rounded-full mx-auto mb-4 object-cover">
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
+                    <p class="text-sm sm:text-base text-gray-600 italic mb-2" x-text="review.title"></p>
+                    <p class="text-sm sm:text-base text-gray-700" x-text="review.description"></p>
+                </div>
+            </template>
+        </div>
+
+        <!-- Navigation Dots (only for slider) -->
+        <div x-show="reviews.length > 3"
+            x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')"
+            x-intersect:delay="600"
+            class="flex justify-center mt-6 space-x-2 space-x-reverse opacity-0 translate-y-10">
+            <template x-for="index in Math.ceil(reviews.length / reviewsPerPage)" :key="index">
+                <span @click="currentIndex = index - 1"
+                    class="w-3 h-3 rounded-full cursor-pointer transition-colors duration-300"
+                    :class="{ 'bg-gray-900': currentIndex === index - 1, 'bg-gray-300': currentIndex !== index - 1 }"></span>
+            </template>
+        </div>
+
+        <!-- Fallback Message -->
+        <div x-show="reviews.length === 0" class="text-center text-gray-300 py-8">
+            <p>لا توجد آراء متاحة</p>
+        </div>
+    </div>
+</div>
+</section>
 
 
     <!-- Features Section (Counters) -->

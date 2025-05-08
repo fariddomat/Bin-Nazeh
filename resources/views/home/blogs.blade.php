@@ -1,5 +1,4 @@
 <x-site-layout>
-
     <!-- Blogs Grid Section -->
     <section id="blogs" x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-white py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
@@ -24,9 +23,7 @@
                     @foreach ($blogs as $index => $blog)
                         <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             x-intersect:delay="{{ ($index % 3) * 200 }}"
-                            class="blog-card bg-white rounded-lg shadow-md overflow-hidden opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300" :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
-                            === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
-                            !== '0' }">
+                            class="blog-card bg-white rounded-lg shadow-md overflow-hidden opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300" :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}' === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}' !== '0' }">
                             <!-- Image with Gold Border -->
                             <div class="relative p-4">
                                 <div class="gold-border"></div>
@@ -37,7 +34,7 @@
                             <!-- Content -->
                             <div class="p-6">
                                 <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $blog->title }}</h3>
-                                <p class="text-gray-600 text-sm mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($blog->introduction), 100) !!}</p>
+                                <div class="text-gray-600 text-sm mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($blog->introduction), 100) !!}</div>
                                 <p class="text-gray-500 text-sm mb-4">{{ $blog->created_at->format('Y-m-d') }}</p>
                                 <a wire:navigate href="{{ route('blogs.show', $blog->slug) }}"
                                     class="text-blue-600 hover:underline">اقرأ المزيد</a>
@@ -64,7 +61,7 @@
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">مدونتنا المميزة</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <!-- Text -->
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')" class="opacity-0 translate-x-10">
+                <div x-intersect="$el.classList.add('animate-item', 'fade-in')" class="">
                     <h3 class="text-2xl font-bold text-orange-500 mb-4">معلومات عقارية قيمة</h3>
                     <p class="text-gray-600 text-lg leading-relaxed">
                         في مدونة بن نازح، نقدم مقالات غنية بالمعلومات حول السوق العقاري، التصميم، الاستدامة، والاستثمار.
@@ -72,8 +69,8 @@
                     </p>
                 </div>
                 <!-- Image with Gold Border -->
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
-                    class="opacity-0 -translate-x-10 relative p-4">
+                <div x-intersect="$el.classList.add('animate-item', 'fade-in')"
+                    class="relative p-4">
                     <div class="gold-border"></div>
                     <img src="{{ asset('images/sections/Contact us section.jpg') }}" alt="Blogs Introduction"
                         class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
@@ -108,8 +105,6 @@
         </div>
     </section>
 
-
-
     <!-- Call-to-Action Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-gray-100 py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
@@ -142,26 +137,12 @@
             }
         }
 
-        @keyframes slide-in-right {
+        @keyframes fade-in {
             from {
-                transform: translateX(100px);
                 opacity: 0;
             }
 
             to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slide-in-left {
-            from {
-                transform: translateX(-100px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
                 opacity: 1;
             }
         }
@@ -220,12 +201,8 @@
             animation: text-slide-in 0.8s ease-in-out forwards;
         }
 
-        .animate-slide-in-right {
-            animation: slide-in-right 0.8s ease-in-out forwards;
-        }
-
-        .animate-slide-in-left {
-            animation: slide-in-left 0.8s ease-in-out forwards;
+        .animate-fade-in {
+            animation: fade-in 0.8s ease-in-out forwards;
         }
 
         .animate-section.fade-in-slide-up {
@@ -289,9 +266,38 @@
             left: 10px;
         }
 
-        /* Parallax */
-        .parallax-bg {
-            will-change: transform;
+        /* Responsive Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: right; /* RTL support */
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 1rem;
+        }
+
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        tr:hover {
+            background-color: #f3f4f6;
         }
 
         /* Blog Card Hover */
@@ -300,14 +306,6 @@
         }
 
         /* RTL Adjustments */
-        [dir="rtl"] .slide-in-left {
-            animation: slide-in-right 0.8s ease-in-out forwards;
-        }
-
-        [dir="rtl"] .slide-in-right {
-            animation: slide-in-left 0.8s ease-in-out forwards;
-        }
-
         [dir="rtl"] .gold-border::before {
             left: auto;
             right: 10px;
@@ -333,6 +331,11 @@
             .blog-image {
                 height: 16rem;
             }
+
+            th, td {
+                padding: 8px 12px;
+                font-size: 0.875rem;
+            }
         }
 
         /* Disable Parallax on Mobile */
@@ -344,7 +347,6 @@
 
         /* Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
-
             .animate-section,
             .animate-item {
                 animation: none !important;

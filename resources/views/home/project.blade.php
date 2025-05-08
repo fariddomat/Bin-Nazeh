@@ -18,7 +18,6 @@
                             <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in"> {{ $project->name }}
                             </h1>
                             <p class="text-lg md:text-xl mt-4 animate-slide-in-up"> تجربة سكنية فاخرة
-
                             </p>
                         </div>
                         <!-- Centered Button with Pulse -->
@@ -38,14 +37,14 @@
     <!-- Project Details Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-gray-50 py-16 opacity-0 translate-y-10" id="details">
-        <div class="container">
+        <div class="container px-4 sm:px-6">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12">
                 <i class="fas fa-info-circle text-orange-500 mr-2"></i> عن المشروع
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <!-- Details with Icons -->
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')" class="opacity-0 translate-x-10">
-                    <ul class="text-gray-700 text-lg space-y-4">
+                <div x-intersect="$el.classList.add('animate-item', 'fade-in')" class="opacity-0">
+                    <ul class="text-gray-700 text-base sm:text-lg space-y-4">
                         <li>
                             <i class="fas fa-map-marker-alt text-orange-500 mr-2"></i>
                             <strong>الموقع:</strong> {!! $project->address ?? 'غير محدد' !!}
@@ -87,7 +86,6 @@
                                     غير محدد
                             @endswitch
                         </li>
-
                         @if ($project->address_location)
                             <li>
                                 <i class="fas fa-map text-orange-500 mr-2"></i>
@@ -105,7 +103,7 @@
                     <div class="mt-6">
                         @if ($project->projectPdfs->isNotEmpty())
                             <div class="flex flex-wrap gap-4">
-                                @foreach ($project->projectPdfs as $index=> $pdf)
+                                @foreach ($project->projectPdfs as $index => $pdf)
                                     <a href="{{ Storage::url($pdf->file) }}" download
                                         class="inline-block px-6 py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-orange-500 transition-all duration-300">
                                         <i class="fas fa-file-pdf mr-2"></i> تحميل البروشور #{{ $index + 1 }}
@@ -119,12 +117,11 @@
                     </div>
                 </div>
                 <!-- Image -->
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-right')"
-                    class="opacity-0 -translate-x-10 relative">
+                <div x-intersect="$el.classList.add('animate-item', 'fade-in')" class="opacity-0 relative">
                     <div class="relative rounded-lg overflow-hidden shadow-lg">
                         <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
                             alt="{{ $project->name }}"
-                            class="w-full h-80 object-cover hover:scale-105 transition-transform duration-300">
+                            class="w-full h-64 md:h-80 object-cover hover:scale-105 transition-transform duration-300">
                     </div>
                 </div>
             </div>
@@ -351,6 +348,16 @@
 
     <!-- Custom Styles -->
     <style>
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
         @keyframes fade-in-slide-up {
             from {
                 transform: translateY(20px);
@@ -375,30 +382,6 @@
             }
         }
 
-        @keyframes slide-in-left {
-            from {
-                transform: translateX(-100px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slide-in-right {
-            from {
-                transform: translateX(100px);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
         @keyframes pulse-once {
             0% {
                 transform: scale(1);
@@ -417,16 +400,12 @@
             animation: fade-in-slide-up 0.8s ease-in-out forwards;
         }
 
+        .animate-item.fade-in {
+            animation: fade-in 0.8s ease-in-out forwards;
+        }
+
         .animate-item.fade-in-scale {
             animation: fade-in-scale 0.8s ease-in-out forwards;
-        }
-
-        .animate-item.slide-in-left {
-            animation: slide-in-left 0.8s ease-in-out forwards;
-        }
-
-        .animate-item.slide-in-right {
-            animation: slide-in-right 0.8s ease-in-out forwards;
         }
 
         .animate-pulse-once {
@@ -439,19 +418,14 @@
             background-attachment: fixed;
         }
 
-        /* RTL Adjustments */
-        [dir="rtl"] .slide-in-left {
-            animation: slide-in-right 0.8s ease-in-out forwards;
-        }
-
-        [dir="rtl"] .slide-in-right {
-            animation: slide-in-left 0.8s ease-in-out forwards;
-        }
-
         /* Responsive Adjustments */
         @media (max-width: 640px) {
             .h-80 {
                 height: 16rem;
+            }
+
+            .h-64 {
+                height: 14rem;
             }
 
             .h-96 {
@@ -460,6 +434,15 @@
 
             .h-48 {
                 height: 12rem;
+            }
+
+            .container {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .text-base {
+                font-size: 0.875rem;
             }
         }
 
@@ -484,6 +467,45 @@
                 transform: none !important;
             }
         }
+
+        table {
+
+            max-width: -webkit-fill-available;
+        }
+                /* Responsive Table Styles */
+                .table-responsive {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: right; /* RTL support */
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 1rem;
+        }
+
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        tr:hover {
+            background-color: #f3f4f6;
+        }
+
     </style>
 
     <!-- Alpine.js and Parallax Script -->
