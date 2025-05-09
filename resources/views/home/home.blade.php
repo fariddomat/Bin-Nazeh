@@ -1,7 +1,7 @@
 <x-site-layout>
     <!-- Hero Image Slider -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="relative h-[89vh] opacity-0 translate-y-10 overflow-x-hidden">
+        class="relative h-[75vh] md:h-[89vh] opacity-0 translate-y-10 overflow-x-hidden">
         <div x-data='{
             slides: @json($sliders, JSON_UNESCAPED_SLASHES),
             currentSlide: 0,
@@ -51,75 +51,96 @@
     </section>
 
 
-
     {{-- Partners Section --}}
-<section x-data="{
-    offset: 0,
-    pause: false,
-    scrollWidth: 0,
-    track: null,
-    shouldScroll: {{ count($partners) > 4 ? 'true' : 'false' }},
-    start() {
-        if (!this.shouldScroll) return;
+    <section x-data="{
+        pause: false,
+        direction: 'right-to-left', // Tracks direction for CSS
+        toggleDirection() {
+            console.log('Toggling direction from:', this.direction); // Debug
+            this.direction = this.direction === 'right-to-left' ? 'left-to-right' : 'right-to-left';
+        }
+    }" class="bg-gradient-to-b from-gray-900 to-gray-800 py-12 overflow-hidden">
+        <div class="container mx-auto px-4 text-center">
+            <!-- Title -->
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-10 tracking-tight transition-transform duration-500 ease-in-out transform hover:scale-105">
+                شركاؤنا
+            </h2>
 
-        this.track = this.$refs.track;
-        this.scrollWidth = this.track.scrollWidth / 2;
-
-        const move = () => {
-            if (!this.pause) {
-                this.offset += 0.3;
-                if (this.offset >= this.scrollWidth) {
-                    this.offset = 0;
-                }
-                this.track.style.transform = `translateX(-${this.offset}px)`;
-            }
-            requestAnimationFrame(move);
-        };
-        move();
-    }
-}" x-init="start()" class="bg-gradient-to-b from-gray-900 to-gray-800 py-8 sm:py-12 lg:py-16 overflow-hidden">
-    <div class="container mx-auto px-4 text-center">
-        <!-- Title -->
-        <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-8 sm:mb-10 lg:mb-12 tracking-tight transition-all duration-500 ease-in-out transform hover:scale-105">
-            شركاؤنا
-        </h2>
-
-        <div class="relative overflow-hidden w-full">
-            <div x-ref="track"
-                 @mouseenter="pause = true"
-                 @mouseleave="pause = false"
-                 @touchstart="pause = true"
-                 @touchend="pause = false"
-                 class="flex w-max will-change-transform transition-transform duration-300 ease-out"
-                 :class="{ 'justify-center flex-wrap gap-4 sm:gap-6 md:gap-8 lg:gap-10 w-full': !shouldScroll, 'gap-6 sm:gap-8 lg:gap-12': shouldScroll }"
-                 :style="shouldScroll ? `transform: translateX(-${offset}px)` : 'width: 100%'"
-                 style="width: 100%;">
-                @if (count($partners) > 4)
-                    <!-- Repeat logos twice for infinite scroll -->
-                    @for ($i = 0; $i < 2; $i++)
-                        @foreach ($partners as $index => $partner)
-                            <img src="{{ Storage::url($partner->img) }}"
-                                 alt="{{ $partner->name ?? 'Partner' }}"
-                                 class="w-20 sm:w-28 md:w-36 lg:w-48 h-10 sm:h-12 md:h-14 lg:h-16 mx-2 sm:mx-3 md:mx-4 object-contain grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300"
-                                 :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}' === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}' !== '0' }">
+            <!-- Slider -->
+            <div class="relative overflow-hidden">
+                <div x-ref="track"
+                     @mouseenter="pause = true"
+                     @mouseleave="pause = false"
+                     @touchstart="pause = true"
+                     @touchend="pause = false"
+                     :class="{
+                         'animate-slide-right-to-left': direction === 'right-to-left' && !pause,
+                         'animate-slide-left-to-right': direction === 'left-to-right' && !pause
+                     }"
+                     class="flex w-max gap-8 md:gap-12">
+                    <!-- Triplicate content for seamless looping -->
+                    @foreach ([1, 2, 3] as $cycle)
+                        @foreach ($partners as $index=>$partner)
+                            <div class="flex-shrink-0">
+                                <img src="{{ Storage::url($partner->img) }}"
+                                     alt="{{ $partner->name ?? 'Partner' }}"
+                                     class="w-full max-w-[100px] sm:max-w-[140px] md:max-w-32 lg:max-w-32 h-full rounded-md grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300"
+                                    :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                                        === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                                        !== '0' }">
+                            </div>
                         @endforeach
-                    @endfor
-                @else
-                    <!-- Show logos in a grid for 4 or fewer partners, optimized for mobile -->
-                    @foreach ($partners as $index => $partner)
-                        <div class="flex justify-center items-center w-1/2 sm:w-1/3 md:w-1/4 px-2 sm:px-3 mb-4 sm:mb-6">
-                            <img src="{{ Storage::url($partner->img) }}"
-                                 alt="{{ $partner->name ?? 'Partner' }}"
-                                 class="w-full max-w-[100px] sm:max-w-[140px] md:max-w-[180px] lg:max-w-[240px] h-auto rounded-md grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300"
-                                 :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}' === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}' !== '0' }">
-                        </div>
                     @endforeach
-                @endif
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
+    <style>
+    /* CSS animations for bidirectional scrolling */
+    .animate-slide-right-to-left {
+        animation: slide-right-to-left 20s linear infinite;
+    }
+    .animate-slide-left-to-right {
+        animation: slide-left-to-right 20s linear infinite;
+    }
+    @keyframes slide-right-to-left {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-33.333%); } /* Move by 1/3 due to triplicated content */
+    }
+    @keyframes slide-left-to-right {
+        0% { transform: translateX(-33.333%); }
+        100% { transform: translateX(0); }
+    }
+    /* Pause animation when needed */
+    [x-ref="track"] {
+        will-change: transform;
+    }
+    </style>
+
+    <script>
+    // JavaScript to toggle direction at the end of each animation cycle
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('slider', () => ({
+            pause: false,
+            direction: 'right-to-left',
+            init() {
+                console.log('Slider initialized'); // Debug
+                const track = this.$refs.track;
+                if (!track) {
+                    console.error('Track not found');
+                    return;
+                }
+                track.addEventListener('animationiteration', () => {
+                    if (!this.pause) {
+                        console.log('Animation iteration, toggling direction'); // Debug
+                        this.direction = this.direction === 'right-to-left' ? 'left-to-right' : 'right-to-left';
+                    }
+                });
+            }
+        }));
+    });
+    </script>
     <!-- Video Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-scale')"
         class="relative h-screen bg-gray-900 opacity-0 scale-95">
@@ -140,70 +161,151 @@
     </section>
 
     {{-- Project Steps Section --}}
-    <section x-data="stepSlider({{ Js::from($steps) }})" x-init="init()" @resize.window="updateChunking()"
-        @mouseenter="stopAutoSlide()" @mouseleave="startAutoSlide()"
-        class="relative py-20 bg-fixed bg-center bg-cover opacity-0 translate-y-10 animate-section fade-in-slide-up"
-        style="background-image: url('{{ asset('images/sections/Project hero.jpg') }}')"
-        x-intersect="$el.classList.add('opacity-100', 'translate-y-0')">
-        <!-- Overlay -->
-        <div class="absolute inset-0 bg-white bg-opacity-60 backdrop-blur-sm"></div>
+@php
+$index = 0;
+@endphp
+<section x-data="stepSlider({{ Js::from($steps) }})" x-init="init()" @resize.window="updateChunking()"
+@mouseenter="stopAutoSlide()" @mouseleave="startAutoSlide()"
+class="relative py-20 bg-fixed bg-center bg-cover opacity-0 translate-y-10 animate-section fade-in-slide-up"
+style="background-image: url('{{ asset('images/sections/Project hero.jpg') }}')"
+x-intersect="$el.classList.add('opacity-100', 'translate-y-0')">
+<!-- Overlay -->
+<div class="absolute inset-0 bg-white bg-opacity-60 backdrop-blur-sm"></div>
 
-        <div class="container relative z-10">
-            <!-- Title -->
-            <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-14">
-                مراحل تطوير المشروع العقاري في بن نازح
-            </h2>
+<div class="container relative z-10">
+    <!-- Title -->
+    <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-14">
+        مراحل تطوير المشروع العقاري في بن نازح
+    </h2>
 
-            <!-- Step Groups -->
-            <div class="relative">
-                <template x-for="(group, index) in chunkedSteps" :key="index">
-                    <div x-show="currentChunk === index" x-transition:enter="transition ease-out duration-700"
-                        class="grid gap-8 sm:grid-cols-1 md:grid-cols-3">
-                        <template x-for="(step, stepIndex) in group" :key="stepIndex">
-                            <div class="text-center bg-white bg-opacity-80 rounded-lg p-6 shadow-md" :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
-                            === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
-                            !== '0' }">
-                                <div class="flex items-center justify-center mb-4">
-                                    <div
-                                        class="w-16 h-16 bg-orange-500 text-white flex items-center justify-center rounded-full text-2xl">
-                                        <i :class="`fas ${step.icon}`"></i>
-                                    </div>
-                                </div>
-                                <h3 class="text-xl font-bold text-gray-800 mb-2" x-text="step.name"></h3>
-                                <p class="text-gray-600 text-base leading-relaxed" x-text="step.description"></p>
+    <!-- Step Groups -->
+    <div class="relative" x-ref="slider"
+         @pointerdown="startDrag($event)"
+         @pointermove="handleDrag($event)"
+         @pointerup="endDrag()"
+         @pointercancel="endDrag()">
+        <template x-for="(group, index) in chunkedSteps" :key="index">
+            <div x-show="currentChunk === index" x-transition:enter="transition ease-out duration-700"
+                 class="grid gap-8 sm:grid-cols-1 md:grid-cols-3" style="cursor: pointer !important">
+                <template x-for="(step, stepIndex) in group" :key="stepIndex">
+                    <div class="text-center bg-white bg-opacity-80 rounded-lg p-6 shadow-md" :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}' === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}' !== '0' }">
+                        <div class="flex items-center justify-center mb-4">
+                            <div class="w-16 h-16 bg-orange-500 text-white flex items-center justify-center rounded-full text-2xl">
+                                <i :class="`fas ${step.icon}`"></i>
                             </div>
-                        </template>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-800 mb-2" x-text="step.name"></h3>
+                        <p class="text-gray-600 text-base leading-relaxed" x-text="step.description"></p>
                     </div>
                 </template>
-
-                <!-- Navigation Arrows -->
-                {{-- <div class="absolute top-1/2 left-0 transform -translate-y-1/2 z-20">
-                    <button @click="prevChunk"
-                        class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
-                        <i class="fas fa-chevron-right transform rotate-180"></i>
-                    </button>
-                </div>
-                <div class="absolute top-1/2 right-0 transform -translate-y-1/2 z-20">
-                    <button @click="nextChunk"
-                        class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div> --}}
             </div>
+        </template>
 
-            <!-- Dots -->
-            <div class="flex justify-center mt-10 space-x-2">
-                <template x-for="(group, index) in chunkedSteps" :key="index">
-                    <button @click="currentChunk = index"
-                        :class="{
-                            'bg-orange-500 w-4 h-4': currentChunk === index,
-                            'bg-gray-400 w-3 h-3': currentChunk !== index
-                        }"
-                        class="rounded-full transition-all duration-300 focus:outline-none"></button>
-                </template>
-            </div>
+        <!-- Navigation Arrows (Commented Out) -->
+        {{-- <div class="absolute top-1/2 left-0 transform -translate-y-1/2 z-20">
+            <button @click="prevChunk"
+                class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
+                <i class="fas fa-chevron-right transform rotate-180"></i>
+            </button>
         </div>
-    </section>
+        <div class="absolute top-1/2 right-0 transform -translate-y-1/2 z-20">
+            <button @click="nextChunk"
+                class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        </div> --}}
+    </div>
+
+    <!-- Dots -->
+    <div class="flex justify-center mt-10 space-x-2">
+        <template x-for="(group, index) in chunkedSteps" :key="index">
+            <button @click="current_CHUNK = index"
+                :class="{
+                    'bg-orange-500 w-4 h-4': currentChunk === index,
+                    'bg-gray-400 w-3 h-3': currentChunk !== index
+                }"
+                class="rounded-full transition-all duration-300 focus:outline-none"></button>
+        </template>
+    </div>
+</div>
+</section>
+
+<script>
+document.addEventListener('alpine:init', () => {
+Alpine.data('stepSlider', (steps) => ({
+    steps: steps,
+    chunkedSteps: [],
+    currentChunk: 0,
+    autoSlideInterval: null,
+    isDragging: false,
+    startX: 0,
+    dragDistance: 0,
+    dragThreshold: 100, // Pixels to trigger chunk change
+    init() {
+        this.updateChunking();
+        this.startAutoSlide();
+    },
+    updateChunking() {
+        const width = window.innerWidth;
+        const itemsPerChunk = width < 768 ? 1 : 3; // 1 for mobile, 3 for desktop
+        this.chunkedSteps = [];
+        for (let i = 0; i < this.steps.length; i += itemsPerChunk) {
+            this.chunkedSteps.push(this.steps.slice(i, i + itemsPerChunk));
+        }
+        // Reset currentChunk if it exceeds new chunk count
+        if (this.currentChunk >= this.chunkedSteps.length) {
+            this.currentChunk = this.chunkedSteps.length - 1;
+        }
+    },
+    startAutoSlide() {
+        if (this.autoSlideInterval) clearInterval(this.autoSlideInterval);
+        this.autoSlideInterval = setInterval(() => {
+            this.nextChunk();
+        }, 5000); // Auto-slide every 5 seconds
+    },
+    stopAutoSlide() {
+        if (this.autoSlideInterval) clearInterval(this.autoSlideInterval);
+    },
+    nextChunk() {
+        this.currentChunk = (this.currentChunk + 1) % this.chunkedSteps.length;
+    },
+    prevChunk() {
+        this.currentChunk = (this.currentChunk - 1 + this.chunkedSteps.length) % this.chunkedSteps.length;
+    },
+    startDrag(event) {
+        this.isDragging = true;
+        this.startX = event.clientX || event.touches?.[0]?.clientX;
+        this.dragDistance = 0;
+        this.stopAutoSlide();
+    },
+    handleDrag(event) {
+        if (!this.isDragging) return;
+        const currentX = event.clientX || event.touches?.[0]?.clientX;
+        this.dragDistance = this.startX - currentX; // Positive for left drag, negative for right
+    },
+    endDrag() {
+        if (!this.isDragging) return;
+        this.isDragging = false;
+        if (Math.abs(this.dragDistance) > this.dragThreshold) {
+            if (this.dragDistance > 0) {
+                this.nextChunk(); // Dragged left, go to next chunk
+            } else {
+                this.prevChunk(); // Dragged right, go to previous chunk
+            }
+        }
+        this.startAutoSlide();
+    }
+}));
+});
+</script>
+
+<style>
+/* Ensure slider is touch-friendly */
+[x-ref="slider"] {
+touch-action: pan-y; /* Allow vertical scrolling while swiping horizontally */
+user-select: none; /* Prevent text selection during drag */
+}
+</style>
 
     <!-- Alpine.js Script -->
     <script>

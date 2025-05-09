@@ -1,23 +1,22 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}"
     livewire:navigate>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     @php
-        $info=\App\Models\Info::first();
+        $info = \App\Models\Info::first();
     @endphp
-    <meta name="description"
-        content="{{ strip_tags($info->description) }} ">
+    <meta name="description" content="{{ strip_tags($info->description) }} ">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ Storage::url($info->logo_2) }}">
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="{{ $metaTitle ?? $info->name }}">
-    <meta property="og:description"
-        content="{{ strip_tags($info->description) }} ">
+    <meta property="og:description" content="{{ strip_tags($info->description) }} ">
     <meta property="og:image" content="{{ Storage::url($info->logo_2) }}">
     <meta property="og:url" content="{{ request()->fullUrl() }}">
     <meta property="og:type" content="website">
@@ -26,8 +25,7 @@
     <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $metaTitle ?? $info->name }}">
-    <meta name="twitter:description"
-        content="{{ strip_tags($info->description) }} ">
+    <meta name="twitter:description" content="{{ strip_tags($info->description) }} ">
     <meta name="twitter:image" content="{{ Storage::url($info->logo_2) }}">
 
     <title>{{ $info->name }}</title>
@@ -84,7 +82,6 @@
                             class="nav-link hover:text-gray-200 transition-colors duration-500 flex items-center"
                             wire:navigate aria-label="projects"><i class="fas fa-chevron-down mr-1"></i>
                             المشاريع
-
                         </a>
                         <div x-show="open" @mouseover="open = true" @mouseleave="open = false"
                             class="absolute top-full right-0 mt-2 bg-white text-gray-900 rounded-md shadow-lg w-48">
@@ -96,7 +93,7 @@
                     </div>
                     <a href="{{ route('register-interest') }}"
                         class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
-                        aria-label="regiter interest">سجل
+                        aria-label="register interest">سجل
                         اهتمامك</a>
                     <a href="{{ route('blogs.index') }}"
                         class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
@@ -105,19 +102,64 @@
                         class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
                         aria-label="contact">تواصل معنا</a>
                 </nav>
-
-                <!-- Mobile Menu Button and Search -->
+                <button class="hidden md:flex " @click="searchOpen = !searchOpen" aria-label="search">
+                    <i class="fas fa-search text-xl"></i>
+                </button>
+                <!-- Mobile Menu Button, Phone, WhatsApp, and Search -->
                 <div class="flex items-center space-x-4 space-x-reverse">
-                    <button class="md:hidden" @click="menuOpen = !menuOpen" aria-label="menu">
-                        <i class="fas fa-bars text-2xl"></i>
-                    </button>
-                    <button @click="searchOpen = !searchOpen" aria-label="search">
-                        <i class="fas fa-search text-xl"></i>
-                    </button>
+                    <!-- Desktop Phone and WhatsApp -->
+                    <div class="hidden md:flex flex-col items-end space-y-2">
+
+                        <a href="tel:+966{{ \App\Models\Info::first()->phone_1 }}"
+                            class="flex items-center space-x-1 space-x-reverse hover:text-gray-200 transition-colors duration-200"
+                            aria-label="phone number">
+                            <i class="fas fa-phone-alt text-xl"></i>
+                            <span>{{ \App\Models\Info::first()->phone_1 }}</span>
+                        </a>
+                        <a href="https://wa.me/+966{{ \App\Models\SocialMedia::where('name','whatsapp')->first()->link }}" target="_blank"
+                            class="flex items-center space-x-1 space-x-reverse hover:text-gray-200 transition-colors duration-200"
+                            aria-label="whatsapp">
+                            <i class="fab fa-whatsapp text-xl"></i>
+                            <span>{{ \App\Models\SocialMedia::where('name','whatsapp')->first()->link }}</span>
+                        </a>
+                    </div>
+                    <!-- Mobile Icons -->
+                    <div class="flex md:hidden items-center space-x-3 space-x-reverse">
+
+                        <a href="tel:+966{{ \App\Models\Info::first()->phone_1 }}"
+                            class="flex items-center hover:text-gray-200 transition-colors duration-200"
+                            aria-label="phone number">
+                            <i class="fas fa-phone-alt text-xl"></i>
+                        </a>
+                        <a href="https://wa.me/+966{{ \App\Models\SocialMedia::where('name','whatsapp')->first()->link }}" target="_blank"
+                            class="flex items-center hover:text-gray-200 transition-colors duration-200"
+                            aria-label="whatsapp">
+                            <i class="fab fa-whatsapp text-xl"></i>
+                        </a>
+                        <button @click="searchOpen = !searchOpen" aria-label="search">
+                            <i class="fas fa-search text-xl"></i>
+                        </button>
+                        <button @click="menuOpen = !menuOpen" aria-label="menu">
+                            <i class="fas fa-bars text-2xl"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </header>
 
+        <style>
+            /* Ensure consistent spacing and alignment for mobile icons */
+            @media (max-width: 767px) {
+                .header .container .flex.items-center.space-x-4.space-x-reverse {
+                    align-items: center;
+                }
+
+                .header .flex.md\:hidden.items-center.space-x-3.space-x-reverse>* {
+                    margin-left: 0.75rem;
+                    /* Consistent spacing between icons */
+                }
+            }
+        </style>
         <!-- Search Popup -->
         <div x-show="searchOpen" x-cloak
             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -209,7 +251,7 @@
                     <img src="{{ asset('logo/bin nazeh 3.png') }}" alt="Bin Nazeh Logo" class="h-24 w-24 mb-4" />
                     <h3 class="text-xl font-bold mb-2">{{ $info->name }}</h3>
                     <p class="text-gray-300">
-                       {{ strip_tags($info->description) }}
+                        {{ strip_tags($info->description) }}
                     </p>
                 </div>
 
@@ -272,15 +314,16 @@
                 <div>
                     <h3 class="text-xl font-bold mb-4">معلومات التواصل</h3>
                     <ul class="space-y-2 text-gray-300">
-                        <li><i class="fas fa-phone mr-2"></i> <a href="tel:{{ $info->phone_1 }}">{{ $info->phone_1 }}</a></li>
-                        <li><i class="fas fa-envelope mr-2"></i> <a href="mailto:{{ $info->email }}">{{ $info->email }}</a></li>
+                        <li><i class="fas fa-phone mr-2"></i> <a
+                                href="tel:{{ $info->phone_1 }}">{{ $info->phone_1 }}</a></li>
+                        <li><i class="fas fa-envelope mr-2"></i> <a
+                                href="mailto:{{ $info->email }}">{{ $info->email }}</a></li>
                         <li><i class="fas fa-map-marker-alt mr-2"></i> {{ $info->location }}</li>
                     </ul>
                     <div class="mt-4 flex space-x-4 space-x-reverse">
                         @foreach (\App\Models\SocialMedia::all() as $item)
-
-                        <a href="{{ $item->link }}" class="hover:text-gray-300" aria-label="{{$item->name}}"><i
-                                class="fab {{ $item->icon }}"></i>
+                            <a href="{{ $item->link }}" class="hover:text-gray-300"
+                                aria-label="{{ $item->name }}"><i class="fab {{ $item->icon }}"></i>
                             </a>
                         @endforeach
                     </div>
