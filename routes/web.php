@@ -7,6 +7,7 @@ use App\Http\Controllers\Dashboard\ImageGalleryController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\SiteController;
 use App\Livewire\UserForm;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -20,6 +21,16 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/clear', function () {
+
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
+
+    return "Cleared!";
+});
 
 Route::get('/', [SiteController::class, 'home'])->name('home');
 Route::get('/about', [SiteController::class, 'about'])->name('about');

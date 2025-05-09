@@ -1,7 +1,7 @@
 <x-site-layout>
     <!-- Hero Image Slider -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="relative h-[75vh] md:h-[89vh] opacity-0 translate-y-10 overflow-x-hidden">
+        class="relative h-[85vh] md:h-[89vh] opacity-0 translate-y-10 overflow-x-hidden">
         <div x-data='{
             slides: @json($sliders, JSON_UNESCAPED_SLASHES),
             currentSlide: 0,

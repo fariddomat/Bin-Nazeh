@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
+            {{ __('الملف الشخصي') }}
         </h2>
     </x-slot>
 
@@ -19,11 +19,37 @@
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    <livewire:profile.delete-user-form />
-                </div>
-            </div>
         </div>
     </div>
+
+    <style>
+        /* RTL Support */
+        html[dir="rtl"] .max-w-7xl {
+            text-align: right;
+        }
+
+        html[dir="rtl"] .space-y-6 > div {
+            text-align: right;
+        }
+
+        /* Custom Button Styling (if Livewire forms use buttons) */
+        .profile-section button[type="submit"] {
+            background-color: #f97316; /* Theme orange */
+            color: #ffffff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .profile-section button[type="submit"]:hover {
+            background-color: #e5690d; /* Darker orange */
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 640px) {
+            .profile-section {
+                padding: 1rem;
+            }
+        }
+    </style>
 </x-app-layout>

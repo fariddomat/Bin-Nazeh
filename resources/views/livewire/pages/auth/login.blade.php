@@ -11,7 +11,7 @@ new #[Layout('layouts.guest')] class extends Component
     public LoginForm $form;
 
     /**
-     * Handle an incoming authentication request.
+     * التعامل مع طلب تسجيل الدخول الوارد.
      */
     public function login(): void
     {
@@ -25,48 +25,46 @@ new #[Layout('layouts.guest')] class extends Component
     }
 }; ?>
 
-<div>
-    <!-- Session Status -->
+<div class="login-container">
+    <!-- حالة الجلسة -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form wire:submit="login">
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
-        </div>
+    <div class="login-card">
+        <h2 class="login-title">تسجيل الدخول</h2>
+        <form wire:submit="login" class="space-y-6">
+            <!-- البريد الإلكتروني -->
+            <div>
+                <x-input-label for="email" :value="__('البريد الإلكتروني')" />
+                <x-text-input wire:model="form.email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus autocomplete="username" dir="ltr" />
+                <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
+            </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <!-- كلمة المرور -->
+            <div class="mt-4">
+                <x-input-label for="password" :value="__('كلمة المرور')" />
+                <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" dir="ltr" />
+                <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
+            </div>
 
-            <x-text-input wire:model="form.password" id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <!-- تذكرني -->
+            <div class="block mt-4">
+                <label for="remember" class="inline-flex items-center">
+                    <input wire:model="form.remember" id="remember" type="checkbox" class="rounded border-gray-300 text-orange-600 shadow-sm focus:ring-orange-500" name="remember">
+                    <span class="mr-2 text-sm text-gray-600">{{ __('تذكرني') }}</span>
+                </label>
+            </div>
 
-            <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
-        </div>
+            <div class="flex items-center justify-between mt-4">
+                @if (Route::has('password.request'))
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500" href="{{ route('password.request') }}" wire:navigate>
+                        {{ __('نسيت كلمة المرور؟') }}
+                    </a>
+                @endif
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember" class="inline-flex items-center">
-                <input wire:model="form.remember" id="remember" type="checkbox" class="rounded dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-indigo-600 shadow-sm focus:ring-indigo-500 dark:focus:ring-indigo-600 dark:focus:ring-offset-gray-800" name="remember">
-                <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}" wire:navigate>
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
+                <x-primary-button class="bg-orange-500 hover:bg-orange-600">
+                    {{ __('تسجيل الدخول') }}
+                </x-primary-button>
+            </div>
+        </form>
+    </div>
 </div>

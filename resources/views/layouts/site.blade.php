@@ -57,6 +57,14 @@
         <div class="loader w-16 h-16 border-8 border-orange-500 border-t-black rounded-full animate-spin"></div>
     </div>
 
+    <!-- Floating Contact Button -->
+    <a href="{{ route('register-interest') }}" class="floating-contact-button" wire:navigate>
+        <div class="contact-icon">
+            <i class="fas fa-user-plus"></i>
+        </div>
+        <span class="contact-text">سجل اهتمامك</span>
+    </a>
+
     <div class="flex flex-col min-h-screen" x-data="{ menuOpen: false, searchOpen: false }">
         <!-- Fixed Header -->
         <header class="header fixed top-0 left-0 right-0 z-50 text-white flex items-center justify-center primary-bg">
@@ -116,11 +124,12 @@
                             <i class="fas fa-phone-alt text-xl"></i>
                             <span>{{ \App\Models\Info::first()->phone_1 }}</span>
                         </a>
-                        <a href="https://wa.me/+966{{ \App\Models\SocialMedia::where('name','whatsapp')->first()->link }}" target="_blank"
+                        <a href="https://wa.me/+966{{ \App\Models\SocialMedia::where('name', 'whatsapp')->first()->link }}"
+                            target="_blank"
                             class="flex items-center space-x-1 space-x-reverse hover:text-gray-200 transition-colors duration-200"
                             aria-label="whatsapp">
                             <i class="fab fa-whatsapp text-xl"></i>
-                            <span>{{ \App\Models\SocialMedia::where('name','whatsapp')->first()->link }}</span>
+                            <span>{{ \App\Models\SocialMedia::where('name', 'whatsapp')->first()->link }}</span>
                         </a>
                     </div>
                     <!-- Mobile Icons -->
@@ -131,7 +140,8 @@
                             aria-label="phone number">
                             <i class="fas fa-phone-alt text-xl"></i>
                         </a>
-                        <a href="https://wa.me/+966{{ \App\Models\SocialMedia::where('name','whatsapp')->first()->link }}" target="_blank"
+                        <a href="https://wa.me/+966{{ \App\Models\SocialMedia::where('name', 'whatsapp')->first()->link }}"
+                            target="_blank"
                             class="flex items-center hover:text-gray-200 transition-colors duration-200"
                             aria-label="whatsapp">
                             <i class="fab fa-whatsapp text-xl"></i>

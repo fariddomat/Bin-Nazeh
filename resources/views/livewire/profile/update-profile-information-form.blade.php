@@ -13,7 +13,7 @@ new class extends Component
     public string $email = '';
 
     /**
-     * Mount the component.
+     * تهيئة المكون.
      */
     public function mount(): void
     {
@@ -22,7 +22,7 @@ new class extends Component
     }
 
     /**
-     * Update the profile information for the currently authenticated user.
+     * تحديث معلومات الملف الشخصي للمستخدم المصادق عليه حاليًا.
      */
     public function updateProfileInformation(): void
     {
@@ -45,7 +45,7 @@ new class extends Component
     }
 
     /**
-     * Send an email verification notification to the current user.
+     * إرسال إشعار التحقق من البريد الإلكتروني للمستخدم الحالي.
      */
     public function sendVerification(): void
     {
@@ -63,42 +63,42 @@ new class extends Component
     }
 }; ?>
 
-<section>
+<section class="profile-section">
     <header>
         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Profile Information') }}
+            {{ __('معلومات الملف الشخصي') }}
         </h2>
 
         <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __("Update your account's profile information and email address.") }}
+            {{ __('تحديث معلومات الملف الشخصي وعنوان البريد الإلكتروني لحسابك.') }}
         </p>
     </header>
 
     <form wire:submit="updateProfileInformation" class="mt-6 space-y-6">
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="__('الاسم')" />
             <x-text-input wire:model="name" id="name" name="name" type="text" class="mt-1 block w-full" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" name="email" type="email" class="mt-1 block w-full" required autocomplete="username" />
+            <x-input-label for="email" :value="__('البريد الإلكتروني')" />
+            <x-text-input wire:model="email" id="email" name="email" type="email" class="mt-1 block w-full" required autocomplete="username" dir="ltr" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if (auth()->user() instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! auth()->user()->hasVerifiedEmail())
                 <div>
                     <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                        {{ __('Your email address is unverified.') }}
+                        {{ __('عنوان بريدك الإلكتروني غير مُتحقق.') }}
 
-                        <button wire:click.prevent="sendVerification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                            {{ __('Click here to re-send the verification email.') }}
+                        <button wire:click.prevent="sendVerification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 dark:focus:ring-offset-gray-800">
+                            {{ __('انقر هنا لإعادة إرسال بريد التحقق.') }}
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
                         <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                            {{ __('A new verification link has been sent to your email address.') }}
+                            {{ __('تم إرسال رابط تحقق جديد إلى عنوان بريدك الإلكتروني.') }}
                         </p>
                     @endif
                 </div>
@@ -106,11 +106,46 @@ new class extends Component
         </div>
 
         <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <x-primary-button class="bg-orange-500 hover:bg-orange-600">
+                {{ __('حفظ') }}
+            </x-primary-button>
 
-            <x-action-message class="me-3" on="profile-updated">
-                {{ __('Saved.') }}
+            <x-action-message class="ml-3" on="profile-updated">
+                {{ __('تم الحفظ.') }}
             </x-action-message>
         </div>
     </form>
+<style>
+    /* RTL Support */
+    html[dir="rtl"] .profile-section {
+        text-align: right;
+    }
+
+    html[dir="rtl"] .flex.items-center.gap-4 {
+        flex-direction: row-reverse;
+    }
+
+    /* Input Styling */
+    .profile-section input[type="text"],
+    .profile-section input[type="email"] {
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 0.75rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .profile-section input:focus {
+        border-color: #f97316; /* Theme orange */
+        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+        outline: none;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 640px) {
+        .profile-section {
+            padding: 1rem;
+        }
+    }
+</style>
 </section>
+

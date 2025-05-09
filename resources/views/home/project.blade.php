@@ -506,8 +506,96 @@
             background-color: #f3f4f6;
         }
 
+
+
     </style>
 
+
+<style>
+/* Guarantees Section */
+.guarantees-section {
+    padding: 3rem 0;
+    background-color: #f9fafb; /* Light gray background */
+    text-align: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937; /* Dark gray */
+    margin-bottom: 2rem;
+}
+
+.guarantees-list {
+    display: grid;
+    grid-template-columns: 1fr; /* 1 column on mobile */
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.guarantees-list li {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #ffffff;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-size: 1.125rem;
+    color: #374151; /* Dark gray text */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.guarantees-list li:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.guarantees-list li i {
+    color: #f97316; /* Theme orange */
+    margin-right: 0.75rem;
+    font-size: 1.25rem;
+}
+
+/* RTL Support */
+html[dir="rtl"] .guarantees-list li {
+    justify-content: flex-end;
+}
+
+html[dir="rtl"] .guarantees-list li i {
+    margin-right: 0;
+    margin-left: 0.75rem;
+}
+
+/* Responsive Design */
+@media (min-width: 640px) {
+    .guarantees-list {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
+    }
+}
+
+@media (min-width: 1024px) {
+    .guarantees-list {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns on desktop */
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+    }
+
+    .guarantees-list li {
+        font-size: 1.25rem;
+    }
+}
+</style>
     <!-- Alpine.js and Parallax Script -->
     <script>
         document.addEventListener('alpine:init', () => {
