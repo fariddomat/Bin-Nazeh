@@ -101,9 +101,6 @@
             margin-left: 0.5rem;
         }
 
-        html[dir="rtl"] .flex.items-center.justify-between {
-            flex-direction: row-reverse;
-        }
 
         /* Responsive Design */
         @media (max-width: 640px) {
