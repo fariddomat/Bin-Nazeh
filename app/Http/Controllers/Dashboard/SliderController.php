@@ -22,7 +22,7 @@ class SliderController extends Controller
 
     public function create()
     {
-        
+
         return view('dashboard.sliders.create', compact([],));
     }
 
@@ -38,21 +38,21 @@ class SliderController extends Controller
         }
 
         $slider = \App\Models\Slider::create($validated);
-        
+
         return redirect()->route('dashboard.sliders.index')->with('success', 'Slider created successfully.');
     }
 
     public function show($id)
     {
         $slider = \App\Models\Slider::findOrFail($id);
-        
+
         return view('dashboard.sliders.show', compact('slider'));
     }
 
     public function edit($id)
     {
         $slider = \App\Models\Slider::findOrFail($id);
-        
+
         return view('dashboard.sliders.edit', compact('slider', ));
     }
 
@@ -62,7 +62,7 @@ class SliderController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'img' => 'required|image|max:2048'
+            'img' => 'nullable|image|max:2048'
         ]);
                 if ($request->hasFile('img')) {
             $validated['img'] = $request->file('img')->store('public/imgs');
@@ -70,7 +70,7 @@ class SliderController extends Controller
         }
 
         $slider->update($validated);
-        
+
         return redirect()->route('dashboard.sliders.index')->with('success', 'Slider updated successfully.');
     }
 

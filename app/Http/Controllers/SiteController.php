@@ -25,43 +25,43 @@ use App\Models\Why;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-
 class SiteController extends Controller
 {
     // Home
-    public function home()
-    {
-        try {
-            $sliders = Slider::all()->map(fn($slider) => [
-                'image' => $slider->img ? Storage::url($slider->img) : asset('images/default-slider.jpg'),
-                'text' => htmlspecialchars($slider->title ?? 'بدون عنوان', ENT_QUOTES, 'UTF-8'),
-                'description' => htmlspecialchars($slider->description ?? 'بدون وصف', ENT_QUOTES, 'UTF-8')
-            ]);
-            $blogs = Blog::where('show_at_home', true)->take(3)->get();
-            $projects = Project::where('status', 'done')->take(3)->get();
-            $services = Service::take(5)->get();
-            $steps = Step::get()->map(fn($step) => [
-                'icon' => $step->icon ?? '',
-                'name' => $step->name ?? 'مجهول',
-                'description' =>  strip_tags($step->description) ?? 'بدون وصف'
-            ]);
-            $counters = Counter::all();
-            $partners = Partner::all();
-            $facilities = Facility::take(6)->get();
-            $reviews = Review::take(5)->get()->map(fn($review) => [
-                'icon' => $review->img ? Storage::url($review->img) : asset('images/default-user.jpg'),
-                'name' => $review->name ?? 'مجهول',
-                'title' => $review->title ?? 'بدون عنوان',
-                'description' => $review->description ?? 'بدون وصف'
-            ]);
 
-            return view('home.home', compact('sliders', 'blogs', 'steps', 'services', 'projects', 'counters', 'partners', 'reviews', 'facilities'));
-        } catch (\Exception $e) {
-            \Log::error('HomeController Error: ' . $e->getMessage() . ' | File: ' . $e->getFile() . ' | Line: ' . $e->getLine());
-            return response('Internal Server Error', 500);
-        }
+public function home()
+{
+    try {
+        $sliders = Slider::all()->map(fn($slider) => [
+            'image' => $slider->img ? Storage::url($slider->img) : asset('images/default-slider.jpg'),
+            'text' => htmlspecialchars($slider->title ?? 'بدون عنوان', ENT_QUOTES, 'UTF-8'),
+            'description' => $slider->description ? strip_tags($slider->description) : 'بدون وصف' // Sanitize HTML
+            // Alternative without DOMPurify: 'description' => $slider->description ?? 'بدون وصف'
+        ]);
+        $blogs = Blog::where('show_at_home', true)->take(3)->get();
+        $projects = Project::where('status', 'done')->take(3)->get();
+        $services = Service::take(5)->get();
+        $steps = Step::get()->map(fn($step) => [
+            'icon' => $step->icon ?? '',
+            'name' => $step->name ?? 'مجهول',
+            'description' => strip_tags($step->description) ?? 'بدون وصف'
+        ]);
+        $counters = Counter::all();
+        $partners = Partner::all();
+        $facilities = Facility::take(6)->get();
+        $reviews = Review::take(5)->get()->map(fn($review) => [
+            'icon' => $review->img ? Storage::url($review->img) : asset('images/default-user.jpg'),
+            'name' => $review->name ?? 'مجهول',
+            'title' => $review->title ?? 'بدون عنوان',
+            'description' => $review->description? strip_tags($review->description) : 'بدون وصف'
+        ]);
+
+        return view('home.home', compact('sliders', 'blogs', 'steps', 'services', 'projects', 'counters', 'partners', 'reviews', 'facilities'));
+    } catch (\Exception $e) {
+        \Log::error('HomeController Error: ' . $e->getMessage() . ' | File: ' . $e->getFile() . ' | Line: ' . $e->getLine());
+        return response('Internal Server Error', 500);
     }
-
+}
     public function search(Request $request)
     {
         $query = $request->input('query');
