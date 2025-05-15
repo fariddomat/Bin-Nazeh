@@ -166,4 +166,5 @@ return [
     'price_bank'=>'price_bank',
     'youtube'=>'youtube',
     'code'=>'code',
+    'back'=>'Back',
 ];

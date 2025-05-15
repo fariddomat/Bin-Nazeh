@@ -15,7 +15,7 @@
                         <i
                             class="fas fa-building text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 px-4"></i>
                         <div class="text-center text-white">
-                            <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">فئات المشاريع</h1>
+                            <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">مشاريعنا المتميزة</h1>
                             <p class="text-lg md:text-xl mt-4 animate-slide-in-up">استكشف مجموعتنا المتنوعة من المشاريع
                                 العقارية المبتكرة
                             </p>
@@ -51,9 +51,12 @@
                             class="category-card bg-white rounded-lg shadow-md overflow-hidden text-center opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">
                             <div class="relative p-4">
                                 <div class="gold-border"></div>
+                                <a wire:navigate href="{{ route('projects', $category->id) }}"
+                                    class="text-blue-600 hover:underline">
                                 <img src="{{ $category->img ? Storage::url($category->img) : asset('images/default-category.jpg') }}"
                                     alt="{{ $category->name }}"
-                                    class="w-full h-64 object-cover rounded-lg relative z-10">
+                                    class="w-full h-64 object-cover rounded-lg relative z-10  hover:scale-105 transition-all duration-300 ">
+                                </a>
                             </div>
                             <div class="p-6">
                                 <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $category->name }}</h3>

@@ -7,7 +7,6 @@
             <!-- Dark Overlay with Gradient -->
             <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
             <!-- Who We Are Section -->
-            < Analysis complete. Response continues below.
 
             <div id="who-we-are" x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')" class="mt-32">
                 <div class="container">
@@ -17,15 +16,15 @@
                             <i
                                 class="{{ $about->icon }} text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 px-4"></i>
                             <h2 class="text-4xl md:text-5xl font-bold text-white text-center mt-8 mb-6">من نحن</h2>
-                            <div class="text-white text-lg leading-relaxed text-center">
+                            <div class="text-white text-lg leading-relaxed text-center" style="text-align: justify ">
                                 {!! $about->discription !!}
                             </div>
                             <!-- Centered Button with Pulse -->
                             <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                                 class="mt-8 text-center opacity-0 scale-95">
-                                <a href="#mission"
+                                <a href="{{ route('project-categories') }}"
                                     class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
-                                    استكشف المزيد
+                                    تصفح مشاريعنا
                                 </a>
                             </div>
                         </div>
@@ -40,7 +39,7 @@
         class="bg-gray-100 py-16 opacity-0 translate-y-10">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">الرسالة</h2>
-            @foreach (\App\Models\About::where('name', 'Mission')->get() as $about)
+            @foreach (\App\Models\About::where('name', ['Mission'])->get() as $about)
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                     <!-- Text -->
                     <div x-intersect="$el.classList.add('animate-item', 'fade-in')"
@@ -49,6 +48,14 @@
                         <div class="text-gray-600 text-lg leading-relaxed">
                             {!! $about->discription !!}
                         </div>
+
+                        @foreach (\App\Models\About::where('name', ['Vision'])->get() as $item)
+
+                        <h3 class="text-2xl font-bold text-orange-500 mt-4 mb-4">رؤيتنا</h3>
+                        <div class="text-gray-600 text-lg leading-relaxed">
+                            {!! $item->discription !!}
+                        </div>
+                        @endforeach
                     </div>
                     <!-- Image with Gold Border -->
                     <div x-intersect="$el.classList.add('animate-item', 'fade-in')"
@@ -67,8 +74,8 @@
         class="bg-white py-16 opacity-0 translate-y-10">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">قيمنا وأهدافنا</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                @foreach (\App\Models\About::whereIn('name', ['Vision', 'Values'])->orderBy('sort_id')->get() as $about)
+            <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+                @foreach (\App\Models\About::whereIn('name', ['Values'])->orderBy('sort_id')->get() as $about)
                     <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                         x-intersect:delay="{{ $loop->index * 200 }}"
                         class="value-card bg-white rounded-lg shadow-md p-6 text-center opacity-0 scale-95 hover:scale-105 hover:shadow-xl transition-all duration-300">

@@ -65,4 +65,8 @@ class Project extends Model
     {
         return $this->hasMany(ProjectPdf::class);
     }
+        public function projectPdf2s()
+    {
+        return $this->hasMany(ProjectPdf2::class);
+    }
 }

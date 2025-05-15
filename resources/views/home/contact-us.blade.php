@@ -119,18 +119,18 @@
                     <div class="bg-white p-6 rounded-lg shadow-md relative z-10">
                         <h3 x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             class="text-2xl font-bold text-gray-900 mb-4 opacity-0 scale-95">
-                            لماذا تتواصل مع بن نازح؟
+                            لماذا تتواصل مع بن نازح؟ <br><br>
                         </h3>
                         <p x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             class="text-gray-600 mb-6 opacity-0 scale-95">
-                            فريق بن نازح العقارية مكرس لتقديم دعم استثنائي لعملائنا. عندما تتواصل معنا، ستحصل على:
+                            فريق بن نازح العقارية مكرس لتقديم دعم استثنائي لعملائنا. عندما تتواصل معنا، ستحصل على: <br>
                         </p>
                         <ul x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             class="list-disc list-inside text-gray-600 mb-6 opacity-0 scale-95">
-                            <li>ردود سريعة من فريقنا المتخصص خلال 24 ساعة.</li>
-                            <li>دعم من خبراء عقاريين للإجابة على استفساراتك.</li>
-                            <li>حلول مخصصة تتناسب مع احتياجاتك الاستثمارية أو السكنية.</li>
-                            <li>معلومات حصرية عن مشاريعنا القادمة والفرص المتاحة.</li>
+                            <li>ردود سريعة من فريقنا المتخصص خلال 24 ساعة.</li><br>
+                            <li>دعم من خبراء عقاريين للإجابة على استفساراتك.</li><br>
+                            <li>حلول مخصصة تتناسب مع احتياجاتك الاستثمارية أو السكنية.</li><br>
+                            <li>معلومات حصرية عن مشاريعنا القادمة والفرص المتاحة.</li><br>
                         </ul>
                         <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             class="relative p-4 opacity-0 scale-95">
@@ -138,6 +138,8 @@
                             <img src="{{ asset('images/sections/Contact us section.jpg') }}"
                                 alt="فريق بن نازح العقارية"
                                 class="w-full h-64 object-cover rounded-lg shadow-md relative z-10">
+                                <br>
+                                <br><br>
                         </div>
                     </div>
                 </div>
@@ -161,7 +163,7 @@
                 </a>
                 <a wire:navigate href="{{ route('blogs.index') }}"
                     class="inline-block px-8 py-4 bg-orange-500 text-white font-semibold rounded-md hover:bg-orange-600 transition-all duration-300">
-                    زر المدونة
+                    المدونة
                 </a>
             </div>
         </div>

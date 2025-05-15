@@ -5,15 +5,13 @@
         class="bg-gray-100 py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">
-                تفاصيل الخدمة
+                {{ $service->name }}
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <!-- Text -->
                 <div x-intersect="$el.classList.add('animate-item', 'slide-in-left')"
                     class="opacity-0 translate-x-10">
-                    <h3 class="text-2xl font-bold text-orange-500 mb-4">
-                        {{ $service->name }}
-                    </h3>
+
                     <p class="text-gray-600 text-lg leading-relaxed mb-4">
                         {!! $service->description !!}
                     </p>
@@ -24,7 +22,7 @@
                             @endforeach
                         </ul>
                     @else
-                        <p class="text-gray-600 text-lg">لا توجد ميزات إضافية متاحة لهذه الخدمة.</p>
+
                     @endif
                 </div>
                 <!-- Image with Gold Gradient Border -->
@@ -110,7 +108,7 @@
                          <p x-show="errors.phone" class="text-red-500 text-sm mt-1" x-text="errors.phone"></p>
                      </div>
                      <!-- Project Type -->
-                     <div>
+                     {{-- <div>
                          <label for="project_type" class="block text-gray-900 font-semibold mb-2">نوع المشروع</label>
                          <select id="project_type" x-model="form.project_type"
                              class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-300"
@@ -122,7 +120,7 @@
                              <option value="industrial">صناعي</option>
                          </select>
                          <p x-show="errors.project_type" class="text-red-500 text-sm mt-1" x-text="errors.project_type"></p>
-                     </div>
+                     </div> --}}
                      <!-- Message -->
                      <div>
                          <label for="message" class="block text-gray-900 font-semibold mb-2">رسالتك</label>

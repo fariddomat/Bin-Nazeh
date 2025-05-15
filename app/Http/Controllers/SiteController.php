@@ -199,10 +199,10 @@ public function home()
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'nullable|email|max:255',
             'phone' => 'required|string|regex:/^\d{10}$/',
-            'project_id' => 'required|exists:projects,id',
-            'message' => 'required|string',
+            'project_id' => 'nullable|exists:projects,id',
+            'message' => 'nullable|string',
         ]);
 
         ContactUs::create($validated);
@@ -242,7 +242,7 @@ public function home()
         $validator = Validator::make($request->all(), [
             'service_id' => 'required|exists:services,id',
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'nullable|email|max:255',
             'phone' => 'required|string|max:255',
             'project_type' => 'required|string|max:255',
             'message' => 'nullable|string',

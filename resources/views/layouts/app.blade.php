@@ -204,9 +204,9 @@
                         <x-responsive-nav-link href="{{ route('dashboard.whies.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.whies.')">
                             @lang('site.whies') <i class="fas fa-question-circle"></i>
                         </x-responsive-nav-link>
-                        <x-responsive-nav-link href="{{ route('dashboard.certificates.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.certificates.')">
+                        {{-- <x-responsive-nav-link href="{{ route('dashboard.certificates.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.certificates.')">
                             @lang('site.certificates') <i class="fas fa-certificate"></i>
-                        </x-responsive-nav-link>
+                        </x-responsive-nav-link> --}}
                         <x-responsive-nav-link href="{{ route('dashboard.reviews.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.reviews.')">
                             @lang('site.reviews') <i class="fas fa-star"></i>
                         </x-responsive-nav-link>
@@ -237,7 +237,7 @@
                             @lang('site.news_letters') <i class="fas fa-newspaper"></i>
                         </x-responsive-nav-link>
                         <x-responsive-nav-link href="{{ route('dashboard.careers.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.careers.')">
-                            @lang('site.careers') <i class="fas fa-briefcase"></i>
+                            تسجيل الاهتمامات <i class="fas fa-briefcase"></i>
                         </x-responsive-nav-link>
                         <x-responsive-nav-link href="{{ route('dashboard.contact_uses.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.contact_uses.')">
                             @lang('site.contact_us') <i class="fas fa-address-book"></i>
@@ -246,7 +246,7 @@
                 </details>
 
                 <!-- SEO Group -->
-                {{-- @php
+                @php
                     $isSeoActive = Str::startsWith(request()->route()->getName(), [
                         'dashboard.meta_tags.',
                         'dashboard.redirects.',
@@ -261,11 +261,11 @@
                         <x-responsive-nav-link href="{{ route('dashboard.meta_tags.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.meta_tags.')">
                             @lang('site.meta_tags') <i class="fas fa-tags"></i>
                         </x-responsive-nav-link>
-                        <x-responsive-nav-link href="{{ route('dashboard.redirects.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.redirects.')">
+                        {{-- <x-responsive-nav-link href="{{ route('dashboard.redirects.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.redirects.')">
                             @lang('site.redirects') <i class="fas fa-link"></i>
-                        </x-responsive-nav-link>
+                        </x-responsive-nav-link> --}}
                     </div>
-                </details> --}}
+                </details>
 
                 <!-- Pages Group -->
                 @php

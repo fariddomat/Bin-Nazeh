@@ -53,7 +53,7 @@
                             <!-- Image -->
                             <div class="relative">
                                 <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
-                                    alt="{{ $project->name }}" class="w-full h-64 object-cover rounded-t-inherit">
+                                    alt="{{ $project->name }}" class="w-full h-64 object-cover rounded-t-inherit  hover:scale-105 transition-all duration-300 ">
                                 <!-- Status Badge -->
                                 <span
                                     class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
@@ -111,7 +111,7 @@
                 مستعد لاستكشاف المزيد؟
             </h2>
             <p class="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
-                تواصل مع بن نازح لمعرفة المزيد عن مشاريعنا العقارية المبتكرة!
+                تواصل مع فريق المبيعات لمعرفة المزيد عن مشاريعنا العقارية المبتكرة!
             </p>
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                 class="opacity-0 scale-95">

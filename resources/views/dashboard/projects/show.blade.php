@@ -19,6 +19,10 @@
                         class="inline-block px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-700">
                         @lang('site.download_pdf')
                     </a>
+                     <a href="{{ route('dashboard.projects.project_pdf2s.index', $project) }}"
+                        class="inline-block px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-700">
+                        التصاميم ثلاثية الابعاد
+                    </a>
                 </div>
             </div>
             <div class="mb-4">

@@ -99,10 +99,10 @@
                 <select name="status" class="w-full border border-gray-300 rounded p-2">
                     <option value="">@lang('site.select_status')</option>
                     <option value="not_started"
-                        {{ old('status', $project->status) == 'not_started' ? 'selected' : '' }}>not_started</option>
+                        {{ old('status', $project->status) == 'not_started' ? 'selected' : '' }}>لم يبدأ</option>
                     <option value="pending" {{ old('status', $project->status) == 'pending' ? 'selected' : '' }}>
-                        pending</option>
-                    <option value="done" {{ old('status', $project->status) == 'done' ? 'selected' : '' }}>done
+                        قيد التطوير</option>
+                    <option value="done" {{ old('status', $project->status) == 'done' ? 'selected' : '' }}>منتهي
                     </option>
 
                 </select>
@@ -141,7 +141,7 @@
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
-            
+
         <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-700">
             @lang('site.update')
         </button>

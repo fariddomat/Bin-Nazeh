@@ -170,3 +170,9 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
     Route::post('projects/{project}/project_pdfs/{projectPdf}/restore', [\App\Http\Controllers\Dashboard\ProjectPdfController::class, 'restore'])
         ->name('projects.project_pdfs.restore');
 });
+Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
+    Route::resource('projects.project_pdf2s', \App\Http\Controllers\Dashboard\ProjectPdf2Controller::class)
+        ->parameters(['projects' => 'project', 'project_pdf2s' => 'projectPdf2']);
+    Route::post('projects/{project}/project_pdf2s/{projectPdf}/restore', [\App\Http\Controllers\Dashboard\ProjectPdf2Controller::class, 'restore'])
+        ->name('projects.project_pdfs.restore');
+});

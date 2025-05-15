@@ -93,10 +93,10 @@
                 <label class="block text-sm font-medium text-gray-700">@lang('site.status')</label>
                 <select name="status" class="w-full border border-gray-300 rounded p-2">
                     <option value="">@lang('site.select_status')</option>
-                    <option value="not_started" {{ old('status') == 'not_started' ? 'selected' : '' }}>not_started
+                    <option value="not_started" {{ old('status') == 'not_started' ? 'selected' : '' }}>لم يبدأ
                     </option>
-                    <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>pending</option>
-                    <option value="done" {{ old('status') == 'done' ? 'selected' : '' }}>done</option>
+                    <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>قيد التطوير</option>
+                    <option value="done" {{ old('status') == 'done' ? 'selected' : '' }}>منتهي</option>
 
                 </select>
                 @error('status')
@@ -133,7 +133,7 @@
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
-           
+
             <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-700">
                 @lang('site.create')
             </button>

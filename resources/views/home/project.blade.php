@@ -23,7 +23,7 @@
                         <!-- Centered Button with Pulse -->
                         <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                             class="mt-8 text-center opacity-0 scale-95">
-                            <a href="#mission"
+                            <a href="{{ route('contact') }}"
                                 class="inline-block px-8 py-4 bg-white text-black font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300">
                                 استكشف المزيد
                             </a>
@@ -55,7 +55,7 @@
                         </li>
                         <li>
                             <i class="fas fa-building text-orange-500 mr-2"></i>
-                            <strong>عدد الطوابق:</strong> {{ $project->floors_count ?? 'غير محدد' }}
+                            <strong>عدد الأدوار:</strong> {{ $project->floors_count ?? 'غير محدد' }}
                         </li>
                         <li>
                             <i class="fas fa-calendar-alt text-orange-500 mr-2"></i>
@@ -100,24 +100,34 @@
                         @endif
                     </ul>
                     <!-- PDF Download Button -->
-                    <div class="mt-6">
-                        @if ($project->projectPdfs->isNotEmpty())
-                            <div class="flex flex-wrap gap-4">
+
+                </div>
+                <!-- Image -->
+                <div x-intersect="$el.classList.add('animate-item', 'fade-in')" class="opacity-0 relative">
+                    <div class="mb-6">
+                        <div class="flex flex-wrap gap-4">
+                            @if ($project->projectPdfs->isNotEmpty())
                                 @foreach ($project->projectPdfs as $index => $pdf)
                                     <a href="{{ Storage::url($pdf->file) }}" download
                                         class="inline-block px-6 py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-orange-500 transition-all duration-300">
                                         <i class="fas fa-file-pdf mr-2"></i> تحميل البروشور #{{ $index + 1 }}
                                     </a>
                                 @endforeach
-                            </div>
-                        @else
-                            <p class="text-gray-600"><i class="fas fa-exclamation-circle mr-2"></i> لا توجد ملفات PDF
-                                متاحة</p>
-                        @endif
+                            @else
+
+                            @endif
+                            @if ($project->projectPdf2s->isNotEmpty())
+                                @foreach ($project->projectPdf2s as $index => $pdf)
+                                    <a href="{{ Storage::url($pdf->file) }}" download
+                                        class="inline-block px-6 py-3 bg-blue-900 text-white font-semibold rounded-lg hover:bg-orange-500 transition-all duration-300">
+                                        <i class="fas fa-file-pdf mr-2"></i> تحميل تصميم ثلاثي الأبعاد #{{ $index + 1 }}
+                                    </a>
+                                @endforeach
+                            @else
+
+                            @endif
+                        </div>
                     </div>
-                </div>
-                <!-- Image -->
-                <div x-intersect="$el.classList.add('animate-item', 'fade-in')" class="opacity-0 relative">
                     <div class="relative rounded-lg overflow-hidden shadow-lg">
                         <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
                             alt="{{ $project->name }}"
@@ -148,7 +158,7 @@
         class="bg-gray-50 py-16 opacity-0 translate-y-10">
         <div class="container">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12">
-                <i class="fas fa-home text-orange-500 mr-2"></i> الشقق المتوفرة
+                <i class="fas fa-home text-orange-500 mr-2"></i> نماذج الوحدات السكنية
             </h2>
             @if ($project->apartments->isNotEmpty())
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -168,7 +178,7 @@
                             <div class="text-gray-600 mt-2 space-y-2">
                                 <p>
                                     <i class="fas fa-key text-orange-500 mr-2"></i>
-                                    الكود: {{ $apartment->code ?? 'غير محدد' }}
+                                    رمز النموذج: {{ $apartment->code ?? 'غير محدد' }}
                                 </p>
                                 <p>
                                     <i class="fas fa-ruler-combined text-orange-500 mr-2"></i>
@@ -227,16 +237,7 @@
                                     @endif
                                 </div>
                                 <!-- Virtual Tour -->
-                                <p>
-                                    <i class="fas fa-vr-cardboard text-orange-500 mr-2"></i>
-                                    <strong>جولة افتراضية:</strong>
-                                    @if ($apartment->virtual_location)
-                                        <a href="{{ $apartment->virtual_location }}" target="_blank"
-                                            class="text-blue-600 hover:underline">عرض الجولة الافتراضية</a>
-                                    @else
-                                        غير متاح
-                                    @endif
-                                </p>
+
                                 <!-- YouTube Video -->
                                 <div>
                                     <i class="fab fa-youtube text-orange-500 mr-2"></i>
@@ -334,7 +335,7 @@
                 <i class="fas fa-question-circle text-orange-500 mr-2"></i> هل أنت مهتم بهذا المشروع؟
             </h2>
             <p class="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
-                تواصل مع بن نازح للحصول على مزيد من المعلومات أو لطلب استشارة.
+                تواصل مع فريق المبيعات للحصول على مزيد من المعلومات أو لطلب استشارة.
             </p>
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                 class="opacity-0 scale-95">
@@ -472,10 +473,12 @@
 
             max-width: -webkit-fill-available;
         }
-                /* Responsive Table Styles */
-                .table-responsive {
+
+        /* Responsive Table Styles */
+        .table-responsive {
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            -webkit-overflow-scrolling: touch;
+            /* Smooth scrolling on iOS */
         }
 
         table {
@@ -485,9 +488,11 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px 16px;
-            text-align: right; /* RTL support */
+            text-align: right;
+            /* RTL support */
             border-bottom: 1px solid #e5e7eb;
             font-size: 1rem;
         }
@@ -505,97 +510,101 @@
         tr:hover {
             background-color: #f3f4f6;
         }
-
-
-
     </style>
 
 
-<style>
-/* Guarantees Section */
-.guarantees-section {
-    padding: 3rem 0;
-    background-color: #f9fafb; /* Light gray background */
-    text-align: center;
-}
+    <style>
+        /* Guarantees Section */
+        .guarantees-section {
+            padding: 3rem 0;
+            background-color: #f9fafb;
+            /* Light gray background */
+            text-align: center;
+        }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
 
-.section-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #1f2937; /* Dark gray */
-    margin-bottom: 2rem;
-}
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            /* Dark gray */
+            margin-bottom: 2rem;
+        }
 
-.guarantees-list {
-    display: grid;
-    grid-template-columns: 1fr; /* 1 column on mobile */
-    gap: 1rem;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
+        .guarantees-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            /* 1 column on mobile */
+            gap: 1rem;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
 
-.guarantees-list li {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    background-color: #ffffff;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-size: 1.125rem;
-    color: #374151; /* Dark gray text */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
+        .guarantees-list li {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: #ffffff;
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 1.125rem;
+            color: #374151;
+            /* Dark gray text */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
 
-.guarantees-list li:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
+        .guarantees-list li:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
 
-.guarantees-list li i {
-    color: #f97316; /* Theme orange */
-    margin-right: 0.75rem;
-    font-size: 1.25rem;
-}
+        .guarantees-list li i {
+            color: #f97316;
+            /* Theme orange */
+            margin-right: 0.75rem;
+            font-size: 1.25rem;
+        }
 
-/* RTL Support */
-html[dir="rtl"] .guarantees-list li {
-    justify-content: flex-end;
-}
+        /* RTL Support */
+        html[dir="rtl"] .guarantees-list li {
+            justify-content: flex-end;
+        }
 
-html[dir="rtl"] .guarantees-list li i {
-    margin-right: 0;
-    margin-left: 0.75rem;
-}
+        html[dir="rtl"] .guarantees-list li i {
+            margin-right: 0;
+            margin-left: 0.75rem;
+        }
 
-/* Responsive Design */
-@media (min-width: 640px) {
-    .guarantees-list {
-        grid-template-columns: repeat(2, 1fr); /* 2 columns on small screens */
-    }
-}
+        /* Responsive Design */
+        @media (min-width: 640px) {
+            .guarantees-list {
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 columns on small screens */
+            }
+        }
 
-@media (min-width: 1024px) {
-    .guarantees-list {
-        grid-template-columns: repeat(3, 1fr); /* 3 columns on desktop */
-    }
+        @media (min-width: 1024px) {
+            .guarantees-list {
+                grid-template-columns: repeat(3, 1fr);
+                /* 3 columns on desktop */
+            }
 
-    .section-title {
-        font-size: 2.5rem;
-    }
+            .section-title {
+                font-size: 2.5rem;
+            }
 
-    .guarantees-list li {
-        font-size: 1.25rem;
-    }
-}
-</style>
+            .guarantees-list li {
+                font-size: 1.25rem;
+            }
+        }
+    </style>
     <!-- Alpine.js and Parallax Script -->
     <script>
         document.addEventListener('alpine:init', () => {

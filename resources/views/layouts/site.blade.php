@@ -71,8 +71,10 @@
             <div class="container flex justify-between items-center">
                 <!-- Logo and Name -->
                 <div class="flex items-center space-x-2 space-x-reverse">
-                    <img src="{{ asset('logo/bin nazeh 3.png') }}" alt="Bin Nazeh Logo"
+                   <a href="{{ route('home') }}">
+                     <img src="{{ asset('logo/bin nazeh 3.png') }}" alt="Bin Nazeh Logo"
                         class="header-logo h-20 md:h-[9rem] w-20 md:w-[9rem] md:pt-8 transition-transform duration-300" />
+                   </a>
                 </div>
 
                 <!-- Desktop Navigation -->
@@ -257,8 +259,8 @@
         <footer class="footer py-12">
             <div class="container grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Column 1: Logo and Company Info -->
-                <div>
-                    <img src="{{ asset('logo/bin nazeh 3.png') }}" alt="Bin Nazeh Logo" class="h-24 w-24 mb-4" />
+                <div><a href="{{ route('home') }}">
+                    <img src="{{ asset('logo/bin nazeh 3.png') }}" alt="Bin Nazeh Logo" class="h-24 w-24 mb-4" /></a>
                     <h3 class="text-xl font-bold mb-2">{{ $info->name }}</h3>
                     <p class="text-gray-300">
                         {{ strip_tags($info->description) }}
@@ -268,32 +270,19 @@
                 <!-- Column 2: Quick Links -->
                 <div>
                     <h3 class="text-xl font-bold mb-4">روابط سريعة</h3>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <ul class="space-y-2">
-                                <li><a href="{{ route('home') }}" class="hover:text-gray-300" wire:navigate
-                                        aria-label="home">الرئيسية</a></li>
-                                <li><a href="{{ route('about') }}" class="hover:text-gray-300" wire:navigate
-                                        aria-label="about">نبذة
-                                        عنا</a></li>
-                                <li><a href="{{ route('services') }}" class="hover:text-gray-300" wire:navigate
-                                        aria-label="services">خدماتنا</a></li>
-                                <li><a href="{{ route('privacy') }}" class="hover:text-gray-300" wire:navigate
-                                        aria-label="privacy">سياسة الخصوصية</a></li>
-                            </ul>
-                        </div>
+                    <div class="grid grid-cols-1 gap-4">
+
                         <div>
                             <ul class="space-y-2">
                                 <li><a href="{{ route('register-interest') }}" class="hover:text-gray-300"
                                         wire:navigate aria-label="register interest">سجل اهتمامك</a></li>
-                                <li><a href="{{ route('blogs.index') }}" class="hover:text-gray-300" wire:navigate
-                                        aria-label="blogs">الأخبار</a></li>
-                                <li><a href="{{ route('contact') }}" class="hover:text-gray-300" wire:navigate
-                                        aria-label="contact">تواصل
-                                        معنا</a></li>
+                                <li><a href="{{ route('project-categories') }}" class="hover:text-gray-300" wire:navigate
+                                        aria-label="blogs">آخر مشاريعنا</a></li>
+                                 <li><a href="{{ route('privacy') }}" class="hover:text-gray-300" wire:navigate
+                                        aria-label="privacy">سياسة الخصوصية</a></li>
                                 <li><a href="{{ route('terms') }}" class="hover:text-gray-300" wire:navigate
                                         aria-label="terms">الشروط والأحكام
-                                        معنا</a></li>
+                                        </a></li>
                             </ul>
                         </div>
                     </div>
@@ -328,7 +317,7 @@
                                 href="tel:{{ $info->phone_1 }}">{{ $info->phone_1 }}</a></li>
                         <li><i class="fas fa-envelope mr-2"></i> <a
                                 href="mailto:{{ $info->email }}">{{ $info->email }}</a></li>
-                        <li><i class="fas fa-map-marker-alt mr-2"></i> {{ $info->location }}</li>
+                        <li><i class="fas fa-map-marker-alt mr-2"></i> <a href="https://maps.app.goo.gl/A4gsfTKovA1jVgni8"> {{ $info->location }}</a></li>
                     </ul>
                     <div class="mt-4 flex space-x-4 space-x-reverse">
                         @foreach (\App\Models\SocialMedia::all() as $item)

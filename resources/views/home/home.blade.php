@@ -54,40 +54,41 @@
     {{-- Partners Section --}}
     <section x-data="{
         pause: false,
-        direction: 'right-to-left', // Tracks direction for CSS
+        direction: 'right-to-left',
         toggleDirection() {
-            console.log('Toggling direction from:', this.direction); // Debug
+            console.log('Toggling direction from:', this.direction);
             this.direction = this.direction === 'right-to-left' ? 'left-to-right' : 'right-to-left';
         }
-    }" class="bg-gradient-to-b from-gray-900 to-gray-800 py-12 overflow-hidden">
+    }" class="relative bg-gradient-to-b from-gray-900 to-gray-800 py-12 overflow-hidden"
+        style="background-image: url({{ asset('pattern.jpg') }}); background-size: 100px 100px;">
         <div class="container mx-auto px-4 text-center">
             <!-- Title -->
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-10 tracking-tight transition-transform duration-500 ease-in-out transform hover:scale-105">
+            <h2
+                class="text-3xl md:text-4xl font-bold text-black mb-10 tracking-tight transition-transform duration-500 ease-in-out transform hover:scale-105">
                 شركاؤنا
             </h2>
 
             <!-- Slider -->
             <div class="relative overflow-hidden">
-                <div x-ref="track"
-                     @mouseenter="pause = true"
-                     @mouseleave="pause = false"
-                     @touchstart="pause = true"
-                     @touchend="pause = false"
-                     :class="{
-                         'animate-slide-right-to-left': direction === 'right-to-left' && !pause,
-                         'animate-slide-left-to-right': direction === 'left-to-right' && !pause
-                     }"
-                     class="flex w-max gap-8 md:gap-12">
+                <div x-ref="track" @mouseenter="pause = true" @mouseleave="pause = false" @touchstart="pause = true"
+                    @touchend="pause = false"
+                    :class="{
+                        'animate-slide-right-to-left': direction === 'right-to-left' && !pause,
+                        'animate-slide-left-to-right': direction === 'left-to-right' && !pause
+                    }"
+                    class="flex w-max gap-8 md:gap-12">
                     <!-- Triplicate content for seamless looping -->
                     @foreach ([1, 2, 3] as $cycle)
-                        @foreach ($partners as $index=>$partner)
+                        @foreach ($partners as $index => $partner)
                             <div class="flex-shrink-0">
-                                <img src="{{ Storage::url($partner->img) }}"
-                                     alt="{{ $partner->name ?? 'Partner' }}"
-                                     class="w-full max-w-[100px] sm:max-w-[140px] md:max-w-32 lg:max-w-32 h-full rounded-md grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300"
-                                    :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
-                                        === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
-                                        !== '0' }">
+                                <img src="{{ Storage::url($partner->img) }}" alt="{{ $partner->name ?? 'Partner' }}"
+                                    class="w-full max-w-[100px] sm:max-w-[140px] md:max-w-32 lg:max-w-32 h-full rounded-md border grayscale hover:grayscale-0 hover:scale-110 transition-all duration-300"
+                                    :class="{
+                                        'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                                        === '0',
+                                        'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                                        !== '0'
+                                    }">
                             </div>
                         @endforeach
                     @endforeach
@@ -95,55 +96,71 @@
             </div>
         </div>
     </section>
-
     <style>
-    /* CSS animations for bidirectional scrolling */
-    .animate-slide-right-to-left {
-        animation: slide-right-to-left 20s linear infinite;
-    }
-    .animate-slide-left-to-right {
-        animation: slide-left-to-right 20s linear infinite;
-    }
-    @keyframes slide-right-to-left {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(-33.333%); } /* Move by 1/3 due to triplicated content */
-    }
-    @keyframes slide-left-to-right {
-        0% { transform: translateX(-33.333%); }
-        100% { transform: translateX(0); }
-    }
-    /* Pause animation when needed */
-    [x-ref="track"] {
-        will-change: transform;
-    }
+        /* CSS animations for bidirectional scrolling */
+        .animate-slide-right-to-left {
+            animation: slide-right-to-left 20s linear infinite;
+        }
+
+        .animate-slide-left-to-right {
+            animation: slide-left-to-right 20s linear infinite;
+        }
+
+        @keyframes slide-right-to-left {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-33.333%);
+            }
+
+            /* Move by 1/3 due to triplicated content */
+        }
+
+        @keyframes slide-left-to-right {
+            0% {
+                transform: translateX(-33.333%);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* Pause animation when needed */
+        [x-ref="track"] {
+            will-change: transform;
+        }
     </style>
 
     <script>
-    // JavaScript to toggle direction at the end of each animation cycle
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('slider', () => ({
-            pause: false,
-            direction: 'right-to-left',
-            init() {
-                console.log('Slider initialized'); // Debug
-                const track = this.$refs.track;
-                if (!track) {
-                    console.error('Track not found');
-                    return;
-                }
-                track.addEventListener('animationiteration', () => {
-                    if (!this.pause) {
-                        console.log('Animation iteration, toggling direction'); // Debug
-                        this.direction = this.direction === 'right-to-left' ? 'left-to-right' : 'right-to-left';
+        // JavaScript to toggle direction at the end of each animation cycle
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('slider', () => ({
+                pause: false,
+                direction: 'right-to-left',
+                init() {
+                    console.log('Slider initialized'); // Debug
+                    const track = this.$refs.track;
+                    if (!track) {
+                        console.error('Track not found');
+                        return;
                     }
-                });
-            }
-        }));
-    });
+                    track.addEventListener('animationiteration', () => {
+                        if (!this.pause) {
+                            console.log('Animation iteration, toggling direction'); // Debug
+                            this.direction = this.direction === 'right-to-left' ?
+                                'left-to-right' : 'right-to-left';
+                        }
+                    });
+                }
+            }));
+        });
     </script>
     <!-- Video Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-scale')"
-        class="relative h-screen bg-gray-900 opacity-0 scale-95">
+        class="relative h-screen max-h-[100vh] bg-gray-900 opacity-0 scale-95">
         <video x-ref="video" class="w-full h-full object-cover" autoplay muted loop playsinline loading="lazy">
             <source src="{{ asset('videos/intro.mp4') }}" type="video/mp4">
             متصفحك لا يدعم تشغيل الفيديو.
@@ -161,190 +178,225 @@
     </section>
 
     {{-- Project Steps Section --}}
-@php
-$index = 0;
-@endphp
-<section x-data="stepSlider({{ Js::from($steps) }})" x-init="init()" @resize.window="updateChunking()"
-@mouseenter="stopAutoSlide()" @mouseleave="startAutoSlide()"
-class="relative py-20 bg-fixed bg-center bg-cover opacity-0 translate-y-10 animate-section fade-in-slide-up"
-style="background-image: url('{{ asset('images/sections/Project hero.jpg') }}')"
-x-intersect="$el.classList.add('opacity-100', 'translate-y-0')">
-<!-- Overlay -->
-<div class="absolute inset-0 bg-white bg-opacity-60 backdrop-blur-sm"></div>
+    @php
+        $index = 0;
+    @endphp
+    <section x-data="cardSlider({{ Js::from($steps) }})" x-init="init()" @resize.window="updateSlider()"
+        class="relative py-20 bg-fixed bg-center bg-cover opacity-0 translate-y-10 animate-section fade-in-slide-up"
+        style="background-image: url('{{ asset('images/sections/Project hero.jpg') }}')"
+        x-intersect="$el.classList.add('opacity-100', 'translate-y-0')" dir="rtl">
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-white bg-opacity-60 backdrop-blur-sm"></div>
 
-<div class="container relative z-10">
-    <!-- Title -->
-    <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-14">
-        مراحل تطوير المشروع العقاري في بن نازح
-    </h2>
+        <div class="container relative z-10 px-4 md:px-6">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl font-bold text-center text-gray-900 mb-14">
+                مراحل تطوير المشروع العقاري في بن نازح
+            </h2>
 
-    <!-- Step Groups -->
-    <div class="relative" x-ref="slider"
-         @pointerdown="startDrag($event)"
-         @pointermove="handleDrag($event)"
-         @pointerup="endDrag()"
-         @pointercancel="endDrag()">
-        <template x-for="(group, index) in chunkedSteps" :key="index">
-            <div x-show="currentChunk === index" x-transition:enter="transition ease-out duration-700"
-                 class="grid gap-8 sm:grid-cols-1 md:grid-cols-3" style="cursor: pointer !important">
-                <template x-for="(step, stepIndex) in group" :key="stepIndex">
-                    <div class="text-center bg-white bg-opacity-80 rounded-lg p-6 shadow-md" :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}' === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}' !== '0' }">
-                        <div class="flex items-center justify-center mb-4">
-                            <div class="w-16 h-16 bg-orange-500 text-white flex items-center justify-center rounded-full text-2xl">
-                                <i :class="`fas ${step.icon}`"></i>
+            <!-- Slider -->
+            <div class="relative overflow-hidden" x-ref="slider" @mousedown="startDrag($event)"
+                @mousemove="handleDrag($event)" @mouseup="endDrag()" @mouseleave="endDrag()"
+                @touchstart="startDrag($event)" @touchmove="handleDrag($event)" @touchend="endDrag()">
+                <div class="flex w-max gap-6 md:gap-8 transition-transform duration-300 ease-out"
+                    :style="`transform: translateX(${translateX}px)`" x-ref="track" style="direction: ltr;">
+                    <!-- Duplicate steps for seamless looping -->
+                    <template x-for="cycle in [1, 2, 3]" :key="cycle">
+                        <template x-for="(step, stepIndex) in steps" :key="stepIndex">
+                            <div class="flex-shrink-0 w-[280px] md:w-[320px] text-center bg-white bg-opacity-80 rounded-lg p-6 shadow-md transition-transform duration-300"
+                                :class="{
+                                    'scale-105 z-10': isActive(stepIndex, cycle),
+                                    'scale-95 opacity-80': !isActive(stepIndex, cycle),
+                                    'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                                    === '0',
+                                    'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                                    !== '0'
+                                }">
+                                <div class="flex items-center justify-center mb-4">
+                                    <div
+                                        class="w-16 h-16 bg-orange-500 text-white flex items-center justify-center rounded-full text-2xl">
+                                        <i :class="`fas ${step.icon}`"></i>
+                                    </div>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-800 mb-2" x-text="step.name"></h3>
+                                <p class="text-gray-600 text-base leading-relaxed" style="text-align: justify;" x-text="step.description"></p>
                             </div>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-800 mb-2" x-text="step.name"></h3>
-                        <p class="text-gray-600 text-base leading-relaxed" x-text="step.description"></p>
-                    </div>
+                        </template>
+                    </template>
+                </div>
+
+                <!-- Navigation Arrows -->
+                <div class="absolute top-1/2 right-0 transform -translate-y-1/2 z-20">
+                    <button @click="prevCard"
+                        class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="absolute top-1/2 left-0 transform -translate-y-1/2 z-20">
+                    <button @click="nextCard"
+                        class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dots -->
+            <div class="flex justify-center mt-10 space-x-2 space-x-reverse">
+                <template x-for="(step, index) in steps" :key="index">
+                    <button @click="goToCard(index)"
+                        :class="{
+                            'bg-orange-500 w-4 h-4': Math.abs(currentIndex % steps.length - index) < 0.5,
+                            'bg-gray-400 w-3 h-3': Math.abs(currentIndex % steps.length - index) >= 0.5
+                        }"
+                        class="rounded-full transition-all duration-300 focus:outline-none"></button>
                 </template>
             </div>
-        </template>
-
-        <!-- Navigation Arrows (Commented Out) -->
-        {{-- <div class="absolute top-1/2 left-0 transform -translate-y-1/2 z-20">
-            <button @click="prevChunk"
-                class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
-                <i class="fas fa-chevron-right transform rotate-180"></i>
-            </button>
         </div>
-        <div class="absolute top-1/2 right-0 transform -translate-y-1/2 z-20">
-            <button @click="nextChunk"
-                class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
-                <i class="fas fa-chevron-right"></i>
-            </button>
-        </div> --}}
-    </div>
-
-    <!-- Dots -->
-    <div class="flex justify-center mt-10 space-x-2">
-        <template x-for="(group, index) in chunkedSteps" :key="index">
-            <button @click="current_CHUNK = index"
-                :class="{
-                    'bg-orange-500 w-4 h-4': currentChunk === index,
-                    'bg-gray-400 w-3 h-3': currentChunk !== index
-                }"
-                class="rounded-full transition-all duration-300 focus:outline-none"></button>
-        </template>
-    </div>
-</div>
-</section>
-
-<script>
-document.addEventListener('alpine:init', () => {
-Alpine.data('stepSlider', (steps) => ({
-    steps: steps,
-    chunkedSteps: [],
-    currentChunk: 0,
-    autoSlideInterval: null,
-    isDragging: false,
-    startX: 0,
-    dragDistance: 0,
-    dragThreshold: 100, // Pixels to trigger chunk change
-    init() {
-        this.updateChunking();
-        this.startAutoSlide();
-    },
-    updateChunking() {
-        const width = window.innerWidth;
-        const itemsPerChunk = width < 768 ? 1 : 3; // 1 for mobile, 3 for desktop
-        this.chunkedSteps = [];
-        for (let i = 0; i < this.steps.length; i += itemsPerChunk) {
-            this.chunkedSteps.push(this.steps.slice(i, i + itemsPerChunk));
-        }
-        // Reset currentChunk if it exceeds new chunk count
-        if (this.currentChunk >= this.chunkedSteps.length) {
-            this.currentChunk = this.chunkedSteps.length - 1;
-        }
-    },
-    startAutoSlide() {
-        if (this.autoSlideInterval) clearInterval(this.autoSlideInterval);
-        this.autoSlideInterval = setInterval(() => {
-            this.nextChunk();
-        }, 5000); // Auto-slide every 5 seconds
-    },
-    stopAutoSlide() {
-        if (this.autoSlideInterval) clearInterval(this.autoSlideInterval);
-    },
-    nextChunk() {
-        this.currentChunk = (this.currentChunk + 1) % this.chunkedSteps.length;
-    },
-    prevChunk() {
-        this.currentChunk = (this.currentChunk - 1 + this.chunkedSteps.length) % this.chunkedSteps.length;
-    },
-    startDrag(event) {
-        this.isDragging = true;
-        this.startX = event.clientX || event.touches?.[0]?.clientX;
-        this.dragDistance = 0;
-        this.stopAutoSlide();
-    },
-    handleDrag(event) {
-        if (!this.isDragging) return;
-        const currentX = event.clientX || event.touches?.[0]?.clientX;
-        this.dragDistance = this.startX - currentX; // Positive for left drag, negative for right
-    },
-    endDrag() {
-        if (!this.isDragging) return;
-        this.isDragging = false;
-        if (Math.abs(this.dragDistance) > this.dragThreshold) {
-            if (this.dragDistance > 0) {
-                this.nextChunk(); // Dragged left, go to next chunk
-            } else {
-                this.prevChunk(); // Dragged right, go to previous chunk
-            }
-        }
-        this.startAutoSlide();
-    }
-}));
-});
-</script>
-
-<style>
-/* Ensure slider is touch-friendly */
-[x-ref="slider"] {
-touch-action: pan-y; /* Allow vertical scrolling while swiping horizontally */
-user-select: none; /* Prevent text selection during drag */
-}
-</style>
-
-    <!-- Alpine.js Script -->
+    </section>
     <script>
-        function stepSlider(stepsFromLaravel) {
-            return {
-                steps: stepsFromLaravel,
-                chunkedSteps: [],
-                currentChunk: 0,
-                interval: null,
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('cardSlider', (steps) => ({
+                steps: steps,
+                currentIndex: steps.length, // Start in the second cycle
+                cardWidth: 280, // Default for mobile
+                gap: 24, // Gap between cards (6 * 4 for rem to px)
+                translateX: 0,
+                isDragging: false,
+                startX: 0,
+                startTranslateX: 0,
+                velocity: 0,
+                lastTime: 0,
+                autoSlideInterval: null,
+
                 init() {
-                    this.updateChunking();
+                    this.updateSlider();
                     this.startAutoSlide();
                 },
-                updateChunking() {
-                    const chunkSize = window.innerWidth >= 768 ? 3 : 1;
-                    this.chunkedSteps = [];
-                    for (let i = 0; i < this.steps.length; i += chunkSize) {
-                        this.chunkedSteps.push(this.steps.slice(i, i + chunkSize));
+
+                updateSlider() {
+                    const slider = this.$refs.slider;
+                    const track = this.$refs.track;
+                    this.cardWidth = window.innerWidth >= 768 ? 320 : 280; // Adjust for md breakpoint
+                    this.gap = window.innerWidth >= 768 ? 32 : 24; // Adjust gap for md breakpoint
+                    this.translateX = this.currentIndex * (this.cardWidth + this.gap);
+                    track.style.transform = `translateX(${this.translateX}px)`;
+                    this.snapToNearestCard();
+                },
+
+                isActive(stepIndex, cycle) {
+                    const totalSteps = this.steps.length;
+                    const offset = (cycle - 1) * totalSteps;
+                    const normalizedIndex = (stepIndex + offset) % totalSteps;
+                    return Math.abs(this.currentIndex % totalSteps - normalizedIndex) < 0.5;
+                },
+
+                startDrag(event) {
+                    this.isDragging = true;
+                    this.startX = event.pageX || (event.touches && event.touches[0].pageX);
+                    this.startTranslateX = this.translateX;
+                    this.velocity = 0;
+                    this.lastTime = Date.now();
+                    this.stopAutoSlide();
+                    this.$refs.track.style.transition = 'none';
+                },
+
+                handleDrag(event) {
+                    if (!this.isDragging) return;
+                    event.preventDefault(); // Prevent text selection on drag
+                    const currentX = event.pageX || (event.touches && event.touches[0].pageX);
+                    const diff = this.startX -
+                    currentX; // Positive diff means drag left (visual right in RTL)
+                    this.translateX = this.startTranslateX +
+                    diff; // RTL: drag left increases translateX
+                    this.$refs.track.style.transform = `translateX(${this.translateX}px)`;
+
+                    // Calculate velocity for inertia
+                    const currentTime = Date.now();
+                    const timeDelta = currentTime - this.lastTime;
+                    if (timeDelta > 0) {
+                        this.velocity = (diff / timeDelta) * 1000; // Pixels per second
+                        this.lastTime = currentTime;
                     }
-                    this.currentChunk = 0;
                 },
+
+                endDrag() {
+                    if (!this.isDragging) return;
+                    this.isDragging = false;
+                    this.$refs.track.style.transition = 'transform 0.3s ease-out';
+
+                    // Apply inertia
+                    const inertia = this.velocity * 0.1; // Adjust multiplier for inertia strength
+                    this.translateX += inertia;
+                    this.snapToNearestCard();
+
+                    this.startAutoSlide();
+                },
+
+                snapToNearestCard() {
+                    const totalSteps = this.steps.length;
+                    const cardDistance = this.cardWidth + this.gap;
+                    this.currentIndex = Math.round(this.translateX / cardDistance);
+
+                    // Handle seamless looping
+                    if (this.currentIndex < 0) {
+                        this.currentIndex = totalSteps;
+                        this.translateX = this.currentIndex * cardDistance;
+                        this.$refs.track.style.transition = 'none';
+                        this.$refs.track.style.transform = `translateX(${this.translateX}px)`;
+                        this.$nextTick(() => {
+                            this.$refs.track.style.transition = 'transform 0.3s ease-out';
+                        });
+                    } else if (this.currentIndex >= totalSteps * 2) {
+                        this.currentIndex = totalSteps;
+                        this.translateX = this.currentIndex * cardDistance;
+                        this.$refs.track.style.transition = 'none';
+                        this.$refs.track.style.transform = `translateX(${this.translateX}px)`;
+                        this.$nextTick(() => {
+                            this.$refs.track.style.transition = 'transform 0.3s ease-out';
+                        });
+                    } else {
+                        this.translateX = this.currentIndex * cardDistance;
+                        this.$refs.track.style.transform = `translateX(${this.translateX}px)`;
+                    }
+                },
+
+                nextCard() {
+                    this.currentIndex--;
+                    this.translateX = this.currentIndex * (this.cardWidth + this.gap);
+                    this.snapToNearestCard();
+                },
+
+                prevCard() {
+                    this.currentIndex++;
+                    this.translateX = this.currentIndex * (this.cardWidth + this.gap);
+                    this.snapToNearestCard();
+                },
+
+                goToCard(index) {
+                    this.currentIndex = index + this.steps.length; // Start in second cycle
+                    this.translateX = this.currentIndex * (this.cardWidth + this.gap);
+                    this.$refs.track.style.transform = `translateX(${this.translateX}px)`;
+                    this.snapToNearestCard();
+                },
+
                 startAutoSlide() {
-                    this.interval = setInterval(() => {
-                        this.nextChunk();
-                    }, 8000);
+                    if (!this.autoSlideInterval) {
+                        this.autoSlideInterval = setInterval(() => {
+                            this.nextCard();
+                        }, 3000);
+                    }
                 },
+
                 stopAutoSlide() {
-                    clearInterval(this.interval);
-                    this.interval = null;
-                },
-                nextChunk() {
-                    this.currentChunk = (this.currentChunk + 1) % this.chunkedSteps.length;
-                },
-                prevChunk() {
-                    this.currentChunk = (this.currentChunk - 1 + this.chunkedSteps.length) % this.chunkedSteps.length;
+                    if (this.autoSlideInterval) {
+                        clearInterval(this.autoSlideInterval);
+                        this.autoSlideInterval = null;
+                    }
                 }
-            };
-        }
+            }));
+        });
     </script>
+
 
 
     <!-- Services Section -->
@@ -403,67 +455,66 @@ user-select: none; /* Prevent text selection during drag */
 
     <!-- Projects Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="bg-gradient-to-b from-gray-900 to-gray-800 g bg py-16 opacity-0 translate-y-10">
-        <div class="container">
+        class="relative bg-gradient-to-b from-gray-900 to-gray-800 py-16 opacity-0 translate-y-10" dir="rtl">
+        <div class="container px-4 md:px-6">
             <!-- Title -->
             <h2 class="text-4xl md:text-5xl font-bold text-white text-center mb-12">مشاريعنا</h2>
             <!-- Projects Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 @foreach ($projects as $index => $project)
-                <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
-                    x-intersect:delay="{{ ($index % 3) * 200 }}"
-                    class="project-card bg-white shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden material-card"
-                    :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
-                        === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
-                        !== '0' }">
-                    <!-- Image -->
-                    <div class="relative">
-                        <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
-                            alt="{{ $project->name }}" class="w-full h-64 object-cover rounded-t-inherit">
-                        <!-- Status Badge -->
-                        <span
-                            class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
-                            :class="{
-                                'bg-gray-500': '{{ $project->status }}'
-                                === 'not_started',
-                                'bg-orange-500': '{{ $project->status }}'
-                                === 'pending',
-                                'bg-green-500': '{{ $project->status }}'
-                                === 'done'
-                            }">
-                            @switch($project->status)
-                                @case('not_started')
-                                    لم يبدأ
-                                @break
+                    <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                        x-intersect:delay="{{ ($index % 3) * 200 }}"
+                        class="project-card bg-white shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden material-card"
+                        :class="{
+                            'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                            === '0',
+                            'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                            !== '0'
+                        }">
+                        <!-- Image -->
+                        <div class="relative">
+                            <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
+                                alt="{{ $project->name }}"
+                                class="w-full h-64 object-cover rounded-t-inherit hover:scale-105 transition-all duration-300 ">
+                            <!-- Status Badge -->
+                            <span class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
+                                :class="{
+                                    'bg-gray-500': '{{ $project->status }}'
+                                    === 'not_started',
+                                    'bg-orange-500': '{{ $project->status }}'
+                                    === 'pending',
+                                    'bg-green-500': '{{ $project->status }}'
+                                    === 'done'
+                                }">
+                                @switch($project->status)
+                                    @case('not_started')
+                                        لم يبدأ
+                                    @break
 
-                                @case('pending')
-                                    قيد التنفيذ
-                                @break
+                                    @case('pending')
+                                        قيد التنفيذ
+                                    @break
 
-                                @case('done')
-                                    مكتمل
-                                @break
-                            @endswitch
-                        </span>
-                    </div>
-                    <!-- Details -->
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">
-                            {{ $project->name }}
-                        </h3>
-                        <div class="mt-4 text-center">
+                                    @case('done')
+                                        مكتمل
+                                    @break
+                                @endswitch
+                            </span>
+                        </div>
+                        <!-- Details -->
+                        <div class="p-6 flex items-center justify-between">
+                            <h3 class="text-xl font-bold text-gray-900">{{ $project->name }}</h3>
                             <a wire:navigate href="{{ route('projects.show', $project->slug) }}"
-                                class="inline-block px-6 py-3 bg-blue-900 text-white font-semibold rounded-md hover:bg-orange-500 transition-all duration-300">
+                                class="inline-block px-4 py-2 bg-blue-900 text-white text-sm font-semibold rounded-md hover:bg-orange-500 transition-all duration-300">
                                 عرض التفاصيل
                             </a>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
             </div>
             <!-- Explore More Button -->
             <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
-                class="text-center mt-12 opacity-0 translate-y-10">
+                class="text-center mt-6 md:mt-12 opacity-0 translate-y-10">
                 <a wire:navigate href="{{ route('project-categories') }}"
                     class="inline-block px-8 py-4 secondary-bg text-white font-semibold rounded-md hover:bg-orange-800 transition-colors duration-300"
                     aria-label="projects">
@@ -484,7 +535,7 @@ user-select: none; /* Prevent text selection during drag */
                 @foreach ($facilities as $index => $facility)
                     <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                         :x-intersect:delay="{{ $index * 200 }}"
-                        class="relative flex items-start bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 opacity-0 scale-95 guarantee-item">
+                        class="relative flex items-start bg-white rounded-2xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 opacity-0 scale-95 guarantee-item border border-orange-500">
                         <i class="{{ $facility->icon }} text-4xl text-gray-900 mr-4"></i>
                         <div>
                             <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $facility->title }}</h3>
@@ -497,17 +548,18 @@ user-select: none; /* Prevent text selection during drag */
     </section>
 
     <!-- Reviews Section -->
-<section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-class="bg-gradient-to-b from-gray-900 to-gray-800 py-8 sm:py-12 lg:py-16 opacity-0 translate-y-10 overflow-x-hidden">
-<div class="custom-container">
-    <!-- Title -->
-    <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-8 sm:mb-10 lg:mb-12">
-        آراء العملاء
-    </h2>
+    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+        class="bg-gradient-to-b from-gray-900 to-gray-800 py-8 sm:py-12 lg:py-16 opacity-0 translate-y-10 overflow-x-hidden px-4">
+        <div class="custom-container overflow-hidden mx-4 mb-4">
+            <!-- Title -->
+            <h2
+                class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-8 sm:mb-10 lg:mb-12">
+                آراء العملاء
+            </h2>
 
-    <!-- Reviews Slider -->
-    <div dir="ltr"
-        x-data='{
+            <!-- Reviews Slider -->
+            <div dir="ltr"
+                x-data='{
             reviews: @json($reviews, JSON_UNESCAPED_SLASHES),
             currentIndex: 0,
             reviewsPerPage: window.innerWidth < 640 ? 1 : window.innerWidth < 1024 ? 2 : 3,
@@ -529,86 +581,91 @@ class="bg-gradient-to-b from-gray-900 to-gray-800 py-8 sm:py-12 lg:py-16 opacity
                 });
             }
         }'
-        class="relative review-slider"
-        @mouseenter="pause = true"
-        @mouseleave="pause = false"
-        @touchstart="pause = true"
-        @touchend="pause = false"
-        wire:ignore>
+                class="relative review-slider" @mouseenter="pause = true" @mouseleave="pause = false"
+                @touchstart="pause = true" @touchend="pause = false" wire:ignore>
 
-        <!-- Slider or Grid Container -->
-        <div x-show="reviews.length > 3"
-            class="flex transition-transform duration-500 flex-nowrap"
-            :style="{ 'transform': `translateX(-${currentIndex * cardWidth * reviewsPerPage}px)` }">
-            <template x-for="(review, index) in reviews" :key="index">
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
-                    :x-intersect:delay="index % reviewsPerPage * 200"
-                    class="flex-shrink-0 w-[90vw] sm:w-[45vw] lg:w-80 bg-white rounded-lg shadow-md p-4 sm:p-6 text-center mx-2 sm:mx-3 opacity-0 translate-y-10 material-card"
-                    :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': index % 2 === 0, 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': index % 2 !== 0 }">
-                    <img :src="review.icon" alt="Reviewer"
-                        class="w-12 h-12 sm:w-16 sm:h-16 rounded-full mx-auto mb-4 object-cover">
-                    <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
-                    <p class="text-sm sm:text-base text-gray-600 italic mb-2" x-text="review.title"></p>
-                    <p class="text-sm sm:text-base text-gray-700" x-text="review.description"></p>
+                <!-- Slider or Grid Container -->
+                <div x-show="reviews.length > 3" class="flex transition-transform duration-500 flex-nowrap"
+                    :style="{ 'transform': `translateX(-${currentIndex * cardWidth * reviewsPerPage}px)` }">
+                    <template x-for="(review, index) in reviews" :key="index">
+                        <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
+                            :x-intersect:delay="index % reviewsPerPage * 200"
+                            class="flex-shrink-0 w-[90vw] sm:w-[45vw] lg:w-80 bg-white rounded-lg shadow-md p-4 sm:p-6 text-center mx-2 sm:mx-3 opacity-0 translate-y-10 material-card"
+                            :class="{
+                                'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': index % 2 ===
+                                    0,
+                                'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': index % 2 !== 0
+                            }">
+                            <img :src="review.icon" alt="Reviewer"
+                                class="w-12 h-12 sm:w-16 sm:h-16 rounded-full mx-auto mb-4 object-cover">
+                            <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
+                            <p class="text-sm sm:text-base text-gray-600 italic mb-2" x-text="review.title"></p>
+                            <p class="text-sm sm:text-base text-gray-700" x-text="review.description"></p>
+                        </div>
+                    </template>
                 </div>
-            </template>
-        </div>
 
-        <!-- Grid for 3 or fewer reviews -->
-        <div x-show="reviews.length <= 3"
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            <template x-for="(review, index) in reviews" :key="index">
-                <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
-                    :x-intersect:delay="index * 200"
-                    class="w-full bg-white rounded-lg shadow-md p-4 sm:p-6 text-center opacity-0 translate-y-10 material-card"
-                    :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': index % 2 === 0, 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': index % 2 !== 0 }">
-                    <img :src="review.icon" alt="Reviewer"
-                        class="w-12 h-12 sm:w-16 sm:h-16 rounded-full mx-auto mb-4 object-cover">
-                    <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
-                    <p class="text-sm sm:text-base text-gray-600 italic mb-2" x-text="review.title"></p>
-                    <p class="text-sm sm:text-base text-gray-700" x-text="review.description"></p>
+                <!-- Grid for 3 or fewer reviews -->
+                <div x-show="reviews.length <= 3"
+                    class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                    <template x-for="(review, index) in reviews" :key="index">
+                        <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
+                            :x-intersect:delay="index * 200"
+                            class="w-full bg-white rounded-lg shadow-md p-4 sm:p-6 text-center opacity-0 translate-y-10 material-card"
+                            :class="{
+                                'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': index % 2 ===
+                                    0,
+                                'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': index % 2 !== 0
+                            }">
+                            <img :src="review.icon" alt="Reviewer"
+                                class="w-12 h-12 sm:w-16 sm:h-16 rounded-full mx-auto mb-4 object-cover">
+                            <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
+                            <p class="text-sm sm:text-base text-gray-600 italic mb-2" x-text="review.title"></p>
+                            <p class="text-sm sm:text-base text-gray-700" x-text="review.description"></p>
+                        </div>
+                    </template>
                 </div>
-            </template>
-        </div>
 
-        <!-- Navigation Dots (only for slider) -->
-        <div x-show="reviews.length > 3"
-            x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')"
-            x-intersect:delay="600"
-            class="flex justify-center mt-6 space-x-2 space-x-reverse opacity-0 translate-y-10">
-            <template x-for="index in Math.ceil(reviews.length / reviewsPerPage)" :key="index">
-                <span @click="currentIndex = index - 1"
-                    class="w-3 h-3 rounded-full cursor-pointer transition-colors duration-300"
-                    :class="{ 'bg-gray-900': currentIndex === index - 1, 'bg-gray-300': currentIndex !== index - 1 }"></span>
-            </template>
-        </div>
+                <!-- Navigation Dots (only for slider) -->
+                <div x-show="reviews.length > 3" x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')"
+                    x-intersect:delay="600"
+                    class="flex justify-center mt-6 space-x-2 space-x-reverse opacity-0 translate-y-10">
+                    <template x-for="index in Math.ceil(reviews.length / reviewsPerPage)" :key="index">
+                        <span @click="currentIndex = index - 1"
+                            class="w-3 h-3 rounded-full cursor-pointer transition-colors duration-300"
+                            :class="{ 'bg-gray-900': currentIndex === index - 1, 'bg-gray-300': currentIndex !== index - 1 }"></span>
+                    </template>
+                </div>
 
-        <!-- Fallback Message -->
-        <div x-show="reviews.length === 0" class="text-center text-gray-300 py-8">
-            <p>لا توجد آراء متاحة</p>
+                <!-- Fallback Message -->
+                <div x-show="reviews.length === 0" class="text-center text-gray-300 py-8">
+                    <p>لا توجد آراء متاحة</p>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-</section>
+    </section>
 
 
     <!-- Features Section (Counters) -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="bg-gray-100 py-16 opacity-0 translate-y-10">
-        <div class="container">
+        class="bg-gray-100 py-16 opacity-0 translate-y-10" dir="rtl">
+        <div class="container px-4 sm:px-6">
             <!-- Title -->
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">المميزات</h2>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">احصائياتنا</h2>
             <!-- Features Grid -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 @foreach ($counters as $index => $counter)
                     <div x-intersect.once="$el.classList.add('animate-item', 'fade-in-scale'); $dispatch('start-count', { id: $el.id })"
                         id="feature-{{ $index + 1 }}" x-data="{ count: 0 }"
                         x-on:start-count.window="if ($event.detail.id === 'feature-{{ $index + 1 }}') { let start = 0; const end = parseInt($el.dataset.count); const duration = 2000; const interval = duration / end; const timer = setInterval(() => { if (start < end) { start++; count = start; } else { clearInterval(timer); } }, interval); }"
-                        class="bg-white rounded-lg shadow-md p-6 text-center opacity-0 scale-95"
+                        class="bg-white rounded-lg shadow-md hover:shadow-2xl hover:scale-105 p-6 text-center opacity-0 scale-95 transition-all duration-300"
                         data-count="{{ $counter->value }}">
-                        <i class="{{ $counter->icon }} text-4xl text-gray-900 mb-4"></i>
-                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $counter->name }}</h3>
-                        <p class="text-3xl font-semibold text-orange-500" x-text="count"></p>
+                        <div
+                            class="flex md:flex-col items-center md:items-center justify-center md:justify-start space-x-3 md:space-x-0 md:space-y-4">
+                            <i class="{{ $counter->icon }} px-2 text-3xl sm:text-4xl text-gray-900"></i>
+                            <h3 class="text-lg sm:text-xl font-bold text-gray-900">{{ $counter->name }}</h3>
+                        </div>
+                        <p class="text-2xl sm:text-3xl font-semibold text-orange-500 mt-4" x-text="count"></p>
                     </div>
                 @endforeach
             </div>
@@ -626,15 +683,19 @@ class="bg-gradient-to-b from-gray-900 to-gray-800 py-8 sm:py-12 lg:py-16 opacity
                 @foreach ($blogs as $index => $blog)
                     <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
                         :x-intersect:delay="{{ $index * 200 }}"
-                        class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 opacity-0 translate-y-10 material-card" :class="{ 'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
-                        === '0', 'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
-                        !== '0' }">
+                        class="bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 opacity-0 translate-y-10 material-card"
+                        :class="{
+                            'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                            === '0',
+                            'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                            !== '0'
+                        }">
                         <img src="{{ Storage::url($blog->image) }}" alt="{{ $blog->title }}"
                             class="w-full h-48 object-cover rounded-t-lg blog-image">
                         <div class="p-6">
                             <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $blog->title }}</h3>
                             <p class="text-gray-600 text-sm mb-4">{{ $blog->created_at->format('d F Y') }}</p>
-                            <p class="text-gray-700 mb-4">{!! \Illuminate\Support\Str::limit(strip_tags($blog->introduction), 100) !!}</p>
+                            <p class="text-gray-700 mb-4" style="text-align: justify">{!! \Illuminate\Support\Str::limit(strip_tags($blog->introduction), 100) !!}</p>
                             <a wire:navigate href="{{ route('blogs.show', $blog->slug) }}"
                                 class="inline-block px-6 py-3 bg-orange-500 text-white font-semibold rounded-md border border-gray-300 hover:bg-orange-500 hover:text-white transition-colors duration-300"
                                 aria-label="blog {{ $blog->slug }}">
@@ -859,8 +920,9 @@ class="bg-gradient-to-b from-gray-900 to-gray-800 py-8 sm:py-12 lg:py-16 opacity
             border-top-left-radius: 0.5rem;
             /* Adjust image border radius in RTL */
         }
+
         /* material card */
-  /* Material Card Styling */
+        /* Material Card Styling */
         .material-card {
             position: relative;
             background: white;
@@ -878,7 +940,8 @@ class="bg-gradient-to-b from-gray-900 to-gray-800 py-8 sm:py-12 lg:py-16 opacity
             border-top-left-radius: inherit;
             border-top-right-radius: inherit;
         }
-/* Reduced Motion */
+
+        /* Reduced Motion */
         @media (prefers-reduced-motion: reduce) {
 
             .animate-section,
@@ -894,6 +957,7 @@ class="bg-gradient-to-b from-gray-900 to-gray-800 py-8 sm:py-12 lg:py-16 opacity
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
             }
         }
+
         /* Responsive Adjustments */
         @media (max-width: 640px) {
             .blog-image {
