@@ -20,6 +20,65 @@ class CareerController extends Controller
         return view('dashboard.careers.index', compact('careers'));
     }
 
+    public function export()
+    {
+        // Set headers for CSV download
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="careers.csv"',
+        ];
+
+        // Fetch data
+        $careers = Career::select('id', 'name', 'email', 'phone', 'block_number', 'city', 'project_id', 'wish', 'other_wish', 'notes', 'created_at', 'updated_at')->get();
+
+        // Create a stream output
+        $output = fopen('php://output', 'w');
+
+        // Add CSV headers
+        fputcsv($output, [
+            'ID',
+            'Name',
+            'Email',
+            'Phone',
+            'Block Number',
+            'City',
+            'Project ID',
+            'Wish',
+            'Other Wish',
+            'Notes',
+            'Created At',
+        ]);
+
+        // Add data rows
+        foreach ($careers as $career) {
+            fputcsv($output, [
+                $career->id,
+                $career->name,
+                $career->email,
+                $career->phone,
+                $career->block_number ?? '',
+                $career->city,
+                $career->project_id,
+                $career->wish,
+                $career->other_wish ?? '',
+                $career->notes ?? '',
+                $career->created_at,
+            ]);
+        }
+
+        // Close the stream
+        fclose($output);
+
+        // Return response as a stream
+        return response()->stream(
+            function () use ($output) {
+                // Stream already handled in the output buffer
+            },
+            200,
+            $headers
+        );
+    }
+
     public function create()
     {
                 $projects = \App\Models\Project::all();
@@ -40,9 +99,9 @@ class CareerController extends Controller
             'other_wish' => 'nullable|string|max:255',
             'notes' => 'nullable|string'
         ]);
-        
+
         $career = \App\Models\Career::create($validated);
-        
+
         return redirect()->route('dashboard.careers.index')->with('success', 'Career created successfully.');
     }
 
@@ -76,9 +135,9 @@ class CareerController extends Controller
             'other_wish' => 'nullable|string|max:255',
             'notes' => 'nullable|string'
         ]);
-        
+
         $career->update($validated);
-        
+
         return redirect()->route('dashboard.careers.index')->with('success', 'Career updated successfully.');
     }
 

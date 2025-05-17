@@ -19,6 +19,47 @@ class ContactUsController extends Controller
         $contactuses = \App\Models\ContactUs::all();
         return view('dashboard.contact_uses.index', compact('contactuses'));
     }
+    public function export()
+    {
+        // Set headers for CSV download
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="contact_uses.csv"',
+        ];
+
+        // Fetch data
+        $contactUses = ContactUs::all();
+
+        // Create a stream output
+        $output = fopen('php://output', 'w');
+
+        // Add CSV headers
+        fputcsv($output, ['ID', 'Name', 'Email', 'Phone', 'Message', 'Date']);
+
+        // Add data rows
+        foreach ($contactUses as $contact) {
+            fputcsv($output, [
+                $contact->id,
+                $contact->name,
+                $contact->email,
+                $contact->phone,
+                $contact->message,
+                $contact->created_at,
+            ]);
+        }
+
+        // Close the stream
+        fclose($output);
+
+        // Return response as a stream
+        return response()->stream(
+            function () use ($output) {
+                // Stream already handled in the output buffer
+            },
+            200,
+            $headers
+        );
+    }
 
     public function create()
     {

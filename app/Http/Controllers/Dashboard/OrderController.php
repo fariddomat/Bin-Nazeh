@@ -20,6 +20,59 @@ class OrderController extends Controller
         return view('dashboard.orders.index', compact('orders'));
     }
 
+    public function export()
+    {
+        // Set headers for CSV download
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="orders.csv"',
+        ];
+
+        // Fetch data
+        $orders = Order::select('id', 'name', 'email', 'phone', 'project_type', 'status', 'message', 'created_at', 'updated_at')->get();
+
+        // Create a stream output
+        $output = fopen('php://output', 'w');
+
+        // Add CSV headers
+        fputcsv($output, [
+            'ID',
+            'Name',
+            'Email',
+            'Phone',
+            'Project Type',
+            'Status',
+            'Message',
+            'Created At',
+        ]);
+
+        // Add data rows
+        foreach ($orders as $order) {
+            fputcsv($output, [
+                $order->id,
+                $order->name,
+                $order->email,
+                $order->phone,
+                $order->project_type ,
+                $order->status,
+                $order->message ?? '',
+                $order->created_at,
+            ]);
+        }
+
+        // Close the stream
+        fclose($output);
+
+        // Return response as a stream
+        return response()->stream(
+            function () use ($output) {
+                // Stream already handled in the output buffer
+            },
+            200,
+            $headers
+        );
+    }
+
     public function create()
     {
                 $services = \App\Models\Service::all();
@@ -38,9 +91,9 @@ class OrderController extends Controller
             'message' => 'nullable|string',
             'status' => 'required|in:pending,processed,completed'
         ]);
-        
+
         $order = \App\Models\Order::create($validated);
-        
+
         return redirect()->route('dashboard.orders.index')->with('success', 'Order created successfully.');
     }
 
@@ -72,9 +125,9 @@ class OrderController extends Controller
             'message' => 'nullable|string',
             'status' => 'required|in:pending,processed,completed'
         ]);
-        
+
         $order->update($validated);
-        
+
         return redirect()->route('dashboard.orders.index')->with('success', 'Order updated successfully.');
     }
 

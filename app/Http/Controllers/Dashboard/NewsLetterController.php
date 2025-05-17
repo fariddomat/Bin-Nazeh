@@ -19,6 +19,48 @@ class NewsLetterController extends Controller
         $newsLetters = \App\Models\NewsLetter::all();
         return view('dashboard.news_letters.index', compact('newsLetters'));
     }
+    public function export()
+    {
+        // Set headers for CSV download
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="news_letters.csv"',
+        ];
+
+        // Fetch data
+        $newsLetters = NewsLetter::select('id', 'mobile', 'created_at')->get();
+
+        // Create a stream output
+        $output = fopen('php://output', 'w');
+
+        // Add CSV headers
+        fputcsv($output, [
+            'ID',
+            'Mobile',
+            'Created At'
+        ]);
+
+        // Add data rows
+        foreach ($newsLetters as $newsLetter) {
+            fputcsv($output, [
+                $newsLetter->id,
+                $newsLetter->mobile,
+                $newsLetter->created_at,
+            ]);
+        }
+
+        // Close the stream
+        fclose($output);
+
+        // Return response as a stream
+        return response()->stream(
+            function () use ($output) {
+                // Stream already handled in the output buffer
+            },
+            200,
+            $headers
+        );
+    }
 
     public function create()
     {

@@ -261,9 +261,9 @@
                         <x-responsive-nav-link href="{{ route('dashboard.meta_tags.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.meta_tags.')">
                             @lang('site.meta_tags') <i class="fas fa-tags"></i>
                         </x-responsive-nav-link>
-                        {{-- <x-responsive-nav-link href="{{ route('dashboard.redirects.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.redirects.')">
+                        <x-responsive-nav-link href="{{ route('dashboard.redirects.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.redirects.')">
                             @lang('site.redirects') <i class="fas fa-link"></i>
-                        </x-responsive-nav-link> --}}
+                        </x-responsive-nav-link>
                     </div>
                 </details>
 

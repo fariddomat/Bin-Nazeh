@@ -3,7 +3,10 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Dashboard\BlogCategoryController;
 use App\Http\Controllers\Dashboard\BlogController;
+use App\Http\Controllers\Dashboard\CareerController;
 use App\Http\Controllers\Dashboard\ImageGalleryController;
+use App\Http\Controllers\Dashboard\NewsLetterController;
+use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\SiteController;
 use App\Livewire\UserForm;
@@ -98,6 +101,8 @@ Route::prefix('dashboard')
         Route::resource('/reviews', \App\Http\Controllers\Dashboard\ReviewController::class);
         Route::post('/reviews/{id}/restore', [\App\Http\Controllers\Dashboard\ReviewController::class, 'restore'])->name('reviews.restore');
 
+         Route::get('/news_letters/export', [NewsLetterController::class, 'export'])->name('news_letters.export');
+
         Route::resource('/news_letters', \App\Http\Controllers\Dashboard\NewsLetterController::class);
         Route::post('/news_letters/{id}/restore', [\App\Http\Controllers\Dashboard\NewsLetterController::class, 'restore'])->name('news_letters.restore');
 
@@ -110,11 +115,14 @@ Route::prefix('dashboard')
         Route::resource('/terms', \App\Http\Controllers\Dashboard\TermController::class);
         Route::post('/terms/{id}/restore', [\App\Http\Controllers\Dashboard\TermController::class, 'restore'])->name('terms.restore');
 
+         Route::get('/careers/export', [CareerController::class, 'export'])->name('careers.export');
         Route::resource('/careers', \App\Http\Controllers\Dashboard\CareerController::class);
         Route::post('/careers/{id}/restore', [\App\Http\Controllers\Dashboard\CareerController::class, 'restore'])->name('careers.restore');
 
+        Route::get('/contact_uses/export', [\App\Http\Controllers\Dashboard\ContactUsController::class, 'export'])->name('contact_uses.export');
         Route::resource('/contact_uses', \App\Http\Controllers\Dashboard\ContactUsController::class);
         Route::post('/contact_uses/{id}/restore', [\App\Http\Controllers\Dashboard\ContactUsController::class, 'restore'])->name('contact_uses.restore');
+
 
         Route::resource('/sliders', \App\Http\Controllers\Dashboard\SliderController::class);
         Route::post('/sliders/{id}/restore', [\App\Http\Controllers\Dashboard\SliderController::class, 'restore'])->name('sliders.restore');
@@ -149,6 +157,8 @@ Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(func
     Route::post('/steps/{id}/restore', [\App\Http\Controllers\Dashboard\StepController::class, 'restore'])->name('steps.restore');
 });
 Route::prefix('dashboard')->name('dashboard.')->middleware(['auth'])->group(function () {
+     Route::get('orders/export', [OrderController::class, 'export'])->name('orders.export');
+
     Route::resource('/orders', \App\Http\Controllers\Dashboard\OrderController::class);
     Route::post('/orders/{id}/restore', [\App\Http\Controllers\Dashboard\OrderController::class, 'restore'])->name('orders.restore');
 });
