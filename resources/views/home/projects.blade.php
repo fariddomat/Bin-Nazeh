@@ -53,32 +53,24 @@
                             <!-- Image -->
                             <div class="relative">
                                 <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
-                                    alt="{{ $project->name }}" class="w-full h-64 object-cover rounded-t-inherit  hover:scale-105 transition-all duration-300 ">
+                                    alt="{{ $project->name }}"
+                                    class="w-full h-64 object-cover rounded-t-inherit hover:scale-105 transition-all duration-300">
                                 <!-- Status Badge -->
-                                <span
-                                    class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
-                                    :class="{
-                                        'bg-gray-500': '{{ $project->status }}'
-                                        === 'not_started',
-                                        'bg-orange-500': '{{ $project->status }}'
-                                        === 'pending',
-                                        'bg-green-500': '{{ $project->status }}'
-                                        === 'done'
-                                    }">
-                                    @switch($project->status)
-                                        @case('not_started')
-                                            لم يبدأ
-                                        @break
-
-                                        @case('pending')
-                                            قيد التنفيذ
-                                        @break
-
-                                        @case('done')
-                                            مكتمل
-                                        @break
-                                    @endswitch
-                                </span>
+                                @if ($project->status === 'sold')
+                            <div class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45">
+                                <img src="{{ asset('sell.png') }}" alt="مباع"
+                                    class="w-60 h-60 object-contain">
+                            </div>
+                        @else
+                            <span class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
+                                :class="{
+                                    'bg-green-500': '{{ $project->status }}' === 'available',
+                                    'bg-orange-500': '{{ $project->status }}' === 'under_construction',
+                                    'bg-blue-500': '{{ $project->status }}' === 'ready'
+                                }">
+                                {{ $project->status_label }}
+                            </span>
+                        @endif
                             </div>
                             <!-- Details -->
                             <div class="p-6">

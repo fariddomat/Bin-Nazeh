@@ -81,16 +81,38 @@
                 <input type="file" name="img" accept="image/*" class="w-full border border-gray-300 rounded p-2">
                 @isset($project->img)
                     <img src="{{ Storage::url($project->img) }}" alt="img" class="mt-2 w-32 h-32 rounded">
-                    @endisset @error('img')
+                @endisset
+                @error('img')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.cover_img')</label>
                 <input type="file" name="cover_img" accept="image/*"
-                    class="w-full border border-gray-300 rounded p-2"> @isset($project->cover_img)
+                    class="w-full border border-gray-300 rounded p-2">
+                @isset($project->cover_img)
                     <img src="{{ Storage::url($project->cover_img) }}" alt="cover_img" class="mt-2 w-32 h-32 rounded">
-                    @endisset @error('cover_img')
+                @endisset
+                @error('cover_img')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">شعار المشروع</label>
+                <input type="file" name="logo" accept="image/png,image/jpeg" class="w-full border border-gray-300 rounded p-2">
+                @isset($project->logo)
+                    <img src="{{ Storage::url($project->logo) }}" alt="Logo" class="mt-2 w-32 h-32 object-contain rounded">
+                @endisset
+                @error('logo')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label class="flex items-center">
+                    <input type="checkbox" name="show_home" value="1" {{ old('show_home', $project->show_home) ? 'checked' : '' }} class="mr-2">
+                    <span class="text-sm font-medium text-gray-700">عرض في الصفحة الرئيسية</span>
+                </label>
+                @error('show_home')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
@@ -98,13 +120,10 @@
                 <label class="block text-sm font-medium text-gray-700">@lang('site.status')</label>
                 <select name="status" class="w-full border border-gray-300 rounded p-2">
                     <option value="">@lang('site.select_status')</option>
-                    <option value="not_started"
-                        {{ old('status', $project->status) == 'not_started' ? 'selected' : '' }}>لم يبدأ</option>
-                    <option value="pending" {{ old('status', $project->status) == 'pending' ? 'selected' : '' }}>
-                        قيد التطوير</option>
-                    <option value="done" {{ old('status', $project->status) == 'done' ? 'selected' : '' }}>منتهي
-                    </option>
-
+                    <option value="available" {{ old('status', $project->status) == 'available' ? 'selected' : '' }}>متاح للحجز</option>
+                    <option value="under_construction" {{ old('status', $project->status) == 'under_construction' ? 'selected' : '' }}>تحت الإنشاء</option>
+                    <option value="ready" {{ old('status', $project->status) == 'ready' ? 'selected' : '' }}>جاهز</option>
+                    <option value="sold" {{ old('status', $project->status) == 'sold' ? 'selected' : '' }}>مباع</option>
                 </select>
                 @error('status')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -114,7 +133,7 @@
                 <label class="block text-sm font-medium text-gray-700">@lang('site.status_percent')</label>
                 <input type="number" name="status_percent"
                     value="{{ old('status_percent', $project->status_percent) }}"
-                    class="w-full border border-gray-300 rounded p-2">
+                    class="w-full border border-gray-300 rounded p-2" min="0" max="100">
                 @error('status_percent')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
@@ -125,7 +144,7 @@
                     <option value="">@lang('site.select_project_category_id')</option>
                     @foreach ($projectCategories as $option)
                         <option value="{{ $option->id }}"
-                            {{ $project->project_category_id == $option->id ? 'selected' : '' }}>{{ $option->name }}
+                            {{ old('project_category_id', $project->project_category_id) == $option->id ? 'selected' : '' }}>{{ $option->name }}
                         </option>
                     @endforeach
                 </select>
@@ -142,9 +161,9 @@
                 @enderror
             </div>
 
-        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-700">
-            @lang('site.update')
-        </button>
-    </form>
-</div>
+            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-700">
+                @lang('site.update')
+            </button>
+        </form>
+    </div>
 </x-app-layout>

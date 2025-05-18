@@ -118,7 +118,7 @@
                         اهتمامك</a>
                     <a href="{{ route('blogs.index') }}"
                         class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
-                        aria-label="blogs">الأخبار</a>
+                        aria-label="blogs">المدونة</a>
                     <a href="{{ route('contact') }}"
                         class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
                         aria-label="contact">تواصل معنا</a>
@@ -210,7 +210,7 @@
                             class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                             <option value="all">الكل</option>
                             <option value="projects">المشاريع</option>
-                            <option value="blogs">الأخبار</option>
+                            <option value="blogs">المدونة</option>
                         </select>
                     </div>
                     <div class="text-center">
@@ -227,7 +227,7 @@
         <!-- Mobile Menu -->
         <div class="mobile-menu fixed top-0 right-0 h-full w-64 bg-gray-900 text-white p-6 md:hidden z-50"
             x-show="menuOpen" x-bind:class="{ 'open': menuOpen }">
-            <button class="absolute top-4 left-4" @click="menuOpen = false" aria-label="menu exit">
+            <button class="absolute top-4 left-4" @click.away="menuOpen = false" @click="menuOpen = false" aria-label="menu exit">
                 <i class="fas fa-times text-2xl"></i>
             </button>
             <nav class="mt-12 space-y-4">
@@ -255,11 +255,12 @@
                     aria-label="register interest">سجل
                     اهتمامك</a>
                 <a href="{{ route('blogs.index') }}" class="block hover:text-gray-300" wire:navigate
-                    aria-label="blogs">الأخبار</a>
+                    aria-label="blogs">المدونة</a>
                 <a href="{{ route('contact') }}" class="block hover:text-gray-300" wire:navigate
                     aria-label="contact">تواصل معنا</a>
             </nav>
         </div>
+
 
         <!-- Main Content -->
         <main class="flex-1 pt-20">
@@ -302,8 +303,8 @@
 
                 <!-- Column 3: Newsletter -->
                 <div>
-                    <h3 class="text-xl font-bold mb-4">النشرة البريدية</h3>
-                    <p class="text-gray-300 mb-4">اشترك في نشرتنا البريدية للحصول على آخر الأخبار والعروض.</p>
+                    <h3 class="text-xl font-bold mb-4">انضم لفريق التسويق</h3>
+                    {{-- <p class="text-gray-300 mb-4">اشترك في نشرتنا البريدية للحصول على آخر الأخبار والعروض.</p> --}}
                     <form id="newsletter-form" action="{{ route('newsletter.subscribe') }}" method="POST"
                         class="space-y-4">
                         @csrf
@@ -316,7 +317,7 @@
                         <button type="submit"
                             class="w-full p-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition-all duration-300"
                             aria-label="newsletter">
-                            اشترك الآن
+                            انضم الآن
                         </button>
                     </form>
                 </div>
@@ -335,7 +336,7 @@
                     <div class="mt-4 flex space-x-4 space-x-reverse">
                         @foreach (\App\Models\SocialMedia::all() as $item)
                             <a href="{{ $item->link }}" class="hover:text-gray-300"
-                                aria-label="{{ $item->name }}"><i class="fab {{ $item->icon }}"></i>
+                                aria-label="{{ $item->name }}"><i class="fab {{ $item->icon }}" style="font-size: 1.5rem"></i>
                             </a>
                         @endforeach
                     </div>

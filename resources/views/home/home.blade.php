@@ -195,9 +195,7 @@
             </h2>
 
             <!-- Slider -->
-            <div class="relative overflow-hidden" x-ref="slider" @mousedown="startDrag($event)"
-                @mousemove="handleDrag($event)" @mouseup="endDrag()" @mouseleave="endDrag()"
-                @touchstart="startDrag($event)" @touchmove="handleDrag($event)" @touchend="endDrag()">
+            <div class="relative overflow-hidden" x-ref="slider" >
                 <div class="flex w-max gap-6 md:gap-8 transition-transform duration-300 ease-out"
                     :style="`transform: translateX(${translateX}px)`" x-ref="track" style="direction: ltr;">
                     <!-- Duplicate steps for seamless looping -->
@@ -454,76 +452,65 @@
     </section> --}}
 
     <!-- Projects Section -->
-    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="relative bg-gradient-to-b from-gray-900 to-gray-800 py-16 opacity-0 translate-y-10" dir="rtl">
-        <div class="container px-4 md:px-6">
-            <!-- Title -->
-            <h2 class="text-4xl md:text-5xl font-bold text-white text-center mb-12">مشاريعنا</h2>
-            <!-- Projects Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach ($projects as $index => $project)
-                    <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
-                        x-intersect:delay="{{ ($index % 3) * 200 }}"
-                        class="project-card bg-white shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden material-card"
-                        :class="{
-                            'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
-                            === '0',
-                            'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
-                            !== '0'
-                        }">
-                        <!-- Image -->
-                        <div class="relative">
-                            <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
-                                alt="{{ $project->name }}"
-                                class="w-full h-64 object-cover rounded-t-inherit hover:scale-105 transition-all duration-300 ">
-                            <!-- Status Badge -->
+  <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+    class="relative bg-gradient-to-b from-gray-900 to-gray-800 py-16 opacity-0 translate-y-10" dir="rtl">
+    <div class="container px-4 md:px-6">
+        <!-- Title -->
+        <h2 class="text-4xl md:text-5xl font-bold text-white text-center mb-12">مشاريعنا</h2>
+        <!-- Projects Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            @foreach ($projects as $index => $project)
+                <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                    x-intersect:delay="{{ ($index % 3) * 200 }}"
+                    class="project-card bg-white shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden material-card"
+                    :class="{
+                        'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}' === '0',
+                        'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}' !== '0'
+                    }">
+                    <!-- Image -->
+                    <div class="relative">
+                        <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
+                            alt="{{ $project->name }}"
+                            class="w-full h-64 object-cover rounded-t-inherit hover:scale-105 transition-all duration-300">
+                        <!-- Status Badge -->
+                        @if ($project->status === 'sold')
+                            <div class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45">
+                                <img src="{{ asset('sell.png') }}" alt="مباع"
+                                    class="w-60 h-60 object-contain">
+                            </div>
+                        @else
                             <span class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
                                 :class="{
-                                    'bg-gray-500': '{{ $project->status }}'
-                                    === 'not_started',
-                                    'bg-orange-500': '{{ $project->status }}'
-                                    === 'pending',
-                                    'bg-green-500': '{{ $project->status }}'
-                                    === 'done'
+                                    'bg-green-500': '{{ $project->status }}' === 'available',
+                                    'bg-orange-500': '{{ $project->status }}' === 'under_construction',
+                                    'bg-blue-500': '{{ $project->status }}' === 'ready'
                                 }">
-                                @switch($project->status)
-                                    @case('not_started')
-                                        لم يبدأ
-                                    @break
-
-                                    @case('pending')
-                                        قيد التنفيذ
-                                    @break
-
-                                    @case('done')
-                                        مكتمل
-                                    @break
-                                @endswitch
+                                {{ $project->status_label }}
                             </span>
-                        </div>
-                        <!-- Details -->
-                        <div class="p-6 flex items-center justify-between">
-                            <h3 class="text-xl font-bold text-gray-900">{{ $project->name }}</h3>
-                            <a wire:navigate href="{{ route('projects.show', $project->slug) }}"
-                                class="inline-block px-4 py-2 bg-blue-900 text-white text-sm font-semibold rounded-md hover:bg-orange-500 transition-all duration-300">
-                                عرض التفاصيل
-                            </a>
-                        </div>
+                        @endif
                     </div>
-                @endforeach
-            </div>
-            <!-- Explore More Button -->
-            <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
-                class="text-center mt-6 md:mt-12 opacity-0 translate-y-10">
-                <a wire:navigate href="{{ route('project-categories') }}"
-                    class="inline-block px-8 py-4 secondary-bg text-white font-semibold rounded-md hover:bg-orange-800 transition-colors duration-300"
-                    aria-label="projects">
-                    استكشف المزيد من المشاريع
-                </a>
-            </div>
+                    <!-- Details -->
+                    <div class="p-6 flex items-center justify-between">
+                        <h3 class="text-xl font-bold text-gray-900">{{ $project->name }}</h3>
+                        <a wire:navigate href="{{ route('projects.show', $project->slug) }}"
+                            class="inline-block px-4 py-2 bg-blue-900 text-white text-sm font-semibold rounded-md hover:bg-orange-500 transition-all duration-300">
+                            عرض التفاصيل
+                        </a>
+                    </div>
+                </div>
+            @endforeach
         </div>
-    </section>
-
+        <!-- Explore More Button -->
+        <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
+            class="text-center mt-6 md:mt-12 opacity-0 translate-y-10">
+            <a wire:navigate href="{{ route('project-categories') }}"
+                class="inline-block px-8 py-4 secondary-bg text-white font-semibold rounded-md hover:bg-orange-800 transition-colors duration-300"
+                aria-label="projects">
+                استكشف المزيد من المشاريع
+            </a>
+        </div>
+    </div>
+</section>
     <!-- Guarantees Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-white py-16 opacity-0 translate-y-10">
@@ -549,7 +536,7 @@
 
     <!-- Reviews Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="bg-gradient-to-b from-gray-900 to-gray-800 py-8 sm:py-12 lg:py-16 opacity-0 translate-y-10 overflow-x-hidden px-4">
+        class="bg-gradient-to-b from-gray-900 to-gray-800 py-8 sm:py-4 lg:py-6 opacity-0 translate-y-10 overflow-x-hidden px-4">
         <div class="custom-container overflow-hidden mx-4 mb-4">
             <!-- Title -->
             <h2
@@ -586,7 +573,7 @@
 
                 <!-- Slider or Grid Container -->
                 <div x-show="reviews.length > 3" class="flex transition-transform duration-500 flex-nowrap"
-                    :style="{ 'transform': `translateX(-${currentIndex * cardWidth * reviewsPerPage}px)` }">
+                    :style="{ 'transform': `translateX(-${currentIndex * cardWidth * reviewsPerPage}px)` }" >
                     <template x-for="(review, index) in reviews" :key="index">
                         <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
                             :x-intersect:delay="index % reviewsPerPage * 200"
@@ -599,7 +586,7 @@
                             <img :src="review.icon" alt="Reviewer"
                                 class="w-12 h-12 sm:w-16 sm:h-16 rounded-full mx-auto mb-4 object-cover">
                             <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
-                            <p class="text-sm sm:text-base text-gray-600 italic mb-2" x-text="review.title"></p>
+                            {{-- <p class="text-sm sm:text-base text-gray-600 italic mb-2" x-text="review.title"></p> --}}
                             <p class="text-sm sm:text-base text-gray-700" x-text="review.description"></p>
                         </div>
                     </template>
@@ -653,7 +640,7 @@
             <!-- Title -->
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">احصائياتنا</h2>
             <!-- Features Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 @foreach ($counters as $index => $counter)
                     <div x-intersect.once="$el.classList.add('animate-item', 'fade-in-scale'); $dispatch('start-count', { id: $el.id })"
                         id="feature-{{ $index + 1 }}" x-data="{ count: 0 }"

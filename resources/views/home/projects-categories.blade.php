@@ -41,7 +41,7 @@
         class="bg-gray-100 py-16 opacity-0 translate-y-10 border-t-2 border-b-2 border-dashed border-orange-500">
         <div class="container">
             <h2 class="text-4xl md:text-5xl font-bold text-gray-900 text-center mb-12">
-                فئات المشاريع
+                الأحياء
             </h2>
             @if ($categories->isNotEmpty())
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

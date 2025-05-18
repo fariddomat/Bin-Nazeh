@@ -10,7 +10,7 @@ class Project extends Model
 
     use SoftDeletes;
 
-    protected $fillable = ['name', 'slug', 'date_of_build', 'address', 'address_location', 'virtual_location', 'scheme_name', 'floors_count', 'details', 'img', 'cover_img', 'status', 'status_percent', 'project_category_id', 'sort_id', 'images'];
+    protected $fillable = ['name', 'slug', 'date_of_build', 'address', 'address_location', 'virtual_location', 'scheme_name', 'floors_count', 'details', 'img', 'cover_img', 'status', 'status_percent', 'project_category_id', 'sort_id', 'images', 'logo', 'show_home'];
 
     public static function rules()
     {
@@ -26,7 +26,7 @@ class Project extends Model
             'details' => 'required|string',
             'img' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'cover_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:not_started,pending,done',
+            'status' => 'required',
             'status_percent' => 'required|numeric',
             'project_category_id' => 'required|exists:project_categories,id',
             'sort_id' => 'nullable|numeric',
@@ -37,6 +37,16 @@ class Project extends Model
 
     protected $searchable = ['name', 'slug', 'address', 'address_location', 'virtual_location', 'scheme_name', 'details'];
 
+    public function getStatusLabelAttribute()
+    {
+        return match ($this->status) {
+            'available' => 'متاح للحجز',
+            'under_construction' => 'تحت الإنشاء',
+            'ready' => 'جاهز',
+            'sold' => 'مباع',
+            default => 'غير معروف',
+        };
+    }
     public function ProjectCategory()
     {
         return $this->belongsTo(\App\Models\ProjectCategory::class, 'project_category_id');

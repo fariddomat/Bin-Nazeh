@@ -85,7 +85,24 @@
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.cover_img')</label>
                 <input type="file" name="cover_img" accept="image/*"
-                    class="w-full border border-gray-300 rounded p-2"> @error('cover_img')
+                    class="w-full border border-gray-300 rounded p-2">
+                @error('cover_img')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">شعار المشروع</label>
+                <input type="file" name="logo" accept="image/png,image/jpeg" class="w-full border border-gray-300 rounded p-2">
+                @error('logo')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="mb-4">
+                <label class="flex items-center">
+                    <input type="checkbox" name="show_home" value="1" {{ old('show_home') ? 'checked' : '' }} class="mr-2">
+                    <span class="text-sm font-medium text-gray-700">عرض في الصفحة الرئيسية</span>
+                </label>
+                @error('show_home')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror
             </div>
@@ -93,11 +110,10 @@
                 <label class="block text-sm font-medium text-gray-700">@lang('site.status')</label>
                 <select name="status" class="w-full border border-gray-300 rounded p-2">
                     <option value="">@lang('site.select_status')</option>
-                    <option value="not_started" {{ old('status') == 'not_started' ? 'selected' : '' }}>لم يبدأ
-                    </option>
-                    <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>قيد التطوير</option>
-                    <option value="done" {{ old('status') == 'done' ? 'selected' : '' }}>منتهي</option>
-
+                    <option value="available" {{ old('status') == 'available' ? 'selected' : '' }}>متاح للحجز</option>
+                    <option value="under_construction" {{ old('status') == 'under_construction' ? 'selected' : '' }}>تحت الإنشاء</option>
+                    <option value="ready" {{ old('status') == 'ready' ? 'selected' : '' }}>جاهز</option>
+                    <option value="sold" {{ old('status') == 'sold' ? 'selected' : '' }}>مباع</option>
                 </select>
                 @error('status')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -106,7 +122,7 @@
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">@lang('site.status_percent')</label>
                 <input type="number" name="status_percent" value="{{ old('status_percent') }}"
-                    class="w-full border border-gray-300 rounded p-2">
+                    class="w-full border border-gray-300 rounded p-2" min="0" max="100">
                 @error('status_percent')
                     <span class="text-red-500 text-sm">{{ $message }}</span>
                 @enderror

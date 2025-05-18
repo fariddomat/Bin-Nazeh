@@ -155,7 +155,7 @@
                     <div class="pl-6 space-y-2 py-2">
                         <x-responsive-nav-link href="{{ route('dashboard.project_categories.index') }}"
                             :active="Str::startsWith(request()->route()->getName(), 'dashboard.project_categories.')">
-                            @lang('site.categories') <i class="fas fa-list-alt"></i>
+                            الأحياء <i class="fas fa-list-alt"></i>
                         </x-responsive-nav-link>
                         <x-responsive-nav-link href="{{ route('dashboard.projects.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.projects.')">
                             @lang('site.projects') <i class="fas fa-folder"></i>
@@ -234,7 +234,7 @@
                     </summary>
                     <div class="pl-6 space-y-2 py-2">
                         <x-responsive-nav-link href="{{ route('dashboard.news_letters.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.news_letters.')">
-                            @lang('site.news_letters') <i class="fas fa-newspaper"></i>
+                            فريق التسويق <i class="fas fa-newspaper"></i>
                         </x-responsive-nav-link>
                         <x-responsive-nav-link href="{{ route('dashboard.careers.index') }}" :active="Str::startsWith(request()->route()->getName(), 'dashboard.careers.')">
                             تسجيل الاهتمامات <i class="fas fa-briefcase"></i>

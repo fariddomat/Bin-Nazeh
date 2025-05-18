@@ -39,7 +39,7 @@ public function home()
             // Alternative without DOMPurify: 'description' => $slider->description ?? 'بدون وصف'
         ]);
         $blogs = Blog::where('show_at_home', true)->take(3)->get();
-        $projects = Project::where('status', 'done')->take(3)->get();
+        $projects = Project::where('show_home', '1')->take(3)->get();
         $services = Service::take(5)->get();
         $steps = Step::get()->map(fn($step) => [
             'icon' => $step->icon ?? '',
