@@ -9,6 +9,7 @@ use App\Http\Controllers\Dashboard\NewsLetterController;
 use App\Http\Controllers\Dashboard\OrderController;
 use App\Http\Controllers\Dashboard\UserController;
 use App\Http\Controllers\SiteController;
+use App\Http\Controllers\SitemapXmlController;
 use App\Livewire\UserForm;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +35,7 @@ Route::get('/clear', function () {
 
     return "Cleared!";
 });
-
+ Route::get('/sitemap.xml', [SitemapXmlController::class, 'index'])->name('sitemap');
 Route::get('/', [SiteController::class, 'home'])->name('home');
 Route::get('/about', [SiteController::class, 'about'])->name('about');
 Route::get('/services', [SiteController::class, 'services'])->name('services');
