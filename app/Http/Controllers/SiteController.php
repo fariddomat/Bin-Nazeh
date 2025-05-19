@@ -25,6 +25,8 @@ use App\Models\Why;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Mail;
+
 class SiteController extends Controller
 {
     // Home
@@ -185,6 +187,24 @@ public function home()
 
         Career::create($validated);
 
+         $info = [
+            'title' => 'لديك طلب تسجيل اهتمام جديد',
+            'name' => $request->name,
+            'email' => $request->email ?? 'غير متوفر', // التحقق من وجود البريد الإلكتروني
+            'phone' => $request->phone,
+            'data' => $request->message,
+        ];
+
+         try {
+            Mail::send('mail', $info, function ($message) {
+                $message->to("info@bennazih.com", "Bennazih Info")
+                    ->subject('New register-interest');
+                $message->from('support@bennazih.com', 'Bennazih Support');
+            });
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
         return redirect()->route('register-interest')->with('success', 'تم تسجيل اهتمامك بنجاح!');
     }
 
@@ -205,7 +225,29 @@ public function home()
             'message' => 'nullable|string',
         ]);
 
+
         ContactUs::create($validated);
+
+        $project=Project::where('id', $request->project_id)->first();
+         $info = [
+            'title' => 'لديك طلب تواصل جديد',
+            'name' => $request->name,
+            'email' => $request->email ?? 'غير متوفر', // التحقق من وجود البريد الإلكتروني
+            'phone' => $request->phone,
+            'project' => $project ? $project->name : 'غير متوفر',
+            'data' => $request->message,
+        ];
+
+         try {
+            Mail::send('mail', $info, function ($message) {
+                $message->to("info@bennazih.com", "Bennazih Info")
+                    ->subject('New Contact');
+                $message->from('support@bennazih.com', 'Bennazih Support');
+            });
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
 
         return redirect()->route('contact')->with('success', 'تم إرسال استفسارك بنجاح!');
     }
@@ -254,6 +296,25 @@ public function home()
 
         $order = Order::create($request->all());
 
+          $service=Service::where('id', $request->service_id)->first();
+         $info = [
+            'title' => 'لديك طلب خدمة جديد',
+            'name' => $request->name,
+            'email' => $request->email ?? 'غير متوفر', // التحقق من وجود البريد الإلكتروني
+            'phone' => $request->phone,
+            'service' => $service ? $service->name : 'غير متوفر',
+            'data' => $request->message,
+        ];
+
+         try {
+            Mail::send('mail', $info, function ($message) {
+                $message->to("info@bennazih.com", "Bennazih Info")
+                    ->subject('New Service Order');
+                $message->from('support@bennazih.com', 'Bennazih Support');
+            });
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
         return response()->json(['message' => 'Order created successfully', 'order' => $order], 201);
     }
 
