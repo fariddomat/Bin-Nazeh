@@ -45,6 +45,10 @@
                 <!-- Details with Icons -->
                 <div x-intersect="$el.classList.add('animate-item', 'fade-in')" class="opacity-0">
                     <ul class="text-gray-700 text-base sm:text-lg space-y-4">
+                        @isset($project->logo)
+                                   <li> <img src="{{ Storage::url($project->logo) }}" class="h-16" alt=" {{ $project->name }}">
+                                    </li>
+                                    @endisset
                         <li>
                             <i class="fas fa-map-marker-alt text-orange-500 mr-2"></i>
                             <strong>الموقع:</strong> {!! $project->address ?? 'غير محدد' !!}
@@ -69,22 +73,7 @@
                         <li>
                             <i class="fas fa-check-circle text-orange-500 mr-2"></i>
                             <strong>الحالة:</strong>
-                            @switch($project->status)
-                                @case('not_started')
-                                    لم يبدأ
-                                @break
-
-                                @case('pending')
-                                    قيد التنفيذ
-                                @break
-
-                                @case('done')
-                                    مكتمل
-                                @break
-
-                                @default
-                                    غير محدد
-                            @endswitch
+                            {{ $project->status_label }}
                         </li>
                         @if ($project->address_location)
                             <li>
@@ -140,7 +129,7 @@
 
     <!-- Details Section (Restored) -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-        class="bg-white py-16 opacity-0 translate-y-10">
+        class="hidden md:block bg-white py-16 opacity-0 translate-y-10">
         <div class="container">
             <h2 class="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-12">
                 <i class="fas fa-file-alt text-orange-500 mr-2"></i> تفاصيل المشروع

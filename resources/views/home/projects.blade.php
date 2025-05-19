@@ -74,8 +74,12 @@
                             </div>
                             <!-- Details -->
                             <div class="p-6">
-                                <h3 class="text-xl font-bold text-gray-900 mb-2">
+                                <h3 class="text-xl font-bold text-gray-900 mb-2 text-center justify-self-center">
+                                    @isset($project->logo)
+                                    <img src="{{ Storage::url($project->logo) }}" class="h-16" alt=" {{ $project->name }}">
+                                    @else
                                     {{ $project->name }}
+                                    @endisset
                                 </h3>
                                 <div class="mt-4 text-center">
                                     <a wire:navigate href="{{ route('projects.show', $project->slug) }}"

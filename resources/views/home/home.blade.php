@@ -195,7 +195,7 @@
             </h2>
 
             <!-- Slider -->
-            <div class="relative overflow-hidden" x-ref="slider" >
+            <div class="relative overflow-hidden" x-ref="slider">
                 <div class="flex w-max gap-6 md:gap-8 transition-transform duration-300 ease-out"
                     :style="`transform: translateX(${translateX}px)`" x-ref="track" style="direction: ltr;">
                     <!-- Duplicate steps for seamless looping -->
@@ -217,7 +217,8 @@
                                     </div>
                                 </div>
                                 <h3 class="text-xl font-bold text-gray-800 mb-2" x-text="step.name"></h3>
-                                <p class="text-gray-600 text-base leading-relaxed" style="text-align: justify;" x-text="step.description"></p>
+                                <p class="text-gray-600 text-base leading-relaxed" style="text-align: justify;"
+                                    x-text="step.description"></p>
                             </div>
                         </template>
                     </template>
@@ -303,9 +304,9 @@
                     event.preventDefault(); // Prevent text selection on drag
                     const currentX = event.pageX || (event.touches && event.touches[0].pageX);
                     const diff = this.startX -
-                    currentX; // Positive diff means drag left (visual right in RTL)
+                        currentX; // Positive diff means drag left (visual right in RTL)
                     this.translateX = this.startTranslateX +
-                    diff; // RTL: drag left increases translateX
+                        diff; // RTL: drag left increases translateX
                     this.$refs.track.style.transform = `translateX(${this.translateX}px)`;
 
                     // Calculate velocity for inertia
@@ -452,65 +453,78 @@
     </section> --}}
 
     <!-- Projects Section -->
-  <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
-    class="relative bg-gradient-to-b from-gray-900 to-gray-800 py-16 opacity-0 translate-y-10" dir="rtl">
-    <div class="container px-4 md:px-6">
-        <!-- Title -->
-        <h2 class="text-4xl md:text-5xl font-bold text-white text-center mb-12">مشاريعنا</h2>
-        <!-- Projects Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            @foreach ($projects as $index => $project)
-                <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
-                    x-intersect:delay="{{ ($index % 3) * 200 }}"
-                    class="project-card bg-white shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden material-card"
-                    :class="{
-                        'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}' === '0',
-                        'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}' !== '0'
-                    }">
-                    <!-- Image -->
-                    <div class="relative">
-                        <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
-                            alt="{{ $project->name }}"
-                            class="w-full h-64 object-cover rounded-t-inherit hover:scale-105 transition-all duration-300">
-                        <!-- Status Badge -->
-                        @if ($project->status === 'sold')
-                            <div class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45">
-                                <img src="{{ asset('sell.png') }}" alt="مباع"
-                                    class="w-60 h-60 object-contain">
-                            </div>
-                        @else
-                            <span class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
-                                :class="{
-                                    'bg-green-500': '{{ $project->status }}' === 'available',
-                                    'bg-orange-500': '{{ $project->status }}' === 'under_construction',
-                                    'bg-blue-500': '{{ $project->status }}' === 'ready'
-                                }">
-                                {{ $project->status_label }}
-                            </span>
-                        @endif
+    <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
+        class="relative bg-gradient-to-b from-gray-900 to-gray-800 py-16 opacity-0 translate-y-10" dir="rtl">
+        <div class="container px-4 md:px-6">
+            <!-- Title -->
+            <h2 class="text-4xl md:text-5xl font-bold text-white text-center mb-12">مشاريعنا</h2>
+            <!-- Projects Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                @foreach ($projects as $index => $project)
+                    <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
+                        x-intersect:delay="{{ ($index % 3) * 200 }}"
+                        class="project-card bg-white shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden material-card"
+                        :class="{
+                            'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
+                            === '0',
+                            'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
+                            !== '0'
+                        }">
+                        <!-- Image -->
+                        <div class="relative">
+                            <img src="{{ $project->img ? Storage::url($project->img) : asset('images/coming-soon.jpg') }}"
+                                alt="{{ $project->name }}"
+                                class="w-full h-64 object-cover rounded-t-inherit hover:scale-105 transition-all duration-300">
+                            <!-- Status Badge -->
+                            @if ($project->status === 'sold')
+                                <div
+                                    class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45">
+                                    <img src="{{ asset('sell.png') }}" alt="مباع"
+                                        class="w-60 h-60 object-contain">
+                                </div>
+                            @else
+                                <span
+                                    class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
+                                    :class="{
+                                        'bg-green-500': '{{ $project->status }}'
+                                        === 'available',
+                                        'bg-orange-500': '{{ $project->status }}'
+                                        === 'under_construction',
+                                        'bg-blue-500': '{{ $project->status }}'
+                                        === 'ready'
+                                    }">
+                                    {{ $project->status_label }}
+                                </span>
+                            @endif
+                        </div>
+                        <!-- Details -->
+                        <div class="p-6 flex items-center justify-between">
+                            <h3 class="text-xl font-bold text-gray-900">
+                                @isset($project->logo)
+                                    <img src="{{ Storage::url($project->logo) }}" class="h-16" alt=" {{ $project->name }}">
+                                @else
+                                    {{ $project->name }}
+                                @endisset
+                            </h3>
+                            <a wire:navigate href="{{ route('projects.show', $project->slug) }}"
+                                class="inline-block px-4 py-2 bg-blue-900 text-white text-sm font-semibold rounded-md hover:bg-orange-500 transition-all duration-300">
+                                عرض التفاصيل
+                            </a>
+                        </div>
                     </div>
-                    <!-- Details -->
-                    <div class="p-6 flex items-center justify-between">
-                        <h3 class="text-xl font-bold text-gray-900">{{ $project->name }}</h3>
-                        <a wire:navigate href="{{ route('projects.show', $project->slug) }}"
-                            class="inline-block px-4 py-2 bg-blue-900 text-white text-sm font-semibold rounded-md hover:bg-orange-500 transition-all duration-300">
-                            عرض التفاصيل
-                        </a>
-                    </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
+            <!-- Explore More Button -->
+            <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
+                class="text-center mt-6 md:mt-12 opacity-0 translate-y-10">
+                <a wire:navigate href="{{ route('project-categories') }}"
+                    class="inline-block px-8 py-4 secondary-bg text-white font-semibold rounded-md hover:bg-orange-800 transition-colors duration-300"
+                    aria-label="projects">
+                    استكشف المزيد من المشاريع
+                </a>
+            </div>
         </div>
-        <!-- Explore More Button -->
-        <div x-intersect="$el.classList.add('animate-item', 'fade-in-slide-up')" x-intersect:delay="600"
-            class="text-center mt-6 md:mt-12 opacity-0 translate-y-10">
-            <a wire:navigate href="{{ route('project-categories') }}"
-                class="inline-block px-8 py-4 secondary-bg text-white font-semibold rounded-md hover:bg-orange-800 transition-colors duration-300"
-                aria-label="projects">
-                استكشف المزيد من المشاريع
-            </a>
-        </div>
-    </div>
-</section>
+    </section>
     <!-- Guarantees Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="bg-white py-16 opacity-0 translate-y-10">
@@ -573,7 +587,7 @@
 
                 <!-- Slider or Grid Container -->
                 <div x-show="reviews.length > 3" class="flex transition-transform duration-500 flex-nowrap"
-                    :style="{ 'transform': `translateX(-${currentIndex * cardWidth * reviewsPerPage}px)` }" >
+                    :style="{ 'transform': `translateX(-${currentIndex * cardWidth * reviewsPerPage}px)` }">
                     <template x-for="(review, index) in reviews" :key="index">
                         <div x-intersect="$el.classList.add('animate-item', 'slide-in-up')"
                             :x-intersect:delay="index % reviewsPerPage * 200"
