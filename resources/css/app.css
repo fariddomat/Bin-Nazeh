@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 /* Font */
+
+@font-face {
+    font-family: 'QomraArabicitf';
+    src: url('/fonts/QomraArabicitf-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'AsalArabicitf';
+    src: url('/fonts/AsalArabicitf-Regular.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
 .ibm-plex-sans-arabic-thin {
     font-family: "IBM Plex Sans Arabic", sans-serif;
     font-weight: 100;
@@ -79,8 +93,14 @@
     background: #d6d9d9  ;
 }
 
+/* Apply QomraArabicitf to all text */
 body {
-    font-family: 'IBM Plex Sans Arabic', sans-serif;
+    font-family: 'QomraArabicitf', sans-serif;
+}
+
+/* Apply AsalArabicitf to all headers */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'AsalArabicitf', sans-serif;
 }
 
 .container {

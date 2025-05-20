@@ -621,7 +621,7 @@
                             <img :src="review.icon" alt="Reviewer"
                                 class="w-12 h-12 sm:w-16 sm:h-16 rounded-full mx-auto mb-4 object-cover">
                             <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-2" x-text="review.name"></h3>
-                            <p class="text-sm sm:text-base text-gray-600 italic mb-2" x-text="review.title"></p>
+                            {{-- <p class="text-sm sm:text-base text-gray-600 italic mb-2" x-text="review.title"></p> --}}
                             <p class="text-sm sm:text-base text-gray-700" x-text="review.description"></p>
                         </div>
                     </template>
