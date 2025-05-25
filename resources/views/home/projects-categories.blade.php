@@ -16,7 +16,7 @@
                             class="fas fa-building text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 px-4"></i>
                         <div class="text-center text-white">
                             <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">مشاريعنا المتميزة</h1>
-                            <p class="text-lg md:text-xl mt-4 animate-slide-in-up">استكشف مجموعتنا المتنوعة من المشاريع
+                            <p class="text-lg md:text-xl mt-4 animate-slide-in-up">اكتشف مجموعتنا المتنوعة من المشاريع
                                 العقارية المبتكرة
                             </p>
                         </div>

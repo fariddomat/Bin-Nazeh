@@ -3,7 +3,7 @@
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="relative h-[95vh] overflow-hidden opacity-0 translate-y-10" data-parallax>
         <div class="absolute inset-0 bg-cover bg-center parallax-bg"
-            style="background-image: url('{{ asset('images/sections/Contact us hero.jpg') }}')">
+            style="background-image: url('{{ asset('images/sections/call.jpg') }}')">
             <!-- Dark Overlay with Gradient -->
             <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
             <!-- Centered Title -->
@@ -64,7 +64,7 @@
                         </div>
                         <!-- Email -->
                         <div>
-                            <label for="email" class="block text-gray-600 mb-2">البريد الإلكتروني <span class="text-red-500">*</span></label>
+                            <label for="email" class="block text-gray-600 mb-2">البريد الإلكتروني </label>
                             <input name="email" id="email" type="email" value="{{ old('email') }}"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('email') border-red-500 @enderror">
                             @error('email')
@@ -82,7 +82,7 @@
                         </div>
                         <!-- Project -->
                         <div>
-                            <label for="project_id" class="block text-gray-600 mb-2">المشروع <span class="text-red-500">*</span></label>
+                            <label for="project_id" class="block text-gray-600 mb-2">المشروع </label>
                             <select name="project_id" id="project_id"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('project_id') border-red-500 @enderror">
                                 <option value="">اختر المشروع</option>
@@ -96,7 +96,7 @@
                         </div>
                         <!-- Message -->
                         <div>
-                            <label for="message" class="block text-gray-600 mb-2">الرسالة <span class="text-red-500">*</span></label>
+                            <label for="message" class="block text-gray-600 mb-2">الرسالة </label>
                             <textarea name="message" id="message" rows="6"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('message') border-red-500 @enderror">{{ old('message') }}</textarea>
                             @error('message')

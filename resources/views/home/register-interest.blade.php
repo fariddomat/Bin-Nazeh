@@ -3,7 +3,7 @@
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="relative h-[95vh] overflow-hidden opacity-0 translate-y-10" data-parallax>
         <div class="absolute inset-0 bg-cover bg-center parallax-bg"
-            style="background-image: url('{{ asset('images/sections/Register interest hero.jpg') }}')">
+            style="background-image: url('{{ asset('images/sections/hero-person.jpg') }}')">
             <!-- Dark Overlay with Gradient -->
             <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
             <!-- Centered Title -->
@@ -14,10 +14,11 @@
                         <!-- Decorative Icon -->
                         <i
                             class="fas fa-building text-5xl text-orange-500 absolute -top-6 left-1/2 transform -translate-x-1/2 px-4"></i>
-                            <div class="text-center text-white">
-                                <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">سجل اهتمامك</h1>
-                                <p class="text-lg md:text-xl mt-4 animate-slide-in-up">شاركنا رؤيتك لنحقق تطلعاتك العقارية</p>
-                            </div>
+                        <div class="text-center text-white">
+                            <h1 class="text-4xl md:text-6xl font-bold animate-text-slide-in">سجل اهتمامك</h1>
+                            <p class="text-lg md:text-xl mt-4 animate-slide-in-up">شاركنا رؤيتك لنحقق تطلعاتك العقارية
+                            </p>
+                        </div>
                         <!-- Centered Button with Pulse -->
                         <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale', 'animate-pulse-once')"
                             class="mt-8 text-center opacity-0 scale-95">
@@ -66,8 +67,7 @@
                         </div>
                         <!-- Email -->
                         <div>
-                            <label for="email" class="block text-gray-600 mb-2">البريد الإلكتروني <span
-                                    class="text-red-500">*</span></label>
+                            <label for="email" class="block text-gray-600 mb-2">البريد الإلكتروني </label>
                             <input name="email" id="email" type="email" value="{{ old('email') }}"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('email') border-red-500 @enderror">
                             @error('email')
@@ -85,7 +85,7 @@
                             @enderror
                         </div>
                         <!-- Block Number -->
-                        <div>
+                        {{-- <div>
                             <label for="block_number" class="block text-gray-600 mb-2">رقم القطعة (اختياري)</label>
                             <input name="block_number" id="block_number" type="text"
                                 value="{{ old('block_number') }}"
@@ -93,9 +93,9 @@
                             @error('block_number')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
-                        </div>
+                        </div> --}}
                         <!-- City -->
-                        <div>
+                        {{-- <div>
                             <label for="city" class="block text-gray-600 mb-2">المدينة <span
                                     class="text-red-500">*</span></label>
                             <input name="city" id="city" type="text" value="{{ old('city') }}"
@@ -103,11 +103,10 @@
                             @error('city')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
-                        </div>
+                        </div> --}}
                         <!-- Project -->
                         <div>
-                            <label for="project_id" class="block text-gray-600 mb-2">المشروع <span
-                                    class="text-red-500">*</span></label>
+                            <label for="project_id" class="block text-gray-600 mb-2">المشروع </label>
                             <select name="project_id" id="project_id"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('project_id') border-red-500 @enderror">
                                 <option value="">اختر المشروع</option>
@@ -123,42 +122,24 @@
                         </div>
                         <!-- Wish -->
                         <div>
-                            <label class="block text-gray-600 mb-2">الرغبة <span class="text-red-500">*</span></label>
-                            <div class="flex flex-col space-y-2">
-                                <label class="flex items-center">
-                                    <input name="wish" type="radio" value="استثمار" class="mr-2"
-                                        {{ old('wish', 'استثمار') == 'استثمار' ? 'checked' : '' }}>
-                                    استثمار
-                                </label>
-                                <label class="flex items-center">
-                                    <input name="wish" type="radio" value="سكن" class="mr-2"
-                                        {{ old('wish') == 'سكن' ? 'checked' : '' }}>
-                                    سكن
-                                </label>
-                                <label class="flex items-center">
-                                    <input name="wish" type="radio" value="اخرى" class="mr-2"
-                                        {{ old('wish') == 'اخرى' ? 'checked' : '' }}>
-                                    اخرى
-                                </label>
-                            </div>
+                            <label for="wish" class="block text-gray-600 mb-2">الرغبة <span
+                                    class="text-red-500">*</span></label>
+                            <select name="wish" id="wish"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-md bg-white text-gray-900 focus:ring-2 focus:ring-orange-500 focus:border-orange-500 transition-all duration-300">
+                                <option value="استثمار" {{ old('wish', 'استثمار') == 'استثمار' ? 'selected' : '' }}>
+                                    استثمار</option>
+                                <option value="سكن" {{ old('wish') == 'سكن' ? 'selected' : '' }}>سكن</option>
+                                <option value="اخرى" {{ old('wish') == 'اخرى' ? 'selected' : '' }}>اخرى</option>
+                            </select>
                             @error('wish')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                             @enderror
                         </div>
-                        <!-- Other Wish -->
-                        <div x-show="$('input[name=wish]:checked').val() === 'اخرى'" x-cloak>
-                            <label for="other_wish" class="block text-gray-600 mb-2">رغبة أخرى <span
-                                    class="text-red-500">*</span></label>
-                            <input name="other_wish" id="other_wish" type="text" value="{{ old('other_wish') }}"
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('other_wish') border-red-500 @enderror">
-                            @error('other_wish')
-                                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                            @enderror
-                        </div>
+
                         <!-- Notes -->
                         <div>
                             <label for="notes" class="block text-gray-600 mb-2">ملاحظات (اختياري)</label>
-                            <textarea name="notes" id="notes" rows="4"
+                            <textarea name="notes" id="notes" rows="3"
                                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent @error('notes') border-red-500 @enderror">{{ old('notes') }}</textarea>
                             @error('notes')
                                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
@@ -180,26 +161,29 @@
                     <div class="bg-white p-6 rounded-lg shadow-md relative z-10">
                         <h3 x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             class="text-2xl font-bold text-gray-900 mb-4 opacity-0 scale-95">
-                            لماذا تسجل اهتمامك مع بن نازح؟
+                            <br>لماذا تسجل اهتمامك مع بن نازح؟
+                            <br><br>
                         </h3>
                         <p x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             class="text-gray-600 mb-6 opacity-0 scale-95">
-                            في بن نازح العقارية، نسعى لتحقيق أحلامك العقارية من خلال تقديم حلول مبتكرة ومشاريع
+                            <br>في بن نازح العقارية، نسعى لتحقيق أحلامك العقارية من خلال تقديم حلول مبتكرة ومشاريع
                             استثنائية. عند تسجيل اهتمامك، ستحصل على:
+                            <br>
                         </p>
                         <ul x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             class="list-disc list-inside text-gray-600 mb-6 opacity-0 scale-95">
-                            <li>إرشادات من خبراء عقاريين ذوي خبرة.</li>
-                            <li>وصول حصري إلى مشاريعنا الفاخرة قبل الإطلاق.</li>
-                            <li>استشارات مخصصة تتناسب مع احتياجاتك الاستثمارية أو السكنية.</li>
+                            <li>إرشادات من خبراء عقاريين ذوي خبرة.</li><br>
+                            <li>وصول حصري إلى مشاريعنا الفاخرة قبل الإطلاق.</li><br>
+                            <li>استشارات مخصصة تتناسب مع احتياجاتك الاستثمارية أو السكنية.</li><br>
                             <li>تحديثات مستمرة حول فرص السوق العقاري في المملكة.</li>
                         </ul>
                         <div x-intersect="$el.classList.add('animate-item', 'fade-in-scale')"
                             class="relative p-4 opacity-0 scale-95">
                             <div class="gold-border"></div>
-                            <img src="{{ asset('images/sections/Register interest section.jpg') }}"
+                            <img src="{{ asset('images/sections/section-person.jpg') }}"
                                 alt="مشاريع بن نازح العقارية الفاخرة"
                                 class="w-full h-64 object-cover rounded-lg shadow-md relative z-10">
+                                <br>
                         </div>
                     </div>
                 </div>

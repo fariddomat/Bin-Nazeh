@@ -267,7 +267,7 @@ return [
     'virtual_location' => 'الموقع الافتراضي',
     'cover_img' => 'صورة الغلاف',
     'status' => 'الحالة',
-    'status_percent' => 'نسبة الحالة',
+    'status_percent' => 'نسبة إنجاز المشروع',
     'project_category_id' => 'فئة المشروع',
     'images' => 'الصور',
 

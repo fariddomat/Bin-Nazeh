@@ -61,16 +61,19 @@
                                 <img src="{{ asset('sell.png') }}" alt="مباع"
                                     class="w-60 h-60 object-contain">
                             </div>
-                        @else
-                            <span class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
-                                :class="{
-                                    'bg-green-500': '{{ $project->status }}' === 'available',
-                                    'bg-orange-500': '{{ $project->status }}' === 'under_construction',
-                                    'bg-blue-500': '{{ $project->status }}' === 'ready'
-                                }">
-                                {{ $project->status_label }}
-                            </span>
-                        @endif
+                       @else
+                                <div class="absolute z-50 top-4 left-4 w-[50%] h-auto mb-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden" dir="ltr">
+                                    <div class="h-full transition-all duration-300 ext-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+                                         :class="{
+                                             'bg-green-500': '{{ $project->status }}' === 'available',
+                                             'bg-orange-500': '{{ $project->status }}' === 'under_construction',
+                                             'bg-blue-500': '{{ $project->status }}' === 'ready'
+                                         }"
+                                         style="width:
+                                    {{ $project->status_percent }}%">{{ $project->status_percent }}%</div>
+
+                                </div>
+                            @endif
                             </div>
                             <!-- Details -->
                             <div class="p-6">
@@ -83,7 +86,7 @@
                                 </h3>
                                 <div class="mt-4 text-center">
                                     <a wire:navigate href="{{ route('projects.show', $project->slug) }}"
-                                        class="inline-block px-6 py-3 bg-blue-900 text-white font-semibold rounded-md hover:bg-orange-500 transition-all duration-300">
+                                        class="inline-block px-6 py-3 bg-black text-white font-semibold rounded-md hover:bg-orange-500 transition-all duration-300">
                                         عرض التفاصيل
                                     </a>
                                 </div>

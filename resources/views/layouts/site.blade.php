@@ -81,111 +81,180 @@
 
     <div class="flex flex-col min-h-screen" x-data="{ menuOpen: false, searchOpen: false }">
         <!-- Fixed Header -->
-        <header class="header fixed top-0 left-0 right-0 z-50 text-white flex items-center justify-center primary-bg">
-            <div class="container flex justify-between items-center">
-                <!-- Logo and Name -->
-                <div class="flex items-center space-x-2 space-x-reverse">
-                    <a href="{{ route('home') }}">
-                        <img src="{{ asset('logo/bin nazeh 3.png') }}" alt="Bin Nazeh Logo"
-                            class="header-logo h-20 md:h-[9rem] w-20 md:w-[9rem] md:pt-8 transition-transform duration-300" />
+    <header x-data="{ menuOpen: false, searchOpen: false }" class="header fixed top-0 left-0 right-0 z-50 text-white flex items-center justify-center primary-bg">
+        <div class="container flex justify-between items-center">
+            <!-- Logo and Name -->
+            <div class="flex items-center space-x-2 space-x-reverse">
+                <a href="{{ route('home') }}" wire:navigate>
+                    <img src="{{ asset('logo/bin nazeh 3.png') }}" alt="Bin Nazeh Logo"
+                        class="header-logo h-20 md:h-[9rem] w-20 md:w-[9rem] md:pt-8 transition-transform duration-300" />
+                </a>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden md:flex space-x-6 space-x-reverse nav-items" dir="ltr">
+                <a href="{{ route('home') }}"
+                    class="nav-link hover:text-gray-200 transition-colors duration-200 {{ request()->is('/') ? 'active' : '' }}"
+                    wire:navigate aria-label="home">الرئيسية</a>
+                <a href="{{ route('about') }}"
+                    class="nav-link hover:text-gray-200 transition-colors duration-200"
+                    wire:navigate aria-label="about">نبذة عنا</a>
+                <a href="{{ route('services') }}"
+                    class="nav-link hover:text-gray-200 transition-colors duration-200"
+                    wire:navigate aria-label="service">خدماتنا</a>
+                <div x-data="{ open: false }" class="relative">
+                    <button @click="open = !open"
+                        class="nav-link hover:text-gray-200 transition-colors duration-500 flex items-center"
+                        aria-label="projects"><i class="fas fa-chevron-down mr-1"></i> المشاريع
+                    </button>
+                    <div x-show="open" x-cloak @click.away="open = false"
+                        class="absolute top-full right-0 mt-2 bg-white text-gray-900 rounded-md shadow-lg w-48">
+                        @foreach (\App\Models\ProjectCategory::all() as $item)
+                            <a href="{{ route('projects', $item) }}"
+                                class="block px-4 py-2 hover:bg-gray-100"
+                                wire:navigate aria-label="project {{ $item->name }}">{{ $item->name }}</a>
+                        @endforeach
+                    </div>
+                </div>
+                <a href="{{ route('blogs.index') }}"
+                    class="nav-link hover:text-gray-200 transition-colors duration-200"
+                    wire:navigate aria-label="blogs">المدونة</a>
+                <a href="{{ route('contact') }}"
+                    class="nav-link hover:text-gray-200 transition-colors duration-200"
+                    wire:navigate aria-label="contact">تواصل معنا</a>
+            </nav>
+
+            <!-- Mobile Menu Button, Phone, WhatsApp, and Search -->
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <button class="hidden md:flex" @click="searchOpen = !searchOpen" aria-label="search">
+                    <i class="fas fa-search text-xl"></i>
+                </button>
+                <!-- Desktop Phone and WhatsApp -->
+                <div class="hidden md:flex flex-col items-end space-y-2">
+                    <a href="tel:+966{{ \App\Models\Info::first()->phone_1 }}"
+                        class="flex items-center space-x-1 space-x-reverse hover:text-gray-200 transition-colors duration-200"
+                        aria-label="phone number">
+                        <i class="fas fa-phone-alt text-xl"></i>
+                        <span>{{ \App\Models\Info::first()->phone_1 }}</span>
+                    </a>
+                    <a href="https://wa.me/+966{{ \App\Models\SocialMedia::where('name', 'whatsapp')->first()->link }}"
+                        target="_blank"
+                        class="flex items-center space-x-1 space-x-reverse hover:text-gray-200 transition-colors duration-200"
+                        aria-label="whatsapp">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                        <span>{{ \App\Models\SocialMedia::where('name', 'whatsapp')->first()->link }}</span>
                     </a>
                 </div>
+                <!-- Mobile Icons -->
+                <div class="flex md:hidden items-center space-x-3 space-x-reverse">
+                    <a href="tel:+966{{ \App\Models\Info::first()->phone_1 }}"
+                        class="flex items-center hover:text-gray-200 transition-colors duration-200"
+                        aria-label="phone number">
+                        <i class="fas fa-phone-alt text-xl"></i>
+                    </a>
+                    <a href="https://wa.me/+966{{ \App\Models\SocialMedia::where('name', 'whatsapp')->first()->link }}"
+                        target="_blank"
+                        class="flex items-center hover:text-gray-200 transition-colors duration-200"
+                        aria-label="whatsapp">
+                        <i class="fab fa-whatsapp text-xl"></i>
+                    </a>
+                    <button @click="searchOpen = !searchOpen" aria-label="search">
+                        <i class="fas fa-search text-xl"></i>
+                    </button>
+                    <button @click="menuOpen = !menuOpen" aria-label="menu">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
 
-                <!-- Desktop Navigation -->
-                <nav class="hidden md:flex space-x-6 space-x-reverse nav-items" dir="ltr">
+        <!-- Mobile Menu -->
+        <div x-show="menuOpen" x-cloak x-transition.opacity
+            class="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden" @click="menuOpen = false">
+            <div class="fixed top-0 right-0 w-3/4 max-w-sm bg-white text-gray-900 h-full shadow-lg overflow-y-auto"
+                @click.stop>
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h2 class="text-xl font-bold">القائمة</h2>
+                    <button @click="menuOpen = false" aria-label="close menu">
+                        <i class="fas fa-times text-2xl"></i>
+                    </button>
+                </div>
+                <nav class="flex flex-col p-4 space-y-4" dir="rtl">
                     <a href="{{ route('home') }}"
-                        class="nav-link hover:text-gray-200 transition-colors duration-200 {{ request()->is('/') ? 'active' : '' }}"
-                        wire:navigate aria-label="home">الرئيسية</a>
-                    <a href="{{ route('about') }}" class="nav-link hover:text-gray-200 transition-colors duration-200"
-                        wire:navigate aria-label="about">نبذة عنا</a>
+                        class="nav-link hover:text-orange-500 transition-colors duration-200 {{ request()->is('/') ? 'active' : '' }}"
+                        wire:navigate aria-label="home"
+                        @click="menuOpen = false">الرئيسية</a>
+                    <a href="{{ route('about') }}"
+                        class="nav-link hover:text-orange-500 transition-colors duration-200"
+                        wire:navigate aria-label="about"
+                        @click="menuOpen = false">نبذة عنا</a>
                     <a href="{{ route('services') }}"
-                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
-                        aria-label="service">خدماتنا</a>
-                    <div x-data="{ open: false }" class="relative">
-                        <a href="{{ route('project-categories') }}" @mouseover="open = true" @click.away="open = false"
-                            class="nav-link hover:text-gray-200 transition-colors duration-500 flex items-center"
-                            wire:navigate aria-label="projects"><i class="fas fa-chevron-down mr-1"></i>
-                            المشاريع
-                        </a>
-                        <div x-show="open" @mouseover="open = true" @mouseleave="open = false"
-                            class="absolute top-full right-0 mt-2 bg-white text-gray-900 rounded-md shadow-lg w-48">
+                        class="nav-link hover:text-orange-500 transition-colors duration-200"
+                        wire:navigate aria-label="service"
+                        @click="menuOpen = false">خدماتنا</a>
+                    <div x-data="{ projectOpen: false }" class="relative">
+                        <button @click="projectOpen = !projectOpen"
+                            class="nav-link hover:text-orange-500 transition-colors duration-200 flex items-center w-full text-right"
+                            aria-label="projects">
+                            <i class="fas fa-chevron-down ml-2"></i> المشاريع
+                        </button>
+                        <div x-show="projectOpen" x-cloak x-transition
+                            class="mt-2 bg-gray-100 rounded-md shadow-inner">
                             @foreach (\App\Models\ProjectCategory::all() as $item)
-                                <a href="{{ route('projects', $item) }}" class="block px-4 py-2 hover:bg-gray-100"
-                                    wire:navigate aria-label="project {{ $item->name }}">{{ $item->name }}</a>
+                                <a href="{{ route('projects', $item) }}"
+                                    class="block px-4 py-2 hover:bg-gray-200"
+                                    wire:navigate aria-label="project {{ $item->name }}"
+                                    @click="menuOpen = false; projectOpen = false">{{ $item->name }}</a>
                             @endforeach
                         </div>
                     </div>
-                    <a href="{{ route('register-interest') }}"
-                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
-                        aria-label="register interest">سجل
-                        اهتمامك</a>
                     <a href="{{ route('blogs.index') }}"
-                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
-                        aria-label="blogs">المدونة</a>
+                        class="nav-link hover:text-orange-500 transition-colors duration-200"
+                        wire:navigate aria-label="blogs"
+                        @click="menuOpen = false">المدونة</a>
                     <a href="{{ route('contact') }}"
-                        class="nav-link hover:text-gray-200 transition-colors duration-200" wire:navigate
-                        aria-label="contact">تواصل معنا</a>
+                        class="nav-link hover:text-orange-500 transition-colors duration-200"
+                        wire:navigate aria-label="contact"
+                        @click="menuOpen = false">تواصل معنا</a>
                 </nav>
-                <button class="hidden md:flex " @click="searchOpen = !searchOpen" aria-label="search">
-                    <i class="fas fa-search text-xl"></i>
-                </button>
-                <!-- Mobile Menu Button, Phone, WhatsApp, and Search -->
-                <div class="flex items-center space-x-4 space-x-reverse">
-                    <!-- Desktop Phone and WhatsApp -->
-                    <div class="hidden md:flex flex-col items-end space-y-2">
-
-                        <a href="tel:+966{{ \App\Models\Info::first()->phone_1 }}"
-                            class="flex items-center space-x-1 space-x-reverse hover:text-gray-200 transition-colors duration-200"
-                            aria-label="phone number">
-                            <i class="fas fa-phone-alt text-xl"></i>
-                            <span>{{ \App\Models\Info::first()->phone_1 }}</span>
-                        </a>
-                        <a href="https://wa.me/+966{{ \App\Models\SocialMedia::where('name', 'whatsapp')->first()->link }}"
-                            target="_blank"
-                            class="flex items-center space-x-1 space-x-reverse hover:text-gray-200 transition-colors duration-200"
-                            aria-label="whatsapp">
-                            <i class="fab fa-whatsapp text-xl"></i>
-                            <span>{{ \App\Models\SocialMedia::where('name', 'whatsapp')->first()->link }}</span>
-                        </a>
-                    </div>
-                    <!-- Mobile Icons -->
-                    <div class="flex md:hidden items-center space-x-3 space-x-reverse">
-
-                        <a href="tel:+966{{ \App\Models\Info::first()->phone_1 }}"
-                            class="flex items-center hover:text-gray-200 transition-colors duration-200"
-                            aria-label="phone number">
-                            <i class="fas fa-phone-alt text-xl"></i>
-                        </a>
-                        <a href="https://wa.me/+966{{ \App\Models\SocialMedia::where('name', 'whatsapp')->first()->link }}"
-                            target="_blank"
-                            class="flex items-center hover:text-gray-200 transition-colors duration-200"
-                            aria-label="whatsapp">
-                            <i class="fab fa-whatsapp text-xl"></i>
-                        </a>
-                        <button @click="searchOpen = !searchOpen" aria-label="search">
-                            <i class="fas fa-search text-xl"></i>
-                        </button>
-                        <button @click="menuOpen = !menuOpen" aria-label="menu">
-                            <i class="fas fa-bars text-2xl"></i>
-                        </button>
-                    </div>
-                </div>
             </div>
-        </header>
+        </div>
 
-        <style>
-            /* Ensure consistent spacing and alignment for mobile icons */
-            @media (max-width: 767px) {
-                .header .container .flex.items-center.space-x-4.space-x-reverse {
-                    align-items: center;
-                }
+        <!-- Search Overlay -->
+        <div x-show="searchOpen" x-cloak x-transition.opacity
+            class="fixed inset-0 bg-black bg-opacity-50 z-40 flex items-center justify-center">
+            <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4" @click.stop>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-gray-900">البحث</h2>
+                    <button @click="searchOpen = false" aria-label="close search">
+                        <i class="fas fa-times text-2xl text-gray-900"></i>
+                    </button>
+                </div>
+                <form action="{{ route('search') }}" method="GET">
+                    <input type="text" name="query" placeholder="ابحث هنا..."
+                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-orange-500 focus:border-orange-500">
+                    <button type="submit"
+                        class="mt-4 w-full px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors duration-200">
+                        بحث
+                    </button>
+                </form>
+            </div>
+        </div>
+    </header>
 
-                .header .flex.md\:hidden.items-center.space-x-3.space-x-reverse>* {
-                    margin-left: 0.75rem;
-                    /* Consistent spacing between icons */
-                }
+    <style>
+        /* Ensure consistent spacing and alignment for mobile icons */
+        @media (max-width: 767px) {
+            .header .container .flex.items-center.space-x-4.space-x-reverse {
+                align-items: center;
             }
-        </style>
+
+            .header .flex.md\:hidden.items-center.space-x-3.space-x-reverse > * {
+                margin-left: 0.75rem;
+                /* Consistent spacing between icons */
+            }
+        }
+    </style>
         <!-- Search Popup -->
         <div x-show="searchOpen" x-cloak
             class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -254,9 +323,9 @@
                         @endforeach
                     </div>
                 </div>
-                <a href="{{ route('register-interest') }}" class="block hover:text-gray-300" wire:navigate
+                {{-- <a href="{{ route('register-interest') }}" class="block hover:text-gray-300" wire:navigate
                     aria-label="register interest">سجل
-                    اهتمامك</a>
+                    اهتمامك</a> --}}
                 <a href="{{ route('blogs.index') }}" class="block hover:text-gray-300" wire:navigate
                     aria-label="blogs">المدونة</a>
                 <a href="{{ route('contact') }}" class="block hover:text-gray-300" wire:navigate

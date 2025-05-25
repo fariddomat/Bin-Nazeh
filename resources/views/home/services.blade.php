@@ -3,7 +3,7 @@
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="relative h-[95vh] overflow-hidden opacity-0 translate-y-10" data-parallax>
         <div class="absolute inset-0 bg-cover bg-center parallax-bg"
-            style="background-image: url('{{ asset('images/sections/Register interest hero.jpg') }}')">
+            style="background-image: url('{{ asset('images/sections/hero-person.jpg') }}')">
             <!-- Dark Overlay with Gradient -->
             <div class="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent"></div>
             <!-- Centered Title -->
@@ -51,7 +51,7 @@
                 <div x-intersect="$el.classList.add('animate-item', 'fade-in')"
                     class="relative p-4">
                     <div class="gold-border"></div>
-                    <img src="{{ asset('images/sections/Register interest section.jpg') }}" alt="Services Introduction"
+                    <img src="{{ asset('images/sections/section-person.jpg') }}" alt="Services Introduction"
                         class="w-full h-96 object-cover rounded-lg shadow-md relative z-10">
                 </div>
             </div>

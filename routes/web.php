@@ -42,7 +42,7 @@ Route::get('/services', [SiteController::class, 'services'])->name('services');
 Route::get('/services/{slug}', [SiteController::class, 'serviceShow'])->name('services.show');
 Route::get('/neighborhoods', [SiteController::class, 'projectCategories'])->name('project-categories');
 Route::get('/neighborhoods/{category?}', [SiteController::class, 'projects'])->name('projects');
-Route::get('/projects/{slug}', [SiteController::class, 'projectShow'])->name('projects.show');
+Route::get('/projects/{slug?}', [SiteController::class, 'projectShow'])->name('projects.show');
 Route::get('/blogs/{categorySlug?}', [SiteController::class, 'blogs'])->name('blogs.index');
 Route::get('/blog/{slug}', [SiteController::class, 'blogShow'])->name('blogs.show');
 Route::get('/register-interest', [SiteController::class, 'registerInterestCreate'])->name('register-interest');

@@ -175,13 +175,13 @@ public function home()
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'nullable|email|max:255',
             'phone' => 'required|string|regex:/^\d{10}$/',
             'block_number' => 'nullable|integer',
-            'city' => 'required|string|max:255',
-            'project_id' => 'required|exists:projects,id',
-            'wish' => 'required|in:استثمار,سكن,اخرى',
-            'other_wish' => 'required_if:wish,اخرى|string|max:255|nullable',
+            'city' => 'nullable|string|max:255',
+            'project_id' => 'nullabl',
+            'wish' => 'nullable|in:استثمار,سكن,اخرى',
+            'other_wish' => 'nullable|string|max:255|nullable',
             'notes' => 'nullable|string',
         ]);
 

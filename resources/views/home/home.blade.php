@@ -26,8 +26,8 @@
                     <div class="absolute inset-0" style="background: #173c4d78"></div>
                     <!-- Main Text with Fade-In Slide Effect -->
                     <div
-                        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center text-white animate-text-slide-in">
-                        <h1 class="text-4xl md:text-6xl font-bold" x-text="slide.text"></h1>
+                        class="absolute top-1/2  transform -translate-x-1/2 -translate-y-1/2 text-center text-white animate-text-slide-in" style="width: 100%">
+                        <h1 class="text-4xl md:text-6xl font-bold" x-text="slide.text" style="text-align: center; width: 100%"></h1>
                     </div>
                     <!-- Description (Bottom Right) -->
                     <div class="absolute bottom-32 md:bottom-8 right-8 text-white max-w-sm animate-slide-in-right">
@@ -159,14 +159,13 @@
         });
     </script>
     <!-- Video Section -->
-    <section x-intersect="$el.classList.add('animate-section', 'fade-in-scale')"
+    {{-- <section x-intersect="$el.classList.add('animate-section', 'fade-in-scale')"
         class="relative h-screen max-h-[100vh] bg-gray-900 opacity-0 scale-95">
         <video x-ref="video" class="w-full h-full object-cover" autoplay muted loop playsinline loading="lazy">
             <source src="{{ asset('videos/intro.mp4') }}" type="video/mp4">
             متصفحك لا يدعم تشغيل الفيديو.
         </video>
 
-        <!-- Mute/Unmute Button -->
         <div x-data="{ isMuted: true }" class="absolute bottom-4 right-4 z-10">
             <button @click="isMuted = !isMuted; $refs.video.muted = isMuted"
                 class="flex items-center justify-center w-12 h-12 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition-all duration-300 focus:outline-none"
@@ -175,9 +174,9 @@
                 <i x-show="!isMuted" class="fas fa-volume-up text-xl"></i>
             </button>
         </div>
-    </section>
+    </section> --}}
 
-    {{-- Project Steps Section --}}
+   {{-- Project Steps Section --}}
     @php
         $index = 0;
     @endphp
@@ -205,10 +204,8 @@
                                 :class="{
                                     'scale-105 z-10': isActive(stepIndex, cycle),
                                     'scale-95 opacity-80': !isActive(stepIndex, cycle),
-                                    'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
-                                    === '0',
-                                    'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
-                                    !== '0'
+                                    'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}' === '0',
+                                    'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}' !== '0'
                                 }">
                                 <div class="flex items-center justify-center mb-4">
                                     <div
@@ -222,20 +219,6 @@
                             </div>
                         </template>
                     </template>
-                </div>
-
-                <!-- Navigation Arrows -->
-                <div class="absolute top-1/2 right-0 transform -translate-y-1/2 z-20">
-                    <button @click="prevCard"
-                        class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
-                        <i class="fas fa-chevron-right"></i>
-                    </button>
-                </div>
-                <div class="absolute top-1/2 left-0 transform -translate-y-1/2 z-20">
-                    <button @click="nextCard"
-                        class="bg-gray-800 text-white p-2 rounded-full hover:bg-gray-700 transition">
-                        <i class="fas fa-chevron-left"></i>
-                    </button>
                 </div>
             </div>
 
@@ -303,10 +286,8 @@
                     if (!this.isDragging) return;
                     event.preventDefault(); // Prevent text selection on drag
                     const currentX = event.pageX || (event.touches && event.touches[0].pageX);
-                    const diff = this.startX -
-                        currentX; // Positive diff means drag left (visual right in RTL)
-                    this.translateX = this.startTranslateX +
-                        diff; // RTL: drag left increases translateX
+                    const diff = this.startX - currentX; // Positive diff means drag left (visual right in RTL)
+                    this.translateX = this.startTranslateX + diff; // RTL: drag left increases translateX
                     this.$refs.track.style.transform = `translateX(${this.translateX}px)`;
 
                     // Calculate velocity for inertia
@@ -338,7 +319,7 @@
 
                     // Handle seamless looping
                     if (this.currentIndex < 0) {
-                        this.currentIndex = totalSteps;
+                        this.currentIndex = totalSteps * 2 - 1; // Move to last card of second cycle
                         this.translateX = this.currentIndex * cardDistance;
                         this.$refs.track.style.transition = 'none';
                         this.$refs.track.style.transform = `translateX(${this.translateX}px)`;
@@ -346,7 +327,7 @@
                             this.$refs.track.style.transition = 'transform 0.3s ease-out';
                         });
                     } else if (this.currentIndex >= totalSteps * 2) {
-                        this.currentIndex = totalSteps;
+                        this.currentIndex = totalSteps; // Move to start of second cycle
                         this.translateX = this.currentIndex * cardDistance;
                         this.$refs.track.style.transition = 'none';
                         this.$refs.track.style.transform = `translateX(${this.translateX}px)`;
@@ -360,13 +341,7 @@
                 },
 
                 nextCard() {
-                    this.currentIndex--;
-                    this.translateX = this.currentIndex * (this.cardWidth + this.gap);
-                    this.snapToNearestCard();
-                },
-
-                prevCard() {
-                    this.currentIndex++;
+                    this.currentIndex++; // Reversed direction: increment instead of decrement
                     this.translateX = this.currentIndex * (this.cardWidth + this.gap);
                     this.snapToNearestCard();
                 },
@@ -382,7 +357,7 @@
                     if (!this.autoSlideInterval) {
                         this.autoSlideInterval = setInterval(() => {
                             this.nextCard();
-                        }, 3000);
+                        }, 8000); // Auto-slide every 8 seconds
                     }
                 },
 
@@ -395,7 +370,6 @@
             }));
         });
     </script>
-
 
 
     <!-- Services Section -->
@@ -452,7 +426,7 @@
         </div>
     </section> --}}
 
-    <!-- Projects Section -->
+  <!-- Projects Section -->
     <section x-intersect="$el.classList.add('animate-section', 'fade-in-slide-up')"
         class="relative bg-gradient-to-b from-gray-900 to-gray-800 py-16 opacity-0 translate-y-10" dir="rtl">
         <div class="container px-4 md:px-6">
@@ -465,10 +439,8 @@
                         x-intersect:delay="{{ ($index % 3) * 200 }}"
                         class="project-card bg-white shadow-md hover:shadow-2xl hover:scale-105 transition-all duration-300 overflow-hidden material-card"
                         :class="{
-                            'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}'
-                            === '0',
-                            'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}'
-                            !== '0'
+                            'rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md': '{{ $index % 2 }}' === '0',
+                            'rounded-tr-3xl rounded-bl-3xl rounded-tl-md rounded-br-md': '{{ $index % 2 }}' !== '0'
                         }">
                         <!-- Image -->
                         <div class="relative">
@@ -477,37 +449,34 @@
                                 class="w-full h-64 object-cover rounded-t-inherit hover:scale-105 transition-all duration-300">
                             <!-- Status Badge -->
                             @if ($project->status === 'sold')
-                                <div
-                                    class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45">
-                                    <img src="{{ asset('sell.png') }}" alt="مباع"
-                                        class="w-60 h-60 object-contain">
+                                <div class="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rotate-45">
+                                    <img src="{{ asset('sell.png') }}" alt="مباع" class="w-60 h-60 object-contain">
                                 </div>
                             @else
-                                <span
-                                    class="absolute z-50 top-4 left-4 px-2 py-1 rounded text-white text-sm font-semibold"
-                                    :class="{
-                                        'bg-green-500': '{{ $project->status }}'
-                                        === 'available',
-                                        'bg-orange-500': '{{ $project->status }}'
-                                        === 'under_construction',
-                                        'bg-blue-500': '{{ $project->status }}'
-                                        === 'ready'
-                                    }">
-                                    {{ $project->status_label }}
-                                </span>
+                                  <div class="absolute z-50 top-4 left-4 w-[50%] h-auto mb-4 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden" dir="ltr">
+                                    <div class="h-full transition-all duration-300 ext-xs font-medium text-blue-100 text-center p-0.5 leading-none rounded-full"
+                                         :class="{
+                                             'bg-green-500': '{{ $project->status }}' === 'available',
+                                             'bg-orange-500': '{{ $project->status }}' === 'under_construction',
+                                             'bg-blue-500': '{{ $project->status }}' === 'ready'
+                                         }"
+                                         style="width:
+                                    {{ $project->status_percent }}%">{{ $project->status_percent }}%</div>
+
+                                </div>
                             @endif
                         </div>
                         <!-- Details -->
                         <div class="p-6 flex items-center justify-between">
                             <h3 class="text-xl font-bold text-gray-900">
                                 @isset($project->logo)
-                                    <img src="{{ Storage::url($project->logo) }}" class="h-16" alt=" {{ $project->name }}">
+                                    <img src="{{ Storage::url($project->logo) }}" class="h-16" alt="{{ $project->name }}">
                                 @else
                                     {{ $project->name }}
                                 @endisset
                             </h3>
                             <a wire:navigate href="{{ route('projects.show', $project->slug) }}"
-                                class="inline-block px-4 py-2 bg-blue-900 text-white text-sm font-semibold rounded-md hover:bg-orange-500 transition-all duration-300">
+                                class="inline-block px-4 py-2 bg-black text-white text-sm font-semibold rounded-md hover:bg-orange-500 transition-all duration-300">
                                 عرض التفاصيل
                             </a>
                         </div>
@@ -520,7 +489,7 @@
                 <a wire:navigate href="{{ route('project-categories') }}"
                     class="inline-block px-8 py-4 secondary-bg text-white font-semibold rounded-md hover:bg-orange-800 transition-colors duration-300"
                     aria-label="projects">
-                    استكشف المزيد من المشاريع
+                    اكتشف المزيد من المشاريع
                 </a>
             </div>
         </div>
@@ -658,7 +627,7 @@
                 @foreach ($counters as $index => $counter)
                     <div x-intersect.once="$el.classList.add('animate-item', 'fade-in-scale'); $dispatch('start-count', { id: $el.id })"
                         id="feature-{{ $index + 1 }}" x-data="{ count: 0 }"
-                        x-on:start-count.window="if ($event.detail.id === 'feature-{{ $index + 1 }}') { let start = 0; const end = parseInt($el.dataset.count); const duration = 2000; const interval = duration / end; const timer = setInterval(() => { if (start < end) { start++; count = start; } else { clearInterval(timer); } }, interval); }"
+                        x-on:start-count.window="if ($event.detail.id === 'feature-{{ $index + 1 }}') { let start = 0; const end = parseInt($el.dataset.count); const duration = 1000; const interval = duration / end; const timer = setInterval(() => { if (start < end) { start++; count = start; } else { clearInterval(timer); } }, interval); }"
                         class="bg-white rounded-lg shadow-md hover:shadow-2xl hover:scale-105 p-6 text-center opacity-0 scale-95 transition-all duration-300"
                         data-count="{{ $counter->value }}">
                         <div
