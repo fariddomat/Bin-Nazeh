@@ -45,7 +45,7 @@
                         @endif
                         <!-- First Paragraph -->
                         @if ($blog->first_paragraph)
-                            <p>{!! nl2br(e($blog->first_paragraph)) !!}</p>
+                            <p>{!! $blog->first_paragraph !!}</p>
                         @endif
                         <!-- Description -->
                         @if ($blog->description)

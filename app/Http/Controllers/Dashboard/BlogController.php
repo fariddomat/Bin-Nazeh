@@ -58,7 +58,7 @@ class BlogController extends Controller
         }
 
         $blog = \App\Models\Blog::create($validated);
-        
+
         return redirect()->route('dashboard.blogs.index')->with('success', 'Blog created successfully.');
     }
 
@@ -84,7 +84,7 @@ class BlogController extends Controller
         $validated = $request->validate([
             'slug' => 'required|string|max:255',
             'blog_category_id' => 'required|exists:blog_categories,id',
-            'image' => 'required|image|max:2048',
+            'image' => 'nullable|image|max:2048',
             'image_alt' => 'required|string|max:255',
             'index_image' => 'nullable|image|max:2048',
             'index_image_alt' => 'nullable|string|max:255',
@@ -97,8 +97,14 @@ class BlogController extends Controller
             'description' => 'required|string',
             'author_name' => 'required|string|max:255',
             'author_title' => 'required|string|max:255',
-            'author_image' => 'required|image|max:2048'
+            'author_image' => 'nullable|image|max:2048'
         ]);
+        if(!$request->showed){
+            $validated['showed'] =0;
+        }
+        if(!$request->show_at_home){
+            $validated['show_at_home'] =0;
+        }
                 if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('public/images');
             if ($blog->image) Storage::delete($blog->image);
@@ -113,7 +119,7 @@ class BlogController extends Controller
         }
 
         $blog->update($validated);
-        
+
         return redirect()->route('dashboard.blogs.index')->with('success', 'Blog updated successfully.');
     }
 
