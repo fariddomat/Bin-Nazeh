@@ -7,7 +7,7 @@
             <i class="fas fa-file-csv mr-2"></i> Export
         </a>
         <div class="overflow-x-auto mt-4">
-            <x-autocrud::table :columns="['id', 'name']" :data="$contactuses" routePrefix="dashboard.contact_uses" :show="true"
+            <x-autocrud::table :columns="['id', 'name', 'created_at_diff', 'project', 'message']" :data="$contactuses" routePrefix="dashboard.contact_uses" :show="true"
                 :edit="true" :delete="true" :restore="true" />
         </div>
     </div>

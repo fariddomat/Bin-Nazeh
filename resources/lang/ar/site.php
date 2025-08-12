@@ -291,4 +291,5 @@ return [
     'additional_info' => 'تواصل معنا لمزيد من التفاصيل',
     'back'=>'رجوع',
 
+    'created_at_diff'=> 'تاريخ الإصدار',
 ];
